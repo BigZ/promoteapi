@@ -1,0 +1,9 @@
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+    prefix:   /
+    defaults: {_format: json}
+
+artists:
+    type:     rest
+    resource: AppBundle\Controller\ArtistController
