@@ -7,3 +7,6 @@ services:
     app.token_authenticator:
         class: AppBundle\Security\TokenAuthenticator
         arguments: ['@doctrine.orm.entity_manager']
+    app.form_authenticator:
+        class: AppBundle\Security\FormAuthenticator
+        arguments: ['@security.password_encoder']

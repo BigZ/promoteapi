@@ -16,8 +16,19 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        token:
+            pattern: ^/token/
+            anonymous: ~
+            guard:
+                authenticators:
+                    - app.form_authenticator
         main:
-          guard:
-              authenticators:
-                  - app.token_authenticator
-          stateless: true
+            anonymous: ~
+            guard:
+                authenticators:
+                    - app.token_authenticator
+            stateless: true
+
+    access_control:
+            - { path: ^/artists, roles: ROLE_USER }
+            - { path: ^/token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
