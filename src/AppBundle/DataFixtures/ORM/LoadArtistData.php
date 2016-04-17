@@ -14,10 +14,12 @@ class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
         return [
             [
                 'name' => 'Bob Marley',
+                'slug' => 'bob-marley',
                 'bio' => 'Bob is a <b>reggae</b> legend'
             ],
             [
                 'name' => 'Daft Punk',
+                'slug' => 'daftpunk',
                 'bio' => 'The robot musicians'
             ],
         ];

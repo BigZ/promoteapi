@@ -24,9 +24,16 @@ class Artist
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="slug", type="string", length=255, unique=true)
+     */
+    private $slug;
 
     /**
      * @var string
@@ -34,7 +41,6 @@ class Artist
      * @ORM\Column(name="bio", type="text", nullable=true)
      */
     private $bio;
-
 
     /**
      * Get id
@@ -68,6 +74,22 @@ class Artist
     public function getName()
     {
         return $this->name;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
     }
 
     /**

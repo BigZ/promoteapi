@@ -30,5 +30,5 @@ security:
             stateless: true
 
     access_control:
-            - { path: ^/artists, roles: ROLE_USER }
+            - { path: ^/artists, roles: IS_AUTHENTICATED_ANONYMOUSLY }
             - { path: ^/token, roles: IS_AUTHENTICATED_ANONYMOUSLY }

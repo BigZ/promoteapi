@@ -6,6 +6,7 @@ use AppBundle\Entity\Artist;
 use FOS\RestBundle\Controller\FOSRestController;
 use AppBundle\Form\Type\ArtistType;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class ArtistController extends FOSRestController
 {
@@ -31,12 +32,14 @@ class ArtistController extends FOSRestController
     /**
      * @param Request $request
      *
+     * @Security("has_role('ROLE_USER')")
+     *
      * @return mixed
      */
     public function postArtistAction(Request $request)
     {
         $artist = new Artist();
-        $form = $this->createForm(new ArtistType(), $artist);
+        $form = $this->createForm(ArtistType::class, $artist);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -51,9 +54,8 @@ class ArtistController extends FOSRestController
     }
 
     /**
-     * @param $slug
-     *
-     * @return mixed
+     * @param Artist $artist
+     * @return array
      */
     public function deleteArtistAction(Artist $artist)
     {

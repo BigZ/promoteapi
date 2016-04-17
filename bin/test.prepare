@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+function success {
+    echo -e " --> \033[32mOK\033[0m"
+}
+
+function fail {
+    echo -e " --> \033[41mFAIL\033[0m"
+    exit 1
+}
+
+function section {
+    echo -e "\n[\033[35m $1 \033[0m]"
+}
+
+function elapsed {
+    echo -e "\033[36m $(($1/60)) min $(($1%60)) sec\033[0m"
+}
+
+section "cleaning cache & log directories"
+mkdir -p var/cache && rm -rf var/cache/* && chmod 777 var/cache && mkdir -p var/logs && rm -rf var/logs/* && chmod 777 var/logs
+if [ $? -eq 0 ]; then
+    success
+else
+    fail
+fi
+
+section "installing vendor\033[0m"
+START_TIME=$SECONDS
+composer install --optimize-autoloader --ansi
+if [ $? -eq 0 ]; then
+    success
+else
+    fail
+fi
+ELAPSED_TIME=$(($SECONDS - $START_TIME))
+elapsed $ELAPSED_TIME
+
+section "clearing cache"
+START_TIME=$SECONDS
+bin/console cache:clear --env=test --no-debug --ansi
+if [ $? -eq 0 ]; then
+    success
+else
+    fail
+fi
+ELAPSED_TIME=$(($SECONDS - $START_TIME))
+elapsed $ELAPSED_TIME
+
+section "droping schema"
+START_TIME=$SECONDS
+bin/console doctrine:schema:drop --no-interaction --force --full-database --ansi
+if [ $? -eq 0 ]; then
+    success
+else
+    fail
+fi
+ELAPSED_TIME=$(($SECONDS - $START_TIME))
+elapsed $ELAPSED_TIME
+
+section "running migrations"
+START_TIME=$SECONDS
+bin/console doctrine:migrations:migrate --no-interaction --ansi
+if [ $? -eq 0 ]; then
+    success
+else
+    fail
+fi
+ELAPSED_TIME=$(($SECONDS - $START_TIME))
+elapsed $ELAPSED_TIME
+
+section "loading fixtures"
+START_TIME=$SECONDS
+bin/console doctrine:fixture:load --quiet --no-debug --no-interaction --env=test --ansi
+if [ $? -eq 0 ]; then
+    success
+else
+    fail
+fi
+ELAPSED_TIME=$(($SECONDS - $START_TIME))
+elapsed $ELAPSED_TIME
