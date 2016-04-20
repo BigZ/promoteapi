@@ -9,14 +9,13 @@ class HerokuDatabase
 {
     public static function populateEnvironment(Event $event)
     {
+        $io = $event->getIO();
+
         try {
             $dotenv = new Dotenv(__DIR__.'/../../../');
-        } catch (\Exception $exception) {
-
-        }
-
-        if (isset($dotenv) && $dotenv) {
             $dotenv->load();
+        } catch (\Exception $exception) {
+            $io->write('Loading env from shell');
         }
 
         $url = getenv('DATABASE_URL');
@@ -35,9 +34,7 @@ class HerokuDatabase
             $db = substr($url['path'], 1);
             putenv("DATABASE_NAME={$db}");
         }
-
-        $io = $event->getIO();
-
+        
         $io->write('DATABASE_URL='.getenv('DATABASE_URL'));
     }
 }
