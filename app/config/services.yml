@@ -4,9 +4,18 @@ parameters:
 #    parameter_name: value
 
 services:
+    #Authenticators
     app.token_authenticator:
         class: AppBundle\Security\TokenAuthenticator
         arguments: ['@doctrine.orm.entity_manager']
     app.form_authenticator:
         class: AppBundle\Security\FormAuthenticator
         arguments: ['@security.password_encoder']
+
+    #Voters
+    app.post_voter:
+        class: AppBundle\Security\Voter\ArtistVoter
+        arguments: ['@security.access.decision_manager']
+        public: false
+        tags:
+            - { name: security.voter }

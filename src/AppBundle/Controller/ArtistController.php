@@ -32,7 +32,7 @@ class ArtistController extends FOSRestController
     /**
      * @param Request $request
      *
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('CREATE')")
      *
      * @return mixed
      */
@@ -48,6 +48,29 @@ class ArtistController extends FOSRestController
             $manager->flush();
 
             return ['status' => 'created', 'resource_id' => $artist->getId()];
+        }
+
+        return $form;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @Security("is_granted('EDIT')")
+     *
+     * @return mixed
+     */
+    public function putArtistAction(Request $request, Artist $artist)
+    {
+        $form = $this->createForm(ArtistType::class, $artist);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($artist);
+            $manager->flush();
+
+            return ['status' => 'updated', 'resource_id' => $artist->getId()];
         }
 
         return $form;

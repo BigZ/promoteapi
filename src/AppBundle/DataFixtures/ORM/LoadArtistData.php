@@ -15,12 +15,14 @@ class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
             [
                 'name' => 'Bob Marley',
                 'slug' => 'bob-marley',
-                'bio' => 'Bob is a <b>reggae</b> legend'
+                'bio' => 'Bob is a <b>reggae</b> legend',
+                'createdBy' => 'user1',
             ],
             [
                 'name' => 'Daft Punk',
                 'slug' => 'daftpunk',
-                'bio' => 'The robot musicians'
+                'bio' => 'The robot musicians',
+                'createdBy' => 'user2',
             ],
         ];
     }
@@ -28,14 +30,13 @@ class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         foreach ($this->getArtists() as $data) {
-            $user = new Artist();
+            $artist = new Artist();
+            $artist->setCreatedBy($manager->getRepository('AppBundle:User')->findOneByUsername($data['createdBy']));
+            $artist->setName($data['name']);
+            $artist->setSlug($data['slug']);
+            $artist->setBio($data['bio']);
 
-            foreach ($data as $fieldName => $fieldValue) {
-                $setter = 'set'.ucfirst($fieldName);
-                $user->$setter($fieldValue);
-            }
-
-            $manager->persist($user);
+            $manager->persist($artist);
         }
 
         $manager->flush();

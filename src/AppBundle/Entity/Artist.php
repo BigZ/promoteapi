@@ -43,6 +43,12 @@ class Artist
     private $bio;
 
     /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="User")
+     */
+    protected $createdBy;
+
+    /**
      * Get id
      *
      * @return int
@@ -114,6 +120,30 @@ class Artist
     public function getBio()
     {
         return $this->bio;
+    }
+
+    /**
+     * Set createdBy.
+     *
+     * @param User $createdBy
+     *
+     * @return Feedback
+     */
+    public function setCreatedBy(User $createdBy)
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    /**
+     * Get createdBy.
+     *
+     * @return User
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
     }
 }
 
