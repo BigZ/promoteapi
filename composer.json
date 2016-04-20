@@ -39,10 +39,8 @@
         "symfony/phpunit-bridge": "^3.0"
     },
     "scripts": {
-        "pre-install-cmd": [
-            "AppBundle\\Heroku\\HerokuDatabase::populateEnvironment"
-        ],
         "post-install-cmd": [
+            "AppBundle\\Heroku\\HerokuDatabase::populateEnvironment",
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
