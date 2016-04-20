@@ -9,8 +9,13 @@ class HerokuDatabase
 {
     public static function populateEnvironment(Event $event)
     {
-        $dotenv = @new Dotenv(__DIR__.'/../../../');
-        if ($dotenv) {
+        try {
+            $dotenv = new Dotenv(__DIR__.'/../../../');
+        } catch (\Exception $exception) {
+
+        }
+
+        if (isset($dotenv) && $dotenv) {
             $dotenv->load();
         }
 
