@@ -9,14 +9,16 @@ use JMS\Serializer\Annotation\Expose;
 use AppBundle\Annotation\Embeddable;
 
 /**
- * Artist
+ * Label
  *
- * @ORM\Table(name="artist")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ArtistRepository")
+ * @ORM\Table(name="label")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\LabelRepository")
+ *
+ * Hateoas\RelationProvider("labelArtists")
  *
  * @ExclusionPolicy("all")
  */
-class Artist
+class Label
 {
     /**
      * @var int
@@ -47,18 +49,18 @@ class Artist
     /**
      * @var string
      *
-     * @ORM\Column(name="bio", type="text", nullable=true)
+     * @ORM\Column(name="description", type="string", length=255)
      * @Expose
      */
-    private $bio;
+    private $description;
 
     /**
      * @var array
      *
-     * @ORM\ManyToMany(targetEntity="Label", inversedBy="artists")
+     * @ORM\ManyToMany(targetEntity="Artist", mappedBy="labels")
      * @Embeddable
      */
-    protected $labels;
+    private $artists;
 
     /**
      * @var User
@@ -82,7 +84,7 @@ class Artist
      *
      * @param string $name
      *
-     * @return Artist
+     * @return Label
      */
     public function setName($name)
     {
@@ -100,8 +102,24 @@ class Artist
     {
         return $this->name;
     }
-    
+
     /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return Label
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
      * @return string
      */
     public function getSlug()
@@ -110,59 +128,45 @@ class Artist
     }
 
     /**
-     * @param string $slug
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-    }
-
-    /**
-     * Set bio
+     * Set description
      *
-     * @param string $bio
+     * @param string $description
      *
-     * @return Artist
+     * @return Label
      */
-    public function setBio($bio)
+    public function setDescription($description)
     {
-        $this->bio = $bio;
+        $this->description = $description;
 
         return $this;
     }
 
     /**
-     * Get bio
+     * Get description
      *
      * @return string
      */
-    public function getBio()
+    public function getDescription()
     {
-        return $this->bio;
+        return $this->description;
     }
 
 
     /**
      * @return array
      */
-    public function getLabels()
+    public function getArtists()
     {
-        return $this->labels;
+        return $this->artists;
     }
 
     /**
-     * @param array $labels
+     * @param array $artists
+     * @return $this
      */
-    public function setLabels($labels)
+    public function setArtists(array $artists)
     {
-        $this->labels = $labels;
-
-        return $this;
-    }
-
-    public function addLabel(Label $label)
-    {
-        $this->labels[] = $label;
+        $this->artists = $artists;
 
         return $this;
     }
@@ -191,4 +195,3 @@ class Artist
         return $this->createdBy;
     }
 }
-

@@ -7,3 +7,7 @@ app:
 artists:
     type:     rest
     resource: AppBundle\Controller\ArtistController
+
+labels:
+    type:     rest
+    resource: AppBundle\Controller\LabelController

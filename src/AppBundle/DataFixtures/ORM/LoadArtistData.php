@@ -17,12 +17,14 @@ class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
                 'slug' => 'bob-marley',
                 'bio' => 'Bob is a <b>reggae</b> legend',
                 'createdBy' => 'user1',
+                'labels' => ['island-records', 'tuff-gong']
             ],
             [
                 'name' => 'Daft Punk',
                 'slug' => 'daftpunk',
                 'bio' => 'The robot musicians',
                 'createdBy' => 'user2',
+                'labels' => ['ninja-tune']
             ],
         ];
     }
@@ -36,6 +38,10 @@ class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
             $artist->setSlug($data['slug']);
             $artist->setBio($data['bio']);
 
+            foreach ($data['labels'] as $label) {
+                $artist->addLabel($manager->getRepository('AppBundle:Label')->findOneBySlug($label));
+            }
+
             $manager->persist($artist);
         }
 
@@ -44,6 +50,6 @@ class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
 
     public function getOrder()
     {
-        return 2;
+        return 3;
     }
 }

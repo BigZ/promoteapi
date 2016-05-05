@@ -3,30 +3,38 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Artist;
-use FOS\RestBundle\Controller\FOSRestController;
 use AppBundle\Form\Type\ArtistType;
+use FOS\RestBundle\Request\ParamFetcher;
+use Hateoas\Representation\CollectionRepresentation;
+use Hateoas\Representation\PaginatedRepresentation;
+use Hateoas\Representation\RouteAwareRepresentation;
 use Symfony\Component\HttpFoundation\Request;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use Hateoas\Configuration\Annotation as Hateoas;
 
-class ArtistController extends FOSRestController
+class ArtistController extends HALController
 {
     /**
+     * @param ParamFetcher $paramFetcher
      * @return array
      */
-    public function getArtistsAction()
+    public function getArtistsAction(ParamFetcher $paramFetcher)
     {
-        return [
-            'artists' => $this->getRepository()->findAll()
-        ];
+        return $this->getPaginatedRepresentation('artist', $paramFetcher);
     }
 
     /**
      * @param Artist $artist
+     * @param ParamFetcher $paramFetcher
      * @return array
      */
-    public function getArtistAction(Artist $artist)
+    public function getArtistAction(Artist $artist, ParamFetcher $paramFetcher)
     {
-        return ['artist' => $artist];
+        $this->paramFetcher = $paramFetcher;
+        return $this->getResourceRepresentation($artist);
     }
 
     /**
@@ -44,6 +52,7 @@ class ArtistController extends FOSRestController
 
         if ($form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
+            $artist->setCreatedBy($this->getUser());
             $manager->persist($artist);
             $manager->flush();
 
@@ -77,6 +86,7 @@ class ArtistController extends FOSRestController
     }
 
     /**
+     * @Route(name="artist_delete")
      * @param Artist $artist
      * @return array
      */
@@ -91,7 +101,7 @@ class ArtistController extends FOSRestController
         return ['status' => 'deleted', 'resource_id' => $id];
     }
 
-    private function getRepository()
+    protected function getRepository()
     {
         return $this->getDoctrine()->getManager()->getRepository('AppBundle:Artist');
     }

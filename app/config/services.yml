@@ -19,3 +19,8 @@ services:
         public: false
         tags:
             - { name: security.voter }
+
+    app.relation_provider_resolver.artist:
+        class: AppBundle\Hateoas\RelationProviderResolver\ArtistRelationProviderResolver
+        tags:
+            - { name: hateoas.relation_provider }
