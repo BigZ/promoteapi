@@ -30,6 +30,12 @@ class LoadLabelData extends AbstractFixture implements OrderedFixtureInterface
                 'description' => 'Black hooded sounds',
                 'createdBy' => 'user2',
             ],
+            [
+                'name' => 'Wati B',
+                'slug' => 'wati-b',
+                'description' => 'Le label du rap francais',
+                'createdBy' => 'user3',
+            ],
         ];
     }
     

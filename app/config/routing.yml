@@ -11,3 +11,7 @@ artists:
 labels:
     type:     rest
     resource: AppBundle\Controller\LabelController
+
+gigs:
+    type:     rest
+    resource: AppBundle\Controller\GigController

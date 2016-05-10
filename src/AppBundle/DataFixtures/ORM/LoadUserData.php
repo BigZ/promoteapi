@@ -41,6 +41,12 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
                 'email' => 'user2@user.com',
                 'apiKey' => '789',
                 'roles' => ['ROLE_USER']
+            ],
+            [
+                'username' => 'user3',
+                'email' => 'user3@user.com',
+                'apiKey' => '1011',
+                'roles' => ['ROLE_USER']
             ]
         ];
     }

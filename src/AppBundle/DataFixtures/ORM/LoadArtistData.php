@@ -20,11 +20,25 @@ class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
                 'labels' => ['island-records', 'tuff-gong']
             ],
             [
+                'name' => 'Peter Tosh',
+                'slug' => 'peter-tosh',
+                'bio' => 'Tosh is the bush doctor !',
+                'createdBy' => 'user1',
+                'labels' => ['tuff-gong']
+            ],
+            [
                 'name' => 'Daft Punk',
                 'slug' => 'daftpunk',
                 'bio' => 'The robot musicians',
                 'createdBy' => 'user2',
                 'labels' => ['ninja-tune']
+            ],
+            [
+                'name' => 'Maitre Gims',
+                'slug' => 'maitregims',
+                'bio' => 'Aka Gandhi Djuna de Kinshasa',
+                'createdBy' => 'user3',
+                'labels' => ['wati-b']
             ],
         ];
     }

@@ -61,6 +61,14 @@ class Artist
     protected $labels;
 
     /**
+     * @var array
+     *
+     * @ORM\ManyToMany(targetEntity="Gig", inversedBy="artists")
+     * @Embeddable
+     */
+    protected $gigs;
+
+    /**
      * @var User
      * @ORM\ManyToOne(targetEntity="User")
      * @Embeddable
@@ -141,7 +149,6 @@ class Artist
         return $this->bio;
     }
 
-
     /**
      * @return array
      */
@@ -151,7 +158,8 @@ class Artist
     }
 
     /**
-     * @param array $labels
+     * @param $labels
+     * @return $this
      */
     public function setLabels($labels)
     {
@@ -160,6 +168,40 @@ class Artist
         return $this;
     }
 
+    /**
+     * @return array
+     */
+    public function getGigs()
+    {
+        return $this->gigs;
+    }
+
+    /**
+     * @param $gigs
+     * @return $this
+     */
+    public function setGigs($gigs)
+    {
+        $this->gigs = $gigs;
+
+        return $this;
+    }
+
+    /**
+     * @param Gig $gig
+     * @return $this
+     */
+    public function addGig(Gig $gig)
+    {
+        $this->gigs[] = $gig;
+
+        return $this;
+    }
+
+    /**
+     * @param Label $label
+     * @return $this
+     */
     public function addLabel(Label $label)
     {
         $this->labels[] = $label;

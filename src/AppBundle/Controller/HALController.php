@@ -20,9 +20,9 @@ class HALController extends FOSRestController
 
     public function getPaginatedRepresentation($name, ParamFetcher $paramFetcher)
     {
-        list($page, $limit, $sorting) = $this->addPaginationParams($paramFetcher);
+        list($page, $limit, $sorting, $filterValues, $filerOperators) = $this->addPaginationParams($paramFetcher);
         $this->paramFetcher = $paramFetcher;
-        $queryBuilder = $this->getRepository()->findAllSorted($paramFetcher->get('sorting'));
+        $queryBuilder = $this->getRepository()->findAllSorted($sorting, $filterValues, $filerOperators);
 
         $pagerAdapter = new DoctrineORMAdapter($queryBuilder);
         $pager = new Pagerfanta($pagerAdapter);
@@ -65,7 +65,24 @@ class HALController extends FOSRestController
         $sortingParam->array = true;
         $paramFetcher->addParam($sortingParam);
 
-        return [$paramFetcher->get('page'), $paramFetcher->get('limit'), $paramFetcher->get('sorting')];
+        $filterValueParam = new QueryParam();
+        $filterValueParam->name = "filtervalue";
+        $filterValueParam->array = true;
+        $paramFetcher->addParam($filterValueParam);
+
+        $filterOperatorParam = new QueryParam();
+        $filterOperatorParam->name = "filteroperator";
+        $filterOperatorParam->array = true;
+        $paramFetcher->addParam($filterOperatorParam);
+
+        return [
+            $paramFetcher->get('page'),
+            $paramFetcher->get('limit'),
+            $paramFetcher->get('sorting'),
+            $paramFetcher->get('filtervalue'),
+            $paramFetcher->get('filteroperator'),
+
+        ];
     }
 
     private function addEmbedParams(ParamFetcher $paramFetcher)
@@ -141,6 +158,7 @@ class HALController extends FOSRestController
     {
         if ($relationContent instanceof Collection) {
             $links = [];
+            //dump($relationContent); die;
 
             foreach ($relationContent as $relation) {
                 $links[] = $this->getRelationLink($property, $relation);
