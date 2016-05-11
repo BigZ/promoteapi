@@ -17,7 +17,9 @@ Post a form containing the username and the password to get the token.
 Use the obtained token to identify with the header `X-AUTH-TOKEN`
 
 `POST /token`
+
 Content-type: Form-date
+
 Fields `username` `password`
 
 ## Resources
@@ -26,15 +28,19 @@ Fields `username` `password`
 
 #### Pagination
 A list will give you a paginated ressource, HAL formatted.
+
 `/artists?page=2&limite&sorting[id]=desc`
 
 #### Filtering
 You can filter out results on specific fields.
+
 `/artists?filtervalue[id]=5&filteroperator[id]=>`
-Available operators are '>','<','>=', '<=', '=', '!='
+
+Available operators are `>`, `<`, `>=`, `<=`, `=`, `!=`
 
 ### Entity
 #### Embedding
 
 By default, relations are not embeded. You can change this behaviour by specifiying wich embedeed entities you need.
-'/artists/1?embed[]=gigs&embed[]=labels'
+
+`/artists/1?embed[]=gigs&embed[]=labels`
