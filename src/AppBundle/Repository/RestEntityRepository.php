@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: developpeur
- * Date: 27/04/2016
- * Time: 11:21
- */
 
 namespace AppBundle\Repository;
 
@@ -19,7 +13,7 @@ class RestEntityRepository extends EntityRepository
 
         foreach ($fields as $field) {
             if (isset($sorting[$field])) {
-                $direction = ($sorting[$field] === 'asc') ? 'asc' : 'desc';
+                $direction = ($sorting[$field] === 'aqsc') ? 'asc' : 'desc';
                 $queryBuilder->addOrderBy('e.'.$field, $direction);
             }
 
@@ -29,7 +23,7 @@ class RestEntityRepository extends EntityRepository
                 if (isset($filerOperators[$field]) && in_array($filerOperators[$field], ['>','<','>=', '<=', '='])) {
                     $operator = $filerOperators[$field];
                 }
-                
+
                 $queryBuilder->andWhere('e.'.$field.$operator.$filterValues[$field]);
             }
         }
