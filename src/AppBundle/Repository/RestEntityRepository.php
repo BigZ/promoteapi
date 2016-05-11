@@ -13,14 +13,16 @@ class RestEntityRepository extends EntityRepository
 
         foreach ($fields as $field) {
             if (isset($sorting[$field])) {
-                $direction = ($sorting[$field] === 'aqsc') ? 'asc' : 'desc';
+                $direction = ($sorting[$field] === 'asc') ? 'asc' : 'desc';
                 $queryBuilder->addOrderBy('e.'.$field, $direction);
             }
 
             if (isset($filterValues[$field])) {
                 $operator = '=';
 
-                if (isset($filerOperators[$field]) && in_array($filerOperators[$field], ['>','<','>=', '<=', '='])) {
+                if (isset($filerOperators[$field]) &&
+                    in_array($filerOperators[$field], ['>','<','>=', '<=', '=', '!='])
+                ) {
                     $operator = $filerOperators[$field];
                 }
 
