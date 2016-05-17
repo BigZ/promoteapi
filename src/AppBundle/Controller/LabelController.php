@@ -8,10 +8,21 @@ use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 class LabelController extends HALController
 {
     /**
+     * Get all labels.
+     *
+     * @ApiDoc(resource=true,filters={
+     *      {"name"="page", "dataType"="integer"},
+     *      {"name"="limit", "dataType"="integer"},
+     *      {"name"="sorting", "dataType"="array", "pattern"="[field]=(asc|desc)"},
+     *      {"name"="filtervalue", "dataType"="array", "pattern"="[field]=value"},
+     *      {"name"="filteroperator", "dataType"="array", "pattern"="[field]=(<|>|<=|>=|=|!=)"}
+     *  })
+     *
      * @param ParamFetcher $paramFetcher
      * @return array
      */
@@ -21,6 +32,10 @@ class LabelController extends HALController
     }
 
     /**
+     * Get a Label.
+     *
+     * @Apidoc()
+     *
      * @param Label        $label
      * @param ParamFetcher $paramFetcher
      * @return array
@@ -32,6 +47,13 @@ class LabelController extends HALController
     }
 
     /**
+     * Create a new label.
+     *
+     * @ApiDoc(
+     *  input="AppBundle\Form\Type\LabelType",
+     *  output="AppBundle\Label"
+     * )
+     *
      * @param Request $request
      *
      * @Security("is_granted('CREATE')")
@@ -57,6 +79,13 @@ class LabelController extends HALController
     }
 
     /**
+     * Update a label.
+     *
+     * @ApiDoc(
+     *  input="AppBundle\Form\Type\LabelType",
+     *  output="AppBundle\Label"
+     * )
+     *
      * @param Request $request
      *
      * @Security("is_granted('EDIT')")
@@ -80,6 +109,11 @@ class LabelController extends HALController
     }
 
     /**
+     * Delete a label.
+     *
+     * @ApiDoc(
+     *  input="AppBundle\Label"
+     * )
      * @param Label $label
      * @return array
      */

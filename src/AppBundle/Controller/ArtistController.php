@@ -5,19 +5,27 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Artist;
 use AppBundle\Form\Type\ArtistType;
 use FOS\RestBundle\Request\ParamFetcher;
-use Hateoas\Representation\CollectionRepresentation;
-use Hateoas\Representation\PaginatedRepresentation;
-use Hateoas\Representation\RouteAwareRepresentation;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Hateoas\Configuration\Annotation as Hateoas;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 class ArtistController extends HALController
 {
     /**
+     * Get artists.
+     *
+     * @ApiDoc(resource=true,filters={
+     *      {"name"="page", "dataType"="integer"},
+     *      {"name"="limit", "dataType"="integer"},
+     *      {"name"="sorting", "dataType"="array", "pattern"="[field]=(asc|desc)"},
+     *      {"name"="filtervalue", "dataType"="array", "pattern"="[field]=value"},
+     *      {"name"="filteroperator", "dataType"="array", "pattern"="[field]=(<|>|<=|>=|=|!=)"}
+     *  })
+     *
      * @param ParamFetcher $paramFetcher
      * @return array
      */
@@ -27,6 +35,10 @@ class ArtistController extends HALController
     }
 
     /**
+     * Get an artist.
+     *
+     * @Apidoc()
+     *
      * @param Artist       $artist
      * @param ParamFetcher $paramFetcher
      * @return array
@@ -38,6 +50,13 @@ class ArtistController extends HALController
     }
 
     /**
+     * Create a new Artist.
+     *
+     * @ApiDoc(
+     *  input="AppBundle\Form\Type\ArtistType",
+     *  output="AppBundle\Artist"
+     * )
+     *
      * @param Request $request
      *
      * @Security("is_granted('CREATE')")
@@ -63,6 +82,13 @@ class ArtistController extends HALController
     }
 
     /**
+     * Update an Artist.
+     *
+     * @ApiDoc(
+     *  input="AppBundle\Form\Type\ArtistType",
+     *  output="AppBundle\Artist"
+     * )
+     *
      * @param Request $request
      *
      * @Security("is_granted('EDIT')")
@@ -86,7 +112,12 @@ class ArtistController extends HALController
     }
 
     /**
-     * @Route(name="artist_delete")
+     * Delete an Artist.
+     *
+     * @ApiDoc(
+     *  input="AppBundle\Artist"
+     * )
+     * @Security("is_granted('ROLE_ADMIN')")
      * @param Artist $artist
      * @return array
      */

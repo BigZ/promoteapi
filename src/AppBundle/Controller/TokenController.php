@@ -10,6 +10,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 /**
  * Token controller.
@@ -17,7 +18,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 class TokenController extends Controller
 {
     /**
-     * Get token
+     * Get token.
+     * Protected by login form (username & password as form-data to this page).
+     *
+     * @ApiDoc()
      *
      * @Route("/token")
      * @Method("POST")

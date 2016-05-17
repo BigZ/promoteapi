@@ -5,15 +5,11 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Gig;
 use AppBundle\Form\Type\GigType;
 use FOS\RestBundle\Request\ParamFetcher;
-use Hateoas\Representation\CollectionRepresentation;
-use Hateoas\Representation\PaginatedRepresentation;
-use Hateoas\Representation\RouteAwareRepresentation;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use Hateoas\Configuration\Annotation as Hateoas;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 class GigController extends HALController
@@ -40,7 +36,7 @@ class GigController extends HALController
     /**
      * Get a gig.
      *
-     * @ApiDoc(resource=true)
+     * @ApiDoc()
      * @param                 Gig          $gig
      * @param                 ParamFetcher $paramFetcher
      * @return                array
