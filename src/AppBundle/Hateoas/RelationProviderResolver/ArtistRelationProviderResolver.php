@@ -20,7 +20,9 @@ class ArtistRelationProviderResolver implements RelationProviderResolverInterfac
             return [$this, 'getRelationsFor'.ucfirst($configuration->getName())];
         }
 
-        return function() { return null; };
+        return function () {
+            return null; 
+        };
     }
 
     public function getRelationsForArtistLabels(Artist $artist)

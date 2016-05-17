@@ -71,8 +71,11 @@ fos_rest:
         failed_validation: HTTP_BAD_REQUEST
     routing_loader:
         default_format: json
+        include_format: false
 
 fos_rest:
     view:
         view_response_listener: 'force'
     param_fetcher_listener: true
+
+nelmio_api_doc: ~

@@ -27,7 +27,7 @@ class ArtistController extends HALController
     }
 
     /**
-     * @param Artist $artist
+     * @param Artist       $artist
      * @param ParamFetcher $paramFetcher
      * @return array
      */

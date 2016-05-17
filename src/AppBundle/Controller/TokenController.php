@@ -21,11 +21,10 @@ class TokenController extends Controller
      *
      * @Route("/token")
      * @Method("POST")
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_USER')")
      */
     public function getTokenAction()
     {
-        return $this->getUser()->getApiKey();
+        return ['token' => $this->getUser()->getApiKey()];
     }
-
 }

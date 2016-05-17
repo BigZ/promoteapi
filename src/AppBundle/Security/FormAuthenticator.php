@@ -21,6 +21,7 @@ class FormAuthenticator extends AbstractGuardAuthenticator
 
     /**
      * FormAuthenticator constructor.
+     *
      * @param UserPasswordEncoder $encoder
      */
     public function __construct(UserPasswordEncoder $encoder)

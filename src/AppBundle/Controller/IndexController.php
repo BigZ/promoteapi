@@ -7,7 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * Class IndexController
- * @package AppBundle\Controller
+ *
+ * @package    AppBundle\Controller
  * @Route("/")
  */
 class IndexController extends Controller
@@ -18,6 +19,6 @@ class IndexController extends Controller
      */
     public function indexAction()
     {
-        return null;
+        return 'Hello World!';
     }
 }

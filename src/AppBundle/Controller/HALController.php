@@ -197,10 +197,12 @@ class HALController extends FOSRestController
 
     private function getPaginatedRoute($name, $limit, $page, $sorting)
     {
-        return $this->get('router')->generate('get_'.$name.'s', [
+        return $this->get('router')->generate(
+            'get_'.$name.'s', [
             'sorting' => $sorting,
             'page' => $page,
             'limit' => $limit
-        ]);
+            ]
+        );
     }
 }

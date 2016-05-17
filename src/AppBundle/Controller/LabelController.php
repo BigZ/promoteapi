@@ -21,7 +21,7 @@ class LabelController extends HALController
     }
 
     /**
-     * @param Label $label
+     * @param Label        $label
      * @param ParamFetcher $paramFetcher
      * @return array
      */

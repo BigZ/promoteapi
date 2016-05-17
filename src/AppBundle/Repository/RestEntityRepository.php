@@ -20,8 +20,8 @@ class RestEntityRepository extends EntityRepository
             if (isset($filterValues[$field])) {
                 $operator = '=';
 
-                if (isset($filerOperators[$field]) &&
-                    in_array($filerOperators[$field], ['>','<','>=', '<=', '=', '!='])
+                if (isset($filerOperators[$field]) 
+                    && in_array($filerOperators[$field], ['>','<','>=', '<=', '=', '!='])
                 ) {
                     $operator = $filerOperators[$field];
                 }

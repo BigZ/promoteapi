@@ -13,14 +13,21 @@ services:
         arguments: ['@security.password_encoder']
 
     #Voters
-    app.post_voter:
+    app.artist_voter:
         class: AppBundle\Security\Voter\ArtistVoter
         arguments: ['@security.access.decision_manager']
         public: false
         tags:
             - { name: security.voter }
-
-    app.relation_provider_resolver.artist:
-        class: AppBundle\Hateoas\RelationProviderResolver\ArtistRelationProviderResolver
+    app.label_voter:
+        class: AppBundle\Security\Voter\LabelVoter
+        arguments: ['@security.access.decision_manager']
+        public: false
         tags:
-            - { name: hateoas.relation_provider }
+            - { name: security.voter }
+    app.gig_vo(er:
+        class: AppBundle\Security\Voter\GigVoter
+        arguments: ['@security.access.decision_manager']
+        public: false
+        tags:
+            - { name: security.voter }

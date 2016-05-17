@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class ArtistVoter extends Voter
+class LabelVoter extends Voter
 {
     const CREATE = 'create';
     const EDIT = 'edit';

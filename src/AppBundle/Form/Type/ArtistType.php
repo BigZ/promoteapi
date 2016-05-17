@@ -15,15 +15,16 @@ class ArtistType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('slug', TextType::class)
-            ->add('bio', TextareaType::class)
-        ;
+            ->add('bio', TextareaType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults(
+            array(
             'data_class' => 'AppBundle\Entity\Artist',
             'csrf_protection' => false,
-        ));
+            )
+        );
     }
 }
