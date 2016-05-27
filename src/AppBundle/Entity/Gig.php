@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Annotation\Embeddable;
 use JMS\Serializer\Annotation\Expose;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Gig
@@ -27,6 +28,7 @@ class Gig
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="name", type="string", length=255, unique=true)
      * @Expose
      */
@@ -35,6 +37,7 @@ class Gig
     /**
      * @var \DateTime
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="startDate", type="datetime")
      * @Expose
      */
@@ -59,6 +62,7 @@ class Gig
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="address", type="string", length=255)
      * @Expose
      */

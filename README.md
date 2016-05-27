@@ -38,7 +38,32 @@ You can filter out results on specific fields.
 
 Available operators are `>`, `<`, `>=`, `<=`, `=`, `!=`
 
+
+#### Sorting
+You can sort the result by any property
+
+`/artists?sorting[id]=asc`
+
 ### Entity
+#### Creating new entities
+`POST /artists`
+
+`{
+     "artist": {
+         "name": "eminem",
+         "slug": "eminem",
+         "bio": "rapper from detroit"
+     }
+ }`
+
+ will return
+
+`{
+  "status": "created",
+  "resource_id": 42
+}`
+
+
 #### Embedding
 
 By default, relations are not embeded. You can change this behaviour by specifiying wich embedeed entities you need.

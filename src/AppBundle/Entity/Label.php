@@ -7,6 +7,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use AppBundle\Annotation\Embeddable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Label
@@ -33,6 +34,7 @@ class Label
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="name", type="string", length=255, unique=true)
      * @Expose
      */
@@ -41,6 +43,7 @@ class Label
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
      * @Expose
      */

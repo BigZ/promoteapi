@@ -39,7 +39,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         $apiKey = $credentials['token'];
-
+        
         return $this->em->getRepository('AppBundle:User')
             ->findOneBy(['apiKey' => $apiKey]);
     }

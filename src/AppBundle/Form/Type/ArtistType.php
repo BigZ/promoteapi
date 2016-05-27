@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\Type;
 
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\AbstractType;
@@ -15,7 +16,8 @@ class ArtistType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('slug', TextType::class)
-            ->add('bio', TextareaType::class);
+            ->add('bio', TextareaType::class)
+            ->add('imageFile', FileType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

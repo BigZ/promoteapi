@@ -37,9 +37,9 @@ class GigController extends HALController
      * Get a gig.
      *
      * @ApiDoc()
-     * @param                 Gig          $gig
-     * @param                 ParamFetcher $paramFetcher
-     * @return                array
+     * @param    Gig          $gig
+     * @param    ParamFetcher $paramFetcher
+     * @return   array
      */
     public function getGigAction(Gig $gig, ParamFetcher $paramFetcher)
     {

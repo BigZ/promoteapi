@@ -30,11 +30,6 @@ class ArtistVoter extends Voter
             return false;
         }
 
-
-        if (!$subject instanceof Artist) {
-            return false;
-        }
-
         return true;
     }
 
@@ -53,22 +48,12 @@ class ArtistVoter extends Voter
 
         switch($attribute) {
         case self::CREATE:
-            return $this->canCreate($artist, $user);
+            return true;
         case self::EDIT:
-            return $this->canEdit($artist, $user);
+            return $artist instanceof Artist && $this->canEdit($artist, $user);
         case self::DELETE:
-            return $this->canDelete($artist, $user);
+            return $artist instanceof Artist && $this->canDelete($artist, $user);
         }
-    }
-
-    /**
-     * @param Artist $artist
-     * @param User   $user
-     * @return bool
-     */
-    private function canCreate(Artist $artist, User $user)
-    {
-        return true;
     }
 
     /**

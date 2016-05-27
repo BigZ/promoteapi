@@ -2,7 +2,7 @@
 
 namespace AppBundle\Security\Voter;
 
-use AppBundle\Entity\Artist;
+use AppBundle\Entity\Label;
 use AppBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
@@ -31,14 +31,14 @@ class LabelVoter extends Voter
         }
 
 
-        if (!$subject instanceof Artist) {
+        if (!$subject instanceof Label) {
             return false;
         }
 
         return true;
     }
 
-    protected function voteOnAttribute($attribute, $artist, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $label, TokenInterface $token)
     {
         $user = $token->getUser();
 
@@ -53,32 +53,32 @@ class LabelVoter extends Voter
 
         switch($attribute) {
         case self::CREATE:
-            return $this->canCreate($artist, $user);
+            return $this->canCreate($label, $user);
         case self::EDIT:
-            return $this->canEdit($artist, $user);
+            return $this->canEdit($label, $user);
         case self::DELETE:
-            return $this->canDelete($artist, $user);
+            return $this->canDelete($label, $user);
         }
     }
 
     /**
-     * @param Artist $artist
-     * @param User   $user
+     * @param Label $label
+     * @param User  $user
      * @return bool
      */
-    private function canCreate(Artist $artist, User $user)
+    private function canCreate(Label $label, User $user)
     {
         return true;
     }
 
     /**
-     * @param Artist $artist
-     * @param User   $user
+     * @param Label $label
+     * @param User  $user
      * @return bool
      */
-    private function canEdit(Artist $artist, User $user)
+    private function canEdit(Label $label, User $user)
     {
-        if ($user === $artist->getCreatedBy()) {
+        if ($user === $label->getCreatedBy()) {
             return true;
         }
 
@@ -86,13 +86,13 @@ class LabelVoter extends Voter
     }
 
     /**
-     * @param Artist $artist
-     * @param User   $user
+     * @param Label $label
+     * @param User  $user
      * @return bool
      */
-    private function canDelete(Artist $artist, User $user)
+    private function canDelete(Label $label, User $user)
     {
-        if ($user === $artist->getCreatedBy()) {
+        if ($user === $label->getCreatedBy()) {
             return true;
         }
 

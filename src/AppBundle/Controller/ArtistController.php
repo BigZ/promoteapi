@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Artist;
+use AppBundle\Exception\InvalidFormException;
 use AppBundle\Form\Type\ArtistType;
 use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,8 +11,8 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use Hateoas\Configuration\Annotation as Hateoas;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\HttpFoundation\Response;
 
 class ArtistController extends HALController
 {
@@ -26,7 +27,7 @@ class ArtistController extends HALController
      *      {"name"="filteroperator", "dataType"="array", "pattern"="[field]=(<|>|<=|>=|=|!=)"}
      *  })
      *
-     * @param ParamFetcher $paramFetcher
+     * @param  ParamFetcher $paramFetcher
      * @return array
      */
     public function getArtistsAction(ParamFetcher $paramFetcher)
@@ -39,8 +40,8 @@ class ArtistController extends HALController
      *
      * @Apidoc()
      *
-     * @param Artist       $artist
-     * @param ParamFetcher $paramFetcher
+     * @param  Artist       $artist
+     * @param  ParamFetcher $paramFetcher
      * @return array
      */
     public function getArtistAction(Artist $artist, ParamFetcher $paramFetcher)
@@ -54,12 +55,16 @@ class ArtistController extends HALController
      *
      * @ApiDoc(
      *  input="AppBundle\Form\Type\ArtistType",
-     *  output="AppBundle\Artist"
+     *  output="AppBundle\Artist",
+     *  statusCodes = {
+     *     200 = "Returned when successful",
+     *     400 = "Returned when the form has errors"
+     *   }
      * )
      *
      * @param Request $request
      *
-     * @Security("is_granted('CREATE')")
+     * @Security("is_granted('create')")
      *
      * @return mixed
      */
@@ -78,7 +83,11 @@ class ArtistController extends HALController
             return ['status' => 'created', 'resource_id' => $artist->getId()];
         }
 
+        //$form->submit(($request->request->get($form->getName())));
+        //throw new InvalidFormException('Bad form');
+
         return $form;
+        //Response(json_encode((array)$form->getErrors(true)->getForm()), 400); //[$form->getErrors(true)];
     }
 
     /**
@@ -117,9 +126,9 @@ class ArtistController extends HALController
      * @ApiDoc(
      *  input="AppBundle\Artist"
      * )
-     * @Security("is_granted('ROLE_ADMIN')")
-     * @param Artist $artist
-     * @return array
+     * @Security("is_granted('DELETE')")
+     * @param                            Artist $artist
+     * @return                           array
      */
     public function deleteArtistAction(Artist $artist)
     {

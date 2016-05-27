@@ -34,6 +34,7 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    exception_controller: 'FOS\RestBundle\Controller\ExceptionController::showAction'
 
 # Doctrine Configuration
 doctrine:
@@ -79,3 +80,28 @@ fos_rest:
     param_fetcher_listener: true
 
 nelmio_api_doc: ~
+
+oneup_flysystem:
+    adapters:
+        app.flysystem_adapter:
+            awss3v3:
+                client: app.s3_client
+                bucket: ~
+                prefix: ~
+
+    filesystems:
+        awss3_fs:
+            adapter: app.flysystem_adapter
+            mount: awss3_fs
+
+vich_uploader:
+    db_driver: orm
+    storage: flysystem
+    mappings:
+        artist_image:
+            uri_prefix: /images/artists
+            upload_destination: awss3_fs
+            namer: vich_uploader.namer_uniqid
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true

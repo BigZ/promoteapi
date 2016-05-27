@@ -3,10 +3,13 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use AppBundle\Annotation\Embeddable;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 
 /**
  * Artist
@@ -15,6 +18,7 @@ use AppBundle\Annotation\Embeddable;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArtistRepository")
  *
  * @ExclusionPolicy("all")
+ * @Vich\Uploadable()
  */
 class Artist
 {
@@ -31,6 +35,7 @@ class Artist
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="name", type="string", length=255, unique=true)
      * @Expose
      */
@@ -39,6 +44,7 @@ class Artist
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
      * @Expose
      */
@@ -46,6 +52,7 @@ class Artist
 
     /**
      * @var string
+     * @Assert\NotBlank()
      *
      * @ORM\Column(name="bio", type="text", nullable=true)
      * @Expose
@@ -67,6 +74,27 @@ class Artist
      * @Embeddable
      */
     protected $gigs;
+
+    /**
+     * @Vich\UploadableField(mapping="artist_image", fileNameProperty="imageName")
+     *
+     * @var File
+     */
+    private $imageFile;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @var string
+     */
+    private $imageName;
+
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @var \DateTime
+     */
+    private $updatedAt;
 
     /**
      * @var User
@@ -207,6 +235,66 @@ class Artist
         $this->labels[] = $label;
 
         return $this;
+    }
+
+    /**
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
+     *
+     * @return Product
+     */
+    public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+
+        if ($image) {
+            $this->updatedAt = new \DateTime('now');
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return File
+     */
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * @param string $imageName
+     *
+     * @return Product
+     */
+    public function setImageName($imageName)
+    {
+        $this->imageName = $imageName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageName()
+    {
+        return $this->imageName;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
     }
 
     /**

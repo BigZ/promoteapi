@@ -158,7 +158,6 @@ class HALController extends FOSRestController
     {
         if ($relationContent instanceof Collection) {
             $links = [];
-            //dump($relationContent); die;
 
             foreach ($relationContent as $relation) {
                 $links[] = $this->getRelationLink($property, $relation);

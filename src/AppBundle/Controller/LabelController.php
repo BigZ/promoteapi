@@ -23,7 +23,7 @@ class LabelController extends HALController
      *      {"name"="filteroperator", "dataType"="array", "pattern"="[field]=(<|>|<=|>=|=|!=)"}
      *  })
      *
-     * @param ParamFetcher $paramFetcher
+     * @param  ParamFetcher $paramFetcher
      * @return array
      */
     public function getLabelsAction(ParamFetcher $paramFetcher)
@@ -36,8 +36,8 @@ class LabelController extends HALController
      *
      * @Apidoc()
      *
-     * @param Label        $label
-     * @param ParamFetcher $paramFetcher
+     * @param  Label        $label
+     * @param  ParamFetcher $paramFetcher
      * @return array
      */
     public function getLabelAction(Label $label, ParamFetcher $paramFetcher)
@@ -114,8 +114,8 @@ class LabelController extends HALController
      * @ApiDoc(
      *  input="AppBundle\Label"
      * )
-     * @param Label $label
-     * @return array
+     * @param   Label $label
+     * @return  array
      */
     public function deleteLabelAction(Label $label)
     {

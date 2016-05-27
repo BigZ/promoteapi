@@ -2,7 +2,7 @@
 
 namespace AppBundle\Security\Voter;
 
-use AppBundle\Entity\Artist;
+use AppBundle\Entity\Gig;
 use AppBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
@@ -31,14 +31,14 @@ class GigVoter extends Voter
         }
 
 
-        if (!$subject instanceof Artist) {
+        if (!$subject instanceof Gig) {
             return false;
         }
 
         return true;
     }
 
-    protected function voteOnAttribute($attribute, $artist, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $gig, TokenInterface $token)
     {
         $user = $token->getUser();
 
@@ -53,32 +53,32 @@ class GigVoter extends Voter
 
         switch($attribute) {
         case self::CREATE:
-            return $this->canCreate($artist, $user);
+            return $this->canCreate($gig, $user);
         case self::EDIT:
-            return $this->canEdit($artist, $user);
+            return $this->canEdit($gig, $user);
         case self::DELETE:
-            return $this->canDelete($artist, $user);
+            return $this->canDelete($gig, $user);
         }
     }
 
     /**
-     * @param Artist $artist
-     * @param User   $user
+     * @param Gig  $gig
+     * @param User $user
      * @return bool
      */
-    private function canCreate(Artist $artist, User $user)
+    private function canCreate(Gig $gig, User $user)
     {
         return true;
     }
 
     /**
-     * @param Artist $artist
-     * @param User   $user
+     * @param Gig  $gig
+     * @param User $user
      * @return bool
      */
-    private function canEdit(Artist $artist, User $user)
+    private function canEdit(Gig $gig, User $user)
     {
-        if ($user === $artist->getCreatedBy()) {
+        if ($user === $gig->getCreatedBy()) {
             return true;
         }
 
@@ -86,13 +86,13 @@ class GigVoter extends Voter
     }
 
     /**
-     * @param Artist $artist
-     * @param User   $user
+     * @param Gig  $gig
+     * @param User $user
      * @return bool
      */
-    private function canDelete(Artist $artist, User $user)
+    private function canDelete(Gig $gig, User $user)
     {
-        if ($user === $artist->getCreatedBy()) {
+        if ($user === $gig->getCreatedBy()) {
             return true;
         }
 
