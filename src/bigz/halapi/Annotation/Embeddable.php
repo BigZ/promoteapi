@@ -1,5 +1,5 @@
 <?php
-namespace AppBundle\Annotation;
+namespace bigz\halapi\Annotation;
 
 /**
  * @Annotation

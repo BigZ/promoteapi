@@ -5,7 +5,10 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Artist;
 use AppBundle\Exception\InvalidFormException;
 use AppBundle\Form\Type\ArtistType;
+use bigz\halapi\Factory\RelationFactory;
+use bigz\halapi\HALAPIBuilder;
 use FOS\RestBundle\Request\ParamFetcher;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -32,7 +35,7 @@ class ArtistController extends HALController
      */
     public function getArtistsAction(ParamFetcher $paramFetcher)
     {
-        return $this->getPaginatedRepresentation('artist', $paramFetcher);
+        return $this->get('app.hal_representation')->getPaginatedRepresentation('artist', $paramFetcher);
     }
 
     /**
@@ -46,8 +49,16 @@ class ArtistController extends HALController
      */
     public function getArtistAction(Artist $artist, ParamFetcher $paramFetcher)
     {
-        $this->paramFetcher = $paramFetcher;
-        return $this->getResourceRepresentation($artist);
+        $relationFactory = new RelationFactory(
+            $this->get('router'),
+            $this->get('annotation_reader'),
+            $this->get('doctrine.orm.entity_manager'),
+            $paramFetcher
+        );
+        $halApiBuilder = new HALAPIBuilder($relationFactory, null);
+        $serializer = $halApiBuilder->getSerializer();
+
+        return new Response($serializer->serialize($artist, 'json'));
     }
 
     /**
@@ -83,11 +94,7 @@ class ArtistController extends HALController
             return ['status' => 'created', 'resource_id' => $artist->getId()];
         }
 
-        //$form->submit(($request->request->get($form->getName())));
-        //throw new InvalidFormException('Bad form');
-
         return $form;
-        //Response(json_encode((array)$form->getErrors(true)->getForm()), 400); //[$form->getErrors(true)];
     }
 
     /**
@@ -139,6 +146,22 @@ class ArtistController extends HALController
         $manager->flush();
 
         return ['status' => 'deleted', 'resource_id' => $id];
+    }
+
+    public function putArtistPictureAction(Request $request, Artist $artist)
+    {
+        $tmpFile = tmpfile();
+        $tmpFilePath = stream_get_meta_data($tmpFile)['uri'];
+
+        file_put_contents($tmpFilePath, $request->getContent());
+        $file = new UploadedFile($tmpFilePath, $tmpFilePath);
+
+        $artist->setImageFile($file);
+        $manager = $this->getDoctrine()->getManager();
+        $manager->persist($artist);
+        $manager->flush();
+
+        return ['status' => 'updated', 'resource_id' => $artist->getId()];
     }
 
     protected function getRepository()

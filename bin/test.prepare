@@ -17,6 +17,15 @@ function elapsed {
     echo -e "\033[36m $(($1/60)) min $(($1%60)) sec\033[0m"
 }
 
+section "sourcing local env"
+source .env
+if [ $? -eq 0 ]; then
+    success
+else
+    fail
+fi
+
+
 section "cleaning cache & log directories"
 mkdir -p var/cache && rm -rf var/cache/* && chmod 777 var/cache && mkdir -p var/logs && rm -rf var/logs/* && chmod 777 var/logs
 if [ $? -eq 0 ]; then

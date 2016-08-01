@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
-use AppBundle\Annotation\Embeddable;
+use bigz\halapi\Annotation\Embeddable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

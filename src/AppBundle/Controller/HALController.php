@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Annotation\Embeddable;
+use bigz\halapi\Annotation\Embeddable;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Proxy\Proxy;
 use Doctrine\ORM\Mapping\ManyToMany;
@@ -107,22 +107,33 @@ class HALController extends FOSRestController
 
     public function getResourceRepresentation($resource)
     {
-        $representation = [];
+        $resourceArray = json_decode($this->get('jms_serializer')->serialize($resource, 'json'), 1);
+        //$resourceArray = $this->processResource($resource, $resourceArray);
+
+        $representation = array_merge(
+            $resourceArray,
+            $this->getResourceLinks($resource)
+        );
+        return $representation;
+    }
+
+    /*
+    private function processResource($resource, array $resourceArray)
+    {
         $reflectionClass = new \ReflectionClass($resource);
 
         foreach ($reflectionClass->getProperties() as $field) {
+
             $reflectionProp = $reflectionClass->getProperty($field->name);
+
             foreach ($this->get('annotation_reader')->getPropertyAnnotations($reflectionProp) as $annotation) {
                 if ($annotation instanceof Expose) {
                     $representation[$field->name] = $resource->{'get'.ucfirst($field->name)}();
                 }
             }
         }
-        
-        $representation = array_merge($representation, $this->getResourceLinks($resource));
-
-        return $representation;
-    }
+        return $resourceArray;
+    }*/
 
     private function getResourceLinks($resource)
     {

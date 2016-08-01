@@ -40,5 +40,16 @@ services:
                 version: "latest"
                 region: "eu-central-1"
                 credentials:
-                    key: "AKIAIOS5LSEDZJEVPIAQ"
-                    secret: "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"
+                    key: "%awss3_key%"
+                    secret: "%awss3_secret%"
+
+    # Serializer Handlers
+    app.serializer.filename_handler:
+        class: AppBundle\Handler\FilenameHandler
+        tags:
+            - { name: jms_serializer.subscribing_handler, type: Artist, format: json}
+
+    # HAL
+    app.hal_representation:
+        class: bigz\HalBundle\Service\HALRepresentation
+        arguments: ['@jms_serializer', '@doctrine.orm.entity_manager', '@annotation_reader', '@router']

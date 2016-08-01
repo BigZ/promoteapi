@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use AppBundle\Annotation\Embeddable;
+use bigz\halapi\Annotation\Embeddable;
 use JMS\Serializer\Annotation\Expose;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -38,6 +38,7 @@ class Gig
      * @var \DateTime
      *
      * @Assert\NotBlank()
+     * @Assert\DateTime()
      * @ORM\Column(name="startDate", type="datetime")
      * @Expose
      */
@@ -46,6 +47,7 @@ class Gig
     /**
      * @var \DateTime
      *
+     * @Assert\DateTime()
      * @ORM\Column(name="endDate", type="datetime", nullable=true)
      * @Expose
      */

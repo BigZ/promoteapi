@@ -5,7 +5,9 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
-use AppBundle\Annotation\Embeddable;
+use JMS\Serializer\Annotation as Serializer;
+use bigz\halapi\Annotation\Embeddable;
+use AppBundle\Annotation\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -77,14 +79,15 @@ class Artist
 
     /**
      * @Vich\UploadableField(mapping="artist_image", fileNameProperty="imageName")
-     *
+     * @Assert\Image
      * @var File
      */
     private $imageFile;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     *
+     * @Expose
+     * @UploadedFile(type="image")
      * @var string
      */
     private $imageName;

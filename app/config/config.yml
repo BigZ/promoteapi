@@ -65,19 +65,14 @@ fos_rest:
     param_fetcher_listener: true
     body_listener: true
     format_listener: true
-    view:
-        view_response_listener: 'force'
-        formats:
-            json : true
-        failed_validation: HTTP_BAD_REQUEST
+    #view:
+       # view_response_listener: 'force'
+      #  formats:
+     #       json : true
+    #    failed_validation: HTTP_BAD_REQUEST
     routing_loader:
         default_format: json
         include_format: false
-
-fos_rest:
-    view:
-        view_response_listener: 'force'
-    param_fetcher_listener: true
 
 nelmio_api_doc: ~
 
@@ -86,8 +81,10 @@ oneup_flysystem:
         app.flysystem_adapter:
             awss3v3:
                 client: app.s3_client
-                bucket: ~
+                bucket: "%awss3_bucket%"
                 prefix: ~
+                options:
+                    ACL: public-read
 
     filesystems:
         awss3_fs:
@@ -99,7 +96,7 @@ vich_uploader:
     storage: flysystem
     mappings:
         artist_image:
-            uri_prefix: /images/artists
+            uri_prefix: http://amazon.com/
             upload_destination: awss3_fs
             namer: vich_uploader.namer_uniqid
             inject_on_load:     false
