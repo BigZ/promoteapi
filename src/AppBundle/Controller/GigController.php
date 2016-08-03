@@ -30,7 +30,7 @@ class GigController extends HALController
      */
     public function getGigsAction(ParamFetcher $paramFetcher)
     {
-        return $this->getPaginatedRepresentation('gig', $paramFetcher);
+        return $this->get('bigz_halapi.pagination_factory')->getRepresentation(Gig::class, $paramFetcher);
     }
 
     /**
@@ -41,10 +41,9 @@ class GigController extends HALController
      * @param    ParamFetcher $paramFetcher
      * @return   array
      */
-    public function getGigAction(Gig $gig, ParamFetcher $paramFetcher)
+    public function getGigAction(Gig $gig)
     {
-        $this->paramFetcher = $paramFetcher;
-        return $this->getResourceRepresentation($gig);
+        return $gig;
     }
 
     /**

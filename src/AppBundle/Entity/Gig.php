@@ -6,12 +6,14 @@ use Doctrine\ORM\Mapping as ORM;
 use bigz\halapi\Annotation\Embeddable;
 use JMS\Serializer\Annotation\Expose;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 
 /**
  * Gig
  *
  * @ORM\Table(name="gig")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\GigRepository")
+ * @ExclusionPolicy("all")
  */
 class Gig
 {

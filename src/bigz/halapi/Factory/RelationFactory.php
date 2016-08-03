@@ -100,12 +100,16 @@ class RelationFactory
             return null;
         }
 
-        return [
-            'self' => $this->router->generate(
-                'get_'.strtolower($reflectionClass->getShortName()),
-                [strtolower($reflectionClass->getShortName()) => $resource->getId()]
-            )
-        ];
+        try {
+            return [
+                'self' => $this->router->generate(
+                    'get_'.strtolower($reflectionClass->getShortName()),
+                    [strtolower($reflectionClass->getShortName()) => $resource->getId()]
+                )
+            ];
+        } catch (\Exception $exception) {
+            return [];
+        }
     }
 
     private function isEmbbedable($property)
