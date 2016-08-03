@@ -65,11 +65,11 @@ fos_rest:
     param_fetcher_listener: true
     body_listener: true
     format_listener: true
-    #view:
-       # view_response_listener: 'force'
-      #  formats:
-     #       json : true
-    #    failed_validation: HTTP_BAD_REQUEST
+    view:
+        view_response_listener: 'force'
+        formats:
+            json : true
+        failed_validation: HTTP_BAD_REQUEST
     routing_loader:
         default_format: json
         include_format: false

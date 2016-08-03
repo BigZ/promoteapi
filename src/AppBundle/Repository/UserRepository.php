@@ -2,6 +2,10 @@
 
 namespace AppBundle\Repository;
 
-class UserRepository extends \Doctrine\ORM\EntityRepository
+use bigz\halapi\Representation\RestEntityRepositoryTrait;
+use Doctrine\ORM\EntityRepository;
+
+class UserRepository  extends EntityRepository
 {
+    use RestEntityRepositoryTrait;
 }

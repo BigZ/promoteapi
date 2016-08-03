@@ -6,10 +6,8 @@ use bigz\halapi\Annotation\Embeddable;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\RestBundle\Controller\Annotations\QueryParam;
-use FOS\RestBundle\Request\ParamFetcher;
-use FOS\RestBundle\Request\ParamFetcherInterface;
 use JMS\Serializer\SerializerBuilder;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -21,20 +19,16 @@ class RelationFactory
 
     private $entityManager;
 
-    private $paramFetcher;
-
     private $serializer;
 
     public function __construct(
         RouterInterface $router,
         Reader $annotationReader,
-        EntityManagerInterface $entityManager,
-        ParamFetcherInterface $paramFetcher
+        EntityManagerInterface $entityManager
     ) {
         $this->router = $router;
         $this->annotationReader = $annotationReader;
         $this->entityManager = $entityManager;
-        $this->paramFetcher = $paramFetcher;
         $this->serializer = SerializerBuilder::create()->build();
     }
 
@@ -62,7 +56,7 @@ class RelationFactory
     {
         $reflectionClass = new \ReflectionClass($resource);
         $embedded = [];
-        $requestedEmbedded = $this->addEmbedParams($this->paramFetcher);
+        $requestedEmbedded = $this->getEmbeddedParams();
         
         foreach ($reflectionClass->getProperties() as $property) {
             $propertyName = $property->getName();
@@ -87,18 +81,25 @@ class RelationFactory
         return $this->serializer->toArray($value);
     }
 
-    private function addEmbedParams(ParamFetcher $paramFetcher)
+    private function getEmbeddedParams()
     {
-        $embeddedParam = new QueryParam();
-        $embeddedParam->name = "embed";
-        $embeddedParam->array = true;
-        $paramFetcher->addParam($embeddedParam);
+        $request = Request::createFromGlobals();
 
-        return $paramFetcher->get('embed');
+        $embed = $request->query->get('embed');
+
+        if (!is_array($embed)) {
+            return [];
+        }
+
+        return $embed;
     }
 
     private function getSelfLink($resource, $reflectionClass)
     {
+        if ($resource instanceof \Traversable) {
+            return null;
+        }
+
         return [
             'self' => $this->router->generate(
                 'get_'.strtolower($reflectionClass->getShortName()),

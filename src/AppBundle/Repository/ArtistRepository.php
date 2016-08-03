@@ -2,6 +2,10 @@
 
 namespace AppBundle\Repository;
 
-class ArtistRepository extends RestEntityRepository
+use bigz\halapi\Representation\RestEntityRepositoryTrait;
+use Doctrine\ORM\EntityRepository;
+
+class ArtistRepository extends EntityRepository
 {
+    use RestEntityRepositoryTrait;
 }

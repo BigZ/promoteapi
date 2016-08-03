@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace bigz\halapi\Representation;
 
 use Doctrine\ORM\EntityRepository;
 
-class RestEntityRepository extends EntityRepository
+trait RestEntityRepositoryTrait
 {
     public function findAllSorted(array $sorting, array $filterValues, array $filerOperators)
     {
@@ -20,13 +20,13 @@ class RestEntityRepository extends EntityRepository
             if (isset($filterValues[$field])) {
                 $operator = '=';
 
-                if (isset($filerOperators[$field]) 
+                if (isset($filerOperators[$field])
                     && in_array($filerOperators[$field], ['>','<','>=', '<=', '=', '!='])
                 ) {
                     $operator = $filerOperators[$field];
                 }
 
-                $queryBuilder->andWhere('e.'.$field.$operator.$filterValues[$field]);
+                $queryBuilder->andWhere('e.'.$field.$operator."'".$filterValues[$field]."'");
             }
         }
 

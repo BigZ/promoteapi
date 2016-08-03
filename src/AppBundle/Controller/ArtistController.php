@@ -5,8 +5,10 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Artist;
 use AppBundle\Exception\InvalidFormException;
 use AppBundle\Form\Type\ArtistType;
+use bigz\halapi\Factory\PaginationFactory;
 use bigz\halapi\Factory\RelationFactory;
 use bigz\halapi\HALAPIBuilder;
+use bigz\halapi\Representation\PaginatedRepresentation;
 use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +37,7 @@ class ArtistController extends HALController
      */
     public function getArtistsAction(ParamFetcher $paramFetcher)
     {
-        return $this->get('app.hal_representation')->getPaginatedRepresentation('artist', $paramFetcher);
+        return $this->get('bigz_halapi.pagination_factory')->getRepresentation(Artist::class, $paramFetcher);
     }
 
     /**
@@ -43,22 +45,12 @@ class ArtistController extends HALController
      *
      * @Apidoc()
      *
-     * @param  Artist       $artist
-     * @param  ParamFetcher $paramFetcher
+     * @param  Artist $artist
      * @return array
      */
-    public function getArtistAction(Artist $artist, ParamFetcher $paramFetcher)
+    public function getArtistAction(Artist $artist)
     {
-        $relationFactory = new RelationFactory(
-            $this->get('router'),
-            $this->get('annotation_reader'),
-            $this->get('doctrine.orm.entity_manager'),
-            $paramFetcher
-        );
-        $halApiBuilder = new HALAPIBuilder($relationFactory, null);
-        $serializer = $halApiBuilder->getSerializer();
-
-        return new Response($serializer->serialize($artist, 'json'));
+        return $artist;
     }
 
     /**
