@@ -1,4 +1,5 @@
 <?php
+
 namespace AppBundle\Security;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -10,7 +11,6 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Doctrine\ORM\EntityManager;
 
 class FormAuthenticator extends AbstractGuardAuthenticator
 {
@@ -30,18 +30,18 @@ class FormAuthenticator extends AbstractGuardAuthenticator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getCredentials(Request $request)
     {
         return [
             'username' => $request->request->get('username'),
-            'password' => $request->request->get('password')
+            'password' => $request->request->get('password'),
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
@@ -51,7 +51,7 @@ class FormAuthenticator extends AbstractGuardAuthenticator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function checkCredentials($credentials, UserInterface $user)
     {
@@ -65,40 +65,40 @@ class FormAuthenticator extends AbstractGuardAuthenticator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        return null;
+        return;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         $data = array(
-            'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
+            'message' => strtr($exception->getMessageKey(), $exception->getMessageData()),
         );
 
         return new JsonResponse($data, 403);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
         $data = array(
             // you might translate this message
-            'message' => 'Authentication Required'
+            'message' => 'Authentication Required',
         );
 
         return new JsonResponse($data, 401);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function supportsRememberMe()
     {

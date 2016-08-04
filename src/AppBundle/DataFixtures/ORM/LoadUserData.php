@@ -28,29 +28,29 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
                 'username' => 'admin',
                 'email' => 'admin@admin.com',
                 'apiKey' => '123',
-                'roles' => ['ROLE_ADMIN']
+                'roles' => ['ROLE_ADMIN'],
             ],
             [
                 'username' => 'user1',
                 'email' => 'user1@user.com',
                 'apiKey' => '456',
-                'roles' => ['ROLE_USER']
+                'roles' => ['ROLE_USER'],
             ],
             [
                 'username' => 'user2',
                 'email' => 'user2@user.com',
                 'apiKey' => '789',
-                'roles' => ['ROLE_USER']
+                'roles' => ['ROLE_USER'],
             ],
             [
                 'username' => 'user3',
                 'email' => 'user3@user.com',
                 'apiKey' => '1011',
-                'roles' => ['ROLE_USER']
-            ]
+                'roles' => ['ROLE_USER'],
+            ],
         ];
     }
-    
+
     public function load(ObjectManager $manager)
     {
         $encoder = $this->container->get('security.password_encoder');

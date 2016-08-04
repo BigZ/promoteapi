@@ -3,11 +3,10 @@
 namespace AppBundle\Entity;
 
 /**
- * Class Filename
- * @package AppBundle\Entity
+ * Class Filename.
  */
-class Filename {
-
+class Filename
+{
     /**
      * @var string
      */
@@ -20,16 +19,16 @@ class Filename {
 
     public function __construct($filename)
     {
-        $parts = explode(".", $filename);
+        $parts = explode('.', $filename);
 
         $this->setName($parts[0]);
 
         $this->setExtension($parts[1]);
-
     }
 
     /**
      * @param mixed $extension
+     *
      * @return Media
      */
     public function setExtension($extension)
@@ -49,6 +48,7 @@ class Filename {
 
     /**
      * @param mixed $name
+     *
      * @return Filename
      */
     public function setName($name)
@@ -69,7 +69,6 @@ class Filename {
      */
     public function __toString()
     {
-        return join(".", array($this->name, $this->extension));
+        return implode('.', array($this->name, $this->extension));
     }
-
 }

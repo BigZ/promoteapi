@@ -16,7 +16,7 @@ parameters:
     mailer_password:   ~
 
     # A secret key that's used to generate certain security-related tokens
-    secret:            ThisTokenIsNotSoSecretChangeIt
+    secret:            1114f6409942b40ef211bb6822fb62e73e2f96d7
 
     awss3_key: awsKey
     awss3_secret: awsSecret

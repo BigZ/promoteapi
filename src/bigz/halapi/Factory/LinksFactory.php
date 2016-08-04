@@ -3,15 +3,11 @@
  * Created by PhpStorm.
  * User: developpeur
  * Date: 23/07/2016
- * Time: 12:52
+ * Time: 12:52.
  */
 
 namespace bigz\halapi\Factory;
 
-
-use Doctrine\Common\Annotations\Reader;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Doctrine\Common\Collections\Collection;
 
 class LinksFactory extends AbstractRelationFactory
@@ -39,7 +35,7 @@ class LinksFactory extends AbstractRelationFactory
     private function getSelfLink($resource, $reflectionClass)
     {
         if ($resource instanceof \Traversable) {
-            return null;
+            return;
         }
 
         try {
@@ -47,7 +43,7 @@ class LinksFactory extends AbstractRelationFactory
                 'self' => $this->router->generate(
                     'get_'.strtolower($reflectionClass->getShortName()),
                     [strtolower($reflectionClass->getShortName()) => $resource->getId()]
-                )
+                ),
             ];
         } catch (\Exception $exception) {
             return [];
@@ -66,7 +62,7 @@ class LinksFactory extends AbstractRelationFactory
             return $links;
         }
 
-        return $this->getRelationLink($property, $relationContent);;
+        return $this->getRelationLink($property, $relationContent);
     }
 
     protected function getRelationLink($property, $relationContent)
@@ -84,11 +80,11 @@ class LinksFactory extends AbstractRelationFactory
                         [strtolower($annotation->targetEntity) => $id]
                     );
                 } catch (\Exception $exception) {
-                    return null;
+                    return;
                 }
             }
         }
 
-        return null;
+        return;
     }
 }

@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 
 /**
- * Gig
+ * Gig.
  *
  * @ORM\Table(name="gig")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\GigRepository")
@@ -103,7 +103,7 @@ class Gig
     protected $createdAt;
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -113,7 +113,7 @@ class Gig
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -127,7 +127,7 @@ class Gig
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -137,7 +137,7 @@ class Gig
     }
 
     /**
-     * Set startDate
+     * Set startDate.
      *
      * @param \DateTime $startDate
      *
@@ -151,7 +151,7 @@ class Gig
     }
 
     /**
-     * Get startDate
+     * Get startDate.
      *
      * @return \DateTime
      */
@@ -161,7 +161,7 @@ class Gig
     }
 
     /**
-     * Set endDate
+     * Set endDate.
      *
      * @param \DateTime $endDate
      *
@@ -175,7 +175,7 @@ class Gig
     }
 
     /**
-     * Get endDate
+     * Get endDate.
      *
      * @return \DateTime
      */
@@ -185,7 +185,7 @@ class Gig
     }
 
     /**
-     * Set venue
+     * Set venue.
      *
      * @param string $venue
      *
@@ -199,7 +199,7 @@ class Gig
     }
 
     /**
-     * Get venue
+     * Get venue.
      *
      * @return string
      */
@@ -209,7 +209,7 @@ class Gig
     }
 
     /**
-     * Set address
+     * Set address.
      *
      * @param string $address
      *
@@ -223,7 +223,7 @@ class Gig
     }
 
     /**
-     * Get address
+     * Get address.
      *
      * @return string
      */
@@ -233,7 +233,7 @@ class Gig
     }
 
     /**
-     * Set facebookLink
+     * Set facebookLink.
      *
      * @param string $facebookLink
      *
@@ -247,7 +247,7 @@ class Gig
     }
 
     /**
-     * Get facebookLink
+     * Get facebookLink.
      *
      * @return string
      */
@@ -266,6 +266,7 @@ class Gig
 
     /**
      * @param $createdBy
+     *
      * @return $this
      */
     public function setCreatedBy($createdBy)
@@ -285,6 +286,7 @@ class Gig
 
     /**
      * @param $artists
+     *
      * @return $this
      */
     public function setArtists($artists)
@@ -296,6 +298,7 @@ class Gig
 
     /**
      * @param Artist $artist
+     *
      * @return $this
      */
     public function addArtist(Artist $artist)
@@ -315,6 +318,7 @@ class Gig
 
     /**
      * @param $createdAt
+     *
      * @return $this
      */
     public function setCreatedAt($createdAt)
@@ -324,4 +328,3 @@ class Gig
         return $this;
     }
 }
-

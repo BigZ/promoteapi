@@ -67,6 +67,7 @@ class User implements UserInterface
 
     /**
      * @param $username
+     *
      * @return $this
      */
     public function setUsername($username)
@@ -86,6 +87,7 @@ class User implements UserInterface
 
     /**
      * @param $apiKey
+     *
      * @return $this
      */
     public function setApiKey($apiKey)
@@ -105,6 +107,7 @@ class User implements UserInterface
 
     /**
      * @param $email
+     *
      * @return $this
      */
     public function setEmail($email)
@@ -115,7 +118,7 @@ class User implements UserInterface
     }
 
     /**
-     * Returns the user roles
+     * Returns the user roles.
      *
      * @return array The roles
      */
@@ -131,6 +134,7 @@ class User implements UserInterface
 
     /**
      * @param $role
+     *
      * @return $this
      */
     public function addRole($role)
@@ -149,6 +153,7 @@ class User implements UserInterface
 
     /**
      * @param array $roles
+     *
      * @return $this
      */
     public function setRoles(array $roles)
@@ -168,6 +173,7 @@ class User implements UserInterface
 
     /**
      * @param $password
+     *
      * @return $this
      */
     public function setPassword($password)
@@ -213,15 +219,11 @@ class User implements UserInterface
     public function unserialize($serialized)
     {
         $data = unserialize($serialized);
-        // add a few extra elements in the array to ensure that we have enough keys when unserializing
-        // older data which does not include all properties.
-        //$data = array_merge($data, array_fill(0, 2, null));
 
         list(
             $this->password,
             $this->username,
             $this->id,
-            $this->email,
-            ) = $data;
+            $this->email) = $data;
     }
 }

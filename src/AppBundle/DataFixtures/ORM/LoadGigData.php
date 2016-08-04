@@ -21,7 +21,7 @@ class LoadGigData extends AbstractFixture implements OrderedFixtureInterface
                 'facebookLink' => null,
                 'createdBy' => 'user1',
                 'artists' => ['bob-marley', 'peter-tosh'],
-                'createdAt' => new \DateTime('yesterday')
+                'createdAt' => new \DateTime('yesterday'),
             ],
             [
                 'name' => 'Alive 2007',
@@ -32,7 +32,7 @@ class LoadGigData extends AbstractFixture implements OrderedFixtureInterface
                 'facebookLink' => 'https://www.facebook.com/events/981661548572560/',
                 'createdBy' => 'user2',
                 'artists' => ['daftpunk'],
-                'createdAt' => new \DateTime('now')
+                'createdAt' => new \DateTime('now'),
             ],
             [
                 'name' => 'Paris 2015',
@@ -43,7 +43,7 @@ class LoadGigData extends AbstractFixture implements OrderedFixtureInterface
                 'facebookLink' => 'https://www.facebook.com/events/4212/',
                 'createdBy' => 'user3',
                 'artists' => ['maitregims'],
-                'createdAt' => new \DateTime('now')
+                'createdAt' => new \DateTime('now'),
             ],
             [
                 'name' => 'Zenith de Lille 2015',
@@ -54,11 +54,11 @@ class LoadGigData extends AbstractFixture implements OrderedFixtureInterface
                 'facebookLink' => 'https://www.facebook.com/events/3456/',
                 'createdBy' => 'user3',
                 'artists' => ['maitregims'],
-                'createdAt' => new \DateTime('now')
+                'createdAt' => new \DateTime('now'),
             ],
         ];
     }
-    
+
     public function load(ObjectManager $manager)
     {
         foreach ($this->getGigs() as $data) {

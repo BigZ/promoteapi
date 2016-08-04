@@ -4,11 +4,8 @@ namespace bigz\halapi;
 
 use bigz\halapi\Factory\RelationFactory;
 use bigz\halapi\Subscriber\JsonEventSubscriber;
-use Doctrine\Common\Annotations\CachedReader;
 use JMS\Serializer\EventDispatcher\EventDispatcherInterface;
 use JMS\Serializer\SerializerBuilder;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\Router;
 
 class HALAPIBuilder
 {
@@ -43,6 +40,7 @@ class HALAPIBuilder
                 }
             })
         ;
+
         return $this->serializerBuilder->build();
     }
 }

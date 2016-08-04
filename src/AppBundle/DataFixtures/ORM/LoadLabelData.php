@@ -38,7 +38,7 @@ class LoadLabelData extends AbstractFixture implements OrderedFixtureInterface
             ],
         ];
     }
-    
+
     public function load(ObjectManager $manager)
     {
         foreach ($this->getLabels() as $data) {

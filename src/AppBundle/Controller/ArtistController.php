@@ -3,21 +3,12 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Artist;
-use AppBundle\Exception\InvalidFormException;
 use AppBundle\Form\Type\ArtistType;
-use bigz\halapi\Factory\PaginationFactory;
-use bigz\halapi\Factory\RelationFactory;
-use bigz\halapi\HALAPIBuilder;
-use bigz\halapi\Representation\PaginatedRepresentation;
 use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
-use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\HttpFoundation\Response;
 
 class ArtistController extends HALController
 {
@@ -32,7 +23,8 @@ class ArtistController extends HALController
      *      {"name"="filteroperator", "dataType"="array", "pattern"="[field]=(<|>|<=|>=|=|!=)"}
      *  })
      *
-     * @param  ParamFetcher $paramFetcher
+     * @param ParamFetcher $paramFetcher
+     *
      * @return array
      */
     public function getArtistsAction(ParamFetcher $paramFetcher)
@@ -45,7 +37,8 @@ class ArtistController extends HALController
      *
      * @Apidoc()
      *
-     * @param  Artist $artist
+     * @param Artist $artist
+     *
      * @return array
      */
     public function getArtistAction(Artist $artist)
@@ -126,8 +119,10 @@ class ArtistController extends HALController
      *  input="AppBundle\Artist"
      * )
      * @Security("is_granted('DELETE')")
-     * @param                            Artist $artist
-     * @return                           array
+     *
+     * @param Artist $artist
+     *
+     * @return array
      */
     public function deleteArtistAction(Artist $artist)
     {

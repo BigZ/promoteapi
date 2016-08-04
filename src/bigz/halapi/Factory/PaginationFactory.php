@@ -1,4 +1,5 @@
 <?php
+
 namespace bigz\halapi\Factory;
 
 use bigz\halapi\Representation\PaginatedRepresentation;
@@ -21,7 +22,13 @@ class PaginationFactory
         $this->entityManager = $entityManager;
     }
 
-    public function getRepresentation($className, $paramFetcher)
+    /**
+     * @param $className
+     * @param ParamFetcher $paramFetcher
+     *
+     * @return PaginatedRepresentation
+     */
+    public function getRepresentation($className, ParamFetcher $paramFetcher)
     {
         $repository = $this->entityManager->getRepository($className);
         list($page, $limit, $sorting, $filterValues, $filerOperators) = $this->addPaginationParams($paramFetcher);
@@ -46,38 +53,38 @@ class PaginationFactory
                     $limit, $page < $pager->getNbPages() ? $page + 1 : $pager->getNbPages(),
                     $sorting
                 ),
-                'last' => $this->getPaginatedRoute($shortName, $limit, $pager->getNbPages(), $sorting)
+                'last' => $this->getPaginatedRoute($shortName, $limit, $pager->getNbPages(), $sorting),
             ],
-            (array)$pager->getCurrentPageResults()
+            (array) $pager->getCurrentPageResults()
         );
     }
 
     private function addPaginationParams(ParamFetcher $paramFetcher)
     {
         $limitParam = new QueryParam();
-        $limitParam->name = "limit";
+        $limitParam->name = 'limit';
         $limitParam->requirements = "\d+";
-        $limitParam->default = "20";
+        $limitParam->default = '20';
         $paramFetcher->addParam($limitParam);
 
         $pageParam = new QueryParam();
-        $pageParam->name = "page";
+        $pageParam->name = 'page';
         $pageParam->requirements = "\d+";
-        $pageParam->default = "1";
+        $pageParam->default = '1';
         $paramFetcher->addParam($pageParam);
 
         $sortingParam = new QueryParam();
-        $sortingParam->name = "sorting";
+        $sortingParam->name = 'sorting';
         $sortingParam->array = true;
         $paramFetcher->addParam($sortingParam);
 
         $filterValueParam = new QueryParam();
-        $filterValueParam->name = "filtervalue";
+        $filterValueParam->name = 'filtervalue';
         $filterValueParam->array = true;
         $paramFetcher->addParam($filterValueParam);
 
         $filterOperatorParam = new QueryParam();
-        $filterOperatorParam->name = "filteroperator";
+        $filterOperatorParam->name = 'filteroperator';
         $filterOperatorParam->array = true;
         $paramFetcher->addParam($filterOperatorParam);
 
@@ -97,7 +104,7 @@ class PaginationFactory
             'get_'.strtolower($name).'s', [
                 'sorting' => $sorting,
                 'page' => $page,
-                'limit' => $limit
+                'limit' => $limit,
             ]
         );
     }

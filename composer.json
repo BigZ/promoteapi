@@ -1,5 +1,6 @@
 {
-    "name": "developpeur/promote.api",
+    "name": "bigz/promoteapi",
+    "description": "Promotion API",
     "license": "proprietary",
     "type": "project",
     "autoload": {
@@ -18,7 +19,7 @@
     },
     "require": {
         "php": ">=5.5.9",
-        "symfony/symfony": "3.0.*",
+        "symfony/symfony": "3.1.*",
         "doctrine/orm": "^2.5",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-cache-bundle": "^1.2",
@@ -39,15 +40,17 @@
         "nelmio/api-doc-bundle": "^2.12",
         "oneup/flysystem-bundle": "^1.3",
         "league/flysystem-aws-s3-v3": "^1.0",
-        "vich/uploader-bundle": "^1.0"
+        "vich/uploader-bundle": "^1.0",
+        "phpmd/phpmd": "^2.4"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^3.0",
-        "squizlabs/php_codesniffer": "2.*"
+        "squizlabs/php_codesniffer": "2.*",
+        "FriendsOfPHP/PHP-CS-Fixer": "^1.11"
     },
     "scripts": {
         "post-install-cmd": [
-            "AppBundle\\Heroku\\HerokuDatabase::populateEnvironment",
+            "Application\\Heroku\\HerokuDatabase::populateEnvironment",
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
@@ -66,7 +69,7 @@
     },
     "config": {
         "platform": {
-            "php": "5.5.9"
+            "php": "5.6"
         }
     },
     "extra": {

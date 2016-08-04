@@ -2,7 +2,6 @@
 
 namespace bigz\halapi\Factory;
 
-
 use bigz\halapi\Annotation\Embeddable;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;

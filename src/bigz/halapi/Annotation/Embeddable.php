@@ -1,4 +1,5 @@
 <?php
+
 namespace bigz\halapi\Annotation;
 
 /**

@@ -2,7 +2,6 @@
 
 namespace bigz\halapi\Factory;
 
-
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerBuilder;

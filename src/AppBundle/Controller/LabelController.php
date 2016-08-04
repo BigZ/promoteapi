@@ -7,7 +7,6 @@ use AppBundle\Form\Type\LabelType;
 use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 class LabelController extends HALController
@@ -23,7 +22,8 @@ class LabelController extends HALController
      *      {"name"="filteroperator", "dataType"="array", "pattern"="[field]=(<|>|<=|>=|=|!=)"}
      *  })
      *
-     * @param  ParamFetcher $paramFetcher
+     * @param ParamFetcher $paramFetcher
+     *
      * @return array
      */
     public function getLabelsAction(ParamFetcher $paramFetcher)
@@ -36,13 +36,15 @@ class LabelController extends HALController
      *
      * @Apidoc()
      *
-     * @param  Label        $label
-     * @param  ParamFetcher $paramFetcher
+     * @param Label        $label
+     * @param ParamFetcher $paramFetcher
+     *
      * @return array
      */
     public function getLabelAction(Label $label, ParamFetcher $paramFetcher)
     {
         $this->paramFetcher = $paramFetcher;
+
         return $this->getResourceRepresentation($label);
     }
 
@@ -114,8 +116,10 @@ class LabelController extends HALController
      * @ApiDoc(
      *  input="AppBundle\Label"
      * )
-     * @param   Label $label
-     * @return  array
+     *
+     * @param Label $label
+     *
+     * @return array
      */
     public function deleteLabelAction(Label $label)
     {

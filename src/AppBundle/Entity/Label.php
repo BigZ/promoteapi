@@ -10,7 +10,7 @@ use bigz\halapi\Annotation\Embeddable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Label
+ * Label.
  *
  * @ORM\Table(name="label")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LabelRepository")
@@ -73,7 +73,7 @@ class Label
     protected $createdBy;
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -83,7 +83,7 @@ class Label
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -97,7 +97,7 @@ class Label
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -107,7 +107,7 @@ class Label
     }
 
     /**
-     * Set slug
+     * Set slug.
      *
      * @param string $slug
      *
@@ -121,7 +121,7 @@ class Label
     }
 
     /**
-     * Get slug
+     * Get slug.
      *
      * @return string
      */
@@ -131,7 +131,7 @@ class Label
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
      *
@@ -145,7 +145,7 @@ class Label
     }
 
     /**
-     * Get description
+     * Get description.
      *
      * @return string
      */
@@ -153,7 +153,6 @@ class Label
     {
         return $this->description;
     }
-
 
     /**
      * @return array
@@ -165,6 +164,7 @@ class Label
 
     /**
      * @param array $artists
+     *
      * @return $this
      */
     public function setArtists(array $artists)

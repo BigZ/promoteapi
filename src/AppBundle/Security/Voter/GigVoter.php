@@ -30,7 +30,6 @@ class GigVoter extends Voter
             return false;
         }
 
-
         if (!$subject instanceof Gig) {
             return false;
         }
@@ -51,7 +50,7 @@ class GigVoter extends Voter
             return true;
         }
 
-        switch($attribute) {
+        switch ($attribute) {
         case self::CREATE:
             return $this->canCreate($gig, $user);
         case self::EDIT:
@@ -64,6 +63,7 @@ class GigVoter extends Voter
     /**
      * @param Gig  $gig
      * @param User $user
+     *
      * @return bool
      */
     private function canCreate(Gig $gig, User $user)
@@ -74,6 +74,7 @@ class GigVoter extends Voter
     /**
      * @param Gig  $gig
      * @param User $user
+     *
      * @return bool
      */
     private function canEdit(Gig $gig, User $user)
@@ -88,6 +89,7 @@ class GigVoter extends Voter
     /**
      * @param Gig  $gig
      * @param User $user
+     *
      * @return bool
      */
     private function canDelete(Gig $gig, User $user)

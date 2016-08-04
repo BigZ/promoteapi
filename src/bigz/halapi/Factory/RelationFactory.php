@@ -2,12 +2,8 @@
 
 namespace bigz\halapi\Factory;
 
-use bigz\halapi\Annotation\Embeddable;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
-use JMS\Serializer\SerializerBuilder;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 
 class RelationFactory

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Heroku;
+namespace Application\Heroku;
 
 use Composer\Script\Event;
 use Dotenv\Dotenv;
@@ -12,7 +12,7 @@ class HerokuDatabase
         $io = $event->getIO();
 
         try {
-            $dotenv = new Dotenv(__DIR__.'/../../../');
+            $dotenv = new Dotenv(__DIR__ . '/../../Web/');
             $dotenv->load();
         } catch (\Exception $exception) {
             $io->write('Loading env from shell');

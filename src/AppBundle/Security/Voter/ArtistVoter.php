@@ -46,7 +46,7 @@ class ArtistVoter extends Voter
             return true;
         }
 
-        switch($attribute) {
+        switch ($attribute) {
         case self::CREATE:
             return true;
         case self::EDIT:
@@ -59,6 +59,7 @@ class ArtistVoter extends Voter
     /**
      * @param Artist $artist
      * @param User   $user
+     *
      * @return bool
      */
     private function canEdit(Artist $artist, User $user)
@@ -73,6 +74,7 @@ class ArtistVoter extends Voter
     /**
      * @param Artist $artist
      * @param User   $user
+     *
      * @return bool
      */
     private function canDelete(Artist $artist, User $user)

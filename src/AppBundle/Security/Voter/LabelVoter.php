@@ -30,7 +30,6 @@ class LabelVoter extends Voter
             return false;
         }
 
-
         if (!$subject instanceof Label) {
             return false;
         }
@@ -51,7 +50,7 @@ class LabelVoter extends Voter
             return true;
         }
 
-        switch($attribute) {
+        switch ($attribute) {
         case self::CREATE:
             return $this->canCreate($label, $user);
         case self::EDIT:
@@ -64,6 +63,7 @@ class LabelVoter extends Voter
     /**
      * @param Label $label
      * @param User  $user
+     *
      * @return bool
      */
     private function canCreate(Label $label, User $user)
@@ -74,6 +74,7 @@ class LabelVoter extends Voter
     /**
      * @param Label $label
      * @param User  $user
+     *
      * @return bool
      */
     private function canEdit(Label $label, User $user)
@@ -88,6 +89,7 @@ class LabelVoter extends Voter
     /**
      * @param Label $label
      * @param User  $user
+     *
      * @return bool
      */
     private function canDelete(Label $label, User $user)

@@ -22,19 +22,18 @@ class JsonEventSubscriber implements EventSubscriberInterface
     {
         return array(
             array(
-                'event'  => Events::POST_SERIALIZE,
+                'event' => Events::POST_SERIALIZE,
                 'format' => 'json',
                 'method' => 'onPostSerialize',
             ),
         );
     }
 
-
     public function __construct(RelationFactory $relationFactory)
     {
         $this->relationFactory = $relationFactory;
     }
-    
+
     public function onPostSerialize(ObjectEvent $event)
     {
         $object = $event->getObject();

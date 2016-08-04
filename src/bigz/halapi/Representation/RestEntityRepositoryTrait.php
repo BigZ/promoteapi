@@ -2,8 +2,6 @@
 
 namespace bigz\halapi\Representation;
 
-use Doctrine\ORM\EntityRepository;
-
 trait RestEntityRepositoryTrait
 {
     public function findAllSorted(array $sorting, array $filterValues, array $filerOperators)
@@ -21,7 +19,7 @@ trait RestEntityRepositoryTrait
                 $operator = '=';
 
                 if (isset($filerOperators[$field])
-                    && in_array($filerOperators[$field], ['>','<','>=', '<=', '=', '!='])
+                    && in_array($filerOperators[$field], ['>', '<', '>=', '<=', '=', '!='])
                 ) {
                     $operator = $filerOperators[$field];
                 }

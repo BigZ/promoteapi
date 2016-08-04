@@ -5,16 +5,14 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
-use JMS\Serializer\Annotation as Serializer;
 use bigz\halapi\Annotation\Embeddable;
 use AppBundle\Annotation\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-
 /**
- * Artist
+ * Artist.
  *
  * @ORM\Table(name="artist")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArtistRepository")
@@ -80,6 +78,7 @@ class Artist
     /**
      * @Vich\UploadableField(mapping="artist_image", fileNameProperty="imageName")
      * @Assert\Image
+     *
      * @var File
      */
     private $imageFile;
@@ -88,6 +87,7 @@ class Artist
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Expose
      * @UploadedFile(type="image")
+     *
      * @var string
      */
     private $imageName;
@@ -107,7 +107,7 @@ class Artist
     protected $createdBy;
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -117,7 +117,7 @@ class Artist
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -131,7 +131,7 @@ class Artist
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -139,7 +139,7 @@ class Artist
     {
         return $this->name;
     }
-    
+
     /**
      * @return string
      */
@@ -157,7 +157,7 @@ class Artist
     }
 
     /**
-     * Set bio
+     * Set bio.
      *
      * @param string $bio
      *
@@ -171,7 +171,7 @@ class Artist
     }
 
     /**
-     * Get bio
+     * Get bio.
      *
      * @return string
      */
@@ -190,6 +190,7 @@ class Artist
 
     /**
      * @param $labels
+     *
      * @return $this
      */
     public function setLabels($labels)
@@ -209,6 +210,7 @@ class Artist
 
     /**
      * @param $gigs
+     *
      * @return $this
      */
     public function setGigs($gigs)
@@ -220,6 +222,7 @@ class Artist
 
     /**
      * @param Gig $gig
+     *
      * @return $this
      */
     public function addGig(Gig $gig)
@@ -231,6 +234,7 @@ class Artist
 
     /**
      * @param Label $label
+     *
      * @return $this
      */
     public function addLabel(Label $label)
@@ -324,4 +328,3 @@ class Artist
         return $this->createdBy;
     }
 }
-

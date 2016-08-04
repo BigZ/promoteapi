@@ -2,7 +2,6 @@
 
 namespace AppBundle\Handler;
 
-use AppBundle\Entity\Filename;
 use JMS\Serializer\GraphNavigator;
 use JMS\Serializer\Handler\SubscribingHandlerInterface;
 use JMS\Serializer\VisitorInterface;
@@ -17,7 +16,7 @@ class FilenameHandler implements SubscribingHandlerInterface
                 'format' => 'json',
                 'type' => 'string',
                 'method' => 'serializeFilenameToJson',
-            ]
+            ],
         ];
     }
 
