@@ -14,10 +14,11 @@ class HALAPIBuilder
      */
     private $serializerBuilder;
 
-    private $router;
-
-    private $annotationReader;
-
+    /**
+     * HALAPIBuilder constructor.
+     * @param RelationFactory $relationFactory
+     * @param SerializerBuilder|null $serializerBuilder
+     */
     public function __construct(
         RelationFactory $relationFactory,
         SerializerBuilder $serializerBuilder = null
@@ -26,6 +27,9 @@ class HALAPIBuilder
         $this->serializerBuilder = $serializerBuilder ?: SerializerBuilder::create();
     }
 
+    /**
+     * @return \JMS\Serializer\Serializer
+     */
     public function getSerializer()
     {
         $eventSubscribers = array(

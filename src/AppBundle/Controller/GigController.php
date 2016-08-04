@@ -4,12 +4,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Gig;
 use AppBundle\Form\Type\GigType;
+use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-class GigController extends HALController
+class GigController extends FOSRestController
 {
     /**
      * Get all gigs.

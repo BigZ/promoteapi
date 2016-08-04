@@ -4,12 +4,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Label;
 use AppBundle\Form\Type\LabelType;
+use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-class LabelController extends HALController
+class LabelController extends FOSRestController
 {
     /**
      * Get all labels.

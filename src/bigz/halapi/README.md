@@ -1,6 +1,6 @@
 /artists?limit=2&page=2&sorting[id]=asc&filtervalue[name]=%27punk%27
 
-``
+```
 public function getArtistAction(Artist $artist)
     {
         $relationFactory = new RelationFactory(
@@ -13,7 +13,7 @@ public function getArtistAction(Artist $artist)
 
         return new Response($serializer->serialize($artist, 'json'));
     }
-````
+```
 
 ```
 public function getArtistsAction(ParamFetcher $paramFetcher)
