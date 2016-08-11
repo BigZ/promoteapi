@@ -1,18 +1,20 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: developpeur
- * Date: 23/07/2016
- * Time: 12:52.
- */
-namespace bigz\halapi\Factory;
+namespace bigz\halapi\Relation;
 
+use bigz\halapi\Factory\AbstractRelationFactory;
+use bigz\halapi\Relation\RelationInterface;
 use Doctrine\Common\Collections\Collection;
 
-class LinksFactory extends AbstractRelationFactory
+class LinksRelation extends AbstractRelation implements RelationInterface
 {
-    public function getLinks($resource)
+
+    public function getName()
+    {
+        return '_links';
+    }
+
+    public function getRelation($resource)
     {
         $reflectionClass = new \ReflectionClass($resource);
         $links = $this->getSelfLink($resource, $reflectionClass);

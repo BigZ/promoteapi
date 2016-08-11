@@ -1,6 +1,6 @@
 <?php
 
-namespace bigz\halapi\Factory;
+namespace bigz\halapi\Relation;
 
 use bigz\halapi\Annotation\Embeddable;
 use Doctrine\Common\Annotations\Reader;
@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 
-class AbstractRelationFactory
+class AbstractRelation
 {
     protected $router;
 

@@ -4,35 +4,47 @@ namespace bigz\halapi\Factory;
 
 use bigz\halapi\Representation\PaginatedRepresentation;
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\RestBundle\Controller\Annotations\QueryParam;
-use FOS\RestBundle\Request\ParamFetcher;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
 class PaginationFactory
 {
+    /**
+     * @var EntityManagerInterface
+     */
     public $entityManager;
 
+    /**
+     * @var RouterInterface
+     */
     public $router;
 
-    public function __construct(RouterInterface $router, EntityManagerInterface $entityManager)
-    {
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    public function __construct(
+        RouterInterface $router,
+        EntityManagerInterface $entityManager,
+        RequestStack $requestStack
+    ) {
         $this->router = $router;
         $this->entityManager = $entityManager;
+        $this->requestStack = $requestStack;
     }
 
     /**
      * @param $className
-     * @param ParamFetcher $paramFetcher
-     *
      * @return PaginatedRepresentation
      */
-    public function getRepresentation($className, ParamFetcher $paramFetcher)
+    public function getRepresentation($className)
     {
         $repository = $this->entityManager->getRepository($className);
-        list($page, $limit, $sorting, $filterValues, $filerOperators) = $this->addPaginationParams($paramFetcher);
-
+        list($page, $limit, $sorting, $filterValues, $filerOperators) = array_values($this->addPaginationParams());
         $queryBuilder = $repository->findAllSorted($sorting, $filterValues, $filerOperators);
         $shortName = (new \ReflectionClass($className))->getShortName();
 
@@ -42,8 +54,8 @@ class PaginationFactory
         $pager->setCurrentPage($page);
 
         return new PaginatedRepresentation(
-            $paramFetcher->get('page'),
-            $paramFetcher->get('limit'),
+            $page,
+            $limit,
             [
                 'self' => $this->getPaginatedRoute($shortName, $limit, $page, $sorting),
                 'first' => $this->getPaginatedRoute($shortName, $limit, 1, $sorting),
@@ -58,45 +70,46 @@ class PaginationFactory
         );
     }
 
-    private function addPaginationParams(ParamFetcher $paramFetcher)
+    /**
+     * @return array
+     */
+    private function addPaginationParams()
     {
-        $limitParam = new QueryParam();
-        $limitParam->name = 'limit';
-        $limitParam->requirements = "\d+";
-        $limitParam->default = '20';
-        $paramFetcher->addParam($limitParam);
+        $resolver = new OptionsResolver();
 
-        $pageParam = new QueryParam();
-        $pageParam->name = 'page';
-        $pageParam->requirements = "\d+";
-        $pageParam->default = '1';
-        $paramFetcher->addParam($pageParam);
+        $resolver->setDefaults(array(
+            'page' => '1',
+            'limit' => '20',
+            'sorting' => [],
+            'filtervalue' => [],
+            'filteroperator' => [],
+        ));
 
-        $sortingParam = new QueryParam();
-        $sortingParam->name = 'sorting';
-        $sortingParam->array = true;
-        $paramFetcher->addParam($sortingParam);
+        $resolver->setAllowedTypes('page', ['NULL', 'string']);
+        $resolver->setAllowedTypes('limit', ['NULL', 'string']);
+        $resolver->setAllowedTypes('sorting', ['NULL', 'array']);
+        $resolver->setAllowedTypes('filtervalue', ['NULL', 'array']);
+        $resolver->setAllowedTypes('filteroperator', ['NULL', 'array']);
 
-        $filterValueParam = new QueryParam();
-        $filterValueParam->name = 'filtervalue';
-        $filterValueParam->array = true;
-        $paramFetcher->addParam($filterValueParam);
+        $request = $this->requestStack->getMasterRequest();
 
-        $filterOperatorParam = new QueryParam();
-        $filterOperatorParam->name = 'filteroperator';
-        $filterOperatorParam->array = true;
-        $paramFetcher->addParam($filterOperatorParam);
-
-        return [
-            $paramFetcher->get('page'),
-            $paramFetcher->get('limit'),
-            $paramFetcher->get('sorting'),
-            $paramFetcher->get('filtervalue'),
-            $paramFetcher->get('filteroperator'),
-
-        ];
+        return $resolver->resolve(array_filter([
+            'page' => $request->query->get('page'),
+            'limit' => $request->query->get('limit'),
+            'sorting' => $request->query->get('sorting'),
+            'filtervalue' => $request->query->get('filtervalue'),
+            'filteroperator' => $request->query->get('filteroperator'),
+        ]));
     }
 
+    /**
+     * Return the url of a resource based on the 'get_entity' route name convention
+     * @param $name
+     * @param $limit
+     * @param $page
+     * @param $sorting
+     * @return mixed
+     */
     private function getPaginatedRoute($name, $limit, $page, $sorting)
     {
         return $this->router->generate(

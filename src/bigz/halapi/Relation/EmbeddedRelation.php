@@ -1,14 +1,15 @@
 <?php
 
-namespace bigz\halapi\Factory;
+namespace bigz\halapi\Relation;
 
+use bigz\halapi\Relation\RelationInterface;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerBuilder;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 
-class EmbeddedFactory extends AbstractRelationFactory
+class EmbeddedRelation extends AbstractRelation implements RelationInterface
 {
     /**
      * @var \JMS\Serializer\Serializer
@@ -25,7 +26,12 @@ class EmbeddedFactory extends AbstractRelationFactory
         $this->serializer = SerializerBuilder::create()->build();
     }
 
-    public function getEmbedded($resource)
+    public function getName()
+    {
+        return '_embedded';
+    }
+
+    public function getRelation($resource)
     {
         $reflectionClass = new \ReflectionClass($resource);
         $embedded = [];

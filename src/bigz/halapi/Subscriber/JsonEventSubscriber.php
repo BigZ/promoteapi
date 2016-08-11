@@ -36,16 +36,12 @@ class JsonEventSubscriber implements EventSubscriberInterface
 
     public function onPostSerialize(ObjectEvent $event)
     {
-        $object = $event->getObject();
-        if ($object instanceof PaginatedRepresentation) {
+        if ($event->getObject() instanceof PaginatedRepresentation) {
             return;
         }
-
-        $event->getVisitor()->addData('_links', $this->relationFactory->getLinks($event->getObject()));
-        $embedded = $this->relationFactory->getEmbedded($event->getObject());
-
-        if ($embedded) {
-            $event->getVisitor()->addData('_embedded', $embedded);
+        
+        foreach ($this->relationFactory->getRelations($event->getObject()) as $relationKey => $relation) {
+            $event->getVisitor()->addData($relationKey, $relation);
         }
     }
 }
