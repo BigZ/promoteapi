@@ -48,8 +48,3 @@ services:
         class: AppBundle\Handler\FilenameHandler
         tags:
             - { name: jms_serializer.subscribing_handler, type: Artist, format: json}
-
-    # HAL
-    app.hal_representation:
-        class: bigz\HalBundle\Service\HALRepresentation
-        arguments: ['@jms_serializer', '@doctrine.orm.entity_manager', '@annotation_reader', '@router']

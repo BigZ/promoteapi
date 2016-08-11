@@ -13,11 +13,14 @@ use Doctrine\ORM\EntityManager;
 
 class TokenAuthenticator extends AbstractGuardAuthenticator
 {
-    private $em;
+    /**
+     * @var EntityManager
+     */
+    private $entityManager;
 
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -41,7 +44,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     {
         $apiKey = $credentials['token'];
 
-        return $this->em->getRepository('AppBundle:User')
+        return $this->entityManager->getRepository('AppBundle:User')
             ->findOneBy(['apiKey' => $apiKey]);
     }
 

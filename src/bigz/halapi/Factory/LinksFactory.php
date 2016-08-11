@@ -1,11 +1,11 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: developpeur
  * Date: 23/07/2016
  * Time: 12:52.
  */
-
 namespace bigz\halapi\Factory;
 
 use Doctrine\Common\Collections\Collection;

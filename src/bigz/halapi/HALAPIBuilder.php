@@ -16,7 +16,8 @@ class HALAPIBuilder
 
     /**
      * HALAPIBuilder constructor.
-     * @param RelationFactory $relationFactory
+     *
+     * @param RelationFactory        $relationFactory
      * @param SerializerBuilder|null $serializerBuilder
      */
     public function __construct(

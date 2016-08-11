@@ -154,13 +154,13 @@ class GigController extends FOSRestController
      */
     public function deleteGigAction(Gig $gig)
     {
-        $id = $gig->getId();
+        $resourceId = $gig->getId();
         $manager = $this->getDoctrine()->getManager();
 
         $manager->remove($gig);
         $manager->flush();
 
-        return ['status' => 'deleted', 'resource_id' => $id];
+        return ['status' => 'deleted', 'resource_id' => $resourceId];
     }
 
     protected function getRepository()

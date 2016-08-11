@@ -5,7 +5,7 @@ namespace bigz\halapi\Factory;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerBuilder;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 
 class EmbeddedFactory extends AbstractRelationFactory
@@ -18,9 +18,10 @@ class EmbeddedFactory extends AbstractRelationFactory
     public function __construct(
         RouterInterface $router,
         Reader $annotationReader,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        RequestStack $requestStack
     ) {
-        parent::__construct($router, $annotationReader, $entityManager);
+        parent::__construct($router, $annotationReader, $entityManager, $requestStack);
         $this->serializer = SerializerBuilder::create()->build();
     }
 
@@ -55,7 +56,7 @@ class EmbeddedFactory extends AbstractRelationFactory
 
     private function getEmbeddedParams()
     {
-        $request = Request::createFromGlobals();
+        $request = $this->requestStack->getMasterRequest();
 
         $embed = $request->query->get('embed');
 

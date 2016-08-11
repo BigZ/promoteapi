@@ -124,13 +124,13 @@ class LabelController extends FOSRestController
      */
     public function deleteLabelAction(Label $label)
     {
-        $id = $label->getId();
+        $resourceId = $label->getId();
         $manager = $this->getDoctrine()->getManager();
 
         $manager->remove($label);
         $manager->flush();
 
-        return ['status' => 'deleted', 'resource_id' => $id];
+        return ['status' => 'deleted', 'resource_id' => $resourceId];
     }
 
     protected function getRepository()

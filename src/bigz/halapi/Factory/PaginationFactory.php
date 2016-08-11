@@ -33,7 +33,6 @@ class PaginationFactory
         $repository = $this->entityManager->getRepository($className);
         list($page, $limit, $sorting, $filterValues, $filerOperators) = $this->addPaginationParams($paramFetcher);
 
-        $this->paramFetcher = $paramFetcher;
         $queryBuilder = $repository->findAllSorted($sorting, $filterValues, $filerOperators);
         $shortName = (new \ReflectionClass($className))->getShortName();
 

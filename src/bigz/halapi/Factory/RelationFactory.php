@@ -4,6 +4,7 @@ namespace bigz\halapi\Factory;
 
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 
 class RelationFactory
@@ -21,10 +22,11 @@ class RelationFactory
     public function __construct(
         RouterInterface $router,
         Reader $annotationReader,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        RequestStack $requestStack
     ) {
-        $this->linksFactory = new LinksFactory($router, $annotationReader, $entityManager);
-        $this->embeddedFactory = new EmbeddedFactory($router, $annotationReader, $entityManager);
+        $this->linksFactory = new LinksFactory($router, $annotationReader, $entityManager, $requestStack);
+        $this->embeddedFactory = new EmbeddedFactory($router, $annotationReader, $entityManager, $requestStack);
     }
 
     public function getLinks($resource)

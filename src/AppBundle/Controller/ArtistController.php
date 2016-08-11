@@ -127,13 +127,13 @@ class ArtistController extends FOSRestController
      */
     public function deleteArtistAction(Artist $artist)
     {
-        $id = $artist->getId();
+        $resourceId = $artist->getId();
         $manager = $this->getDoctrine()->getManager();
 
         $manager->remove($artist);
         $manager->flush();
 
-        return ['status' => 'deleted', 'resource_id' => $id];
+        return ['status' => 'deleted', 'resource_id' => $resourceId];
     }
 
     public function putArtistPictureAction(Request $request, Artist $artist)

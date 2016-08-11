@@ -1,7 +1,7 @@
 services:
     bigz_halapi.relation_factory:
         class: bigz\halapi\Factory\RelationFactory
-        arguments: ["@router", "@annotation_reader", "@doctrine.orm.entity_manager"]
+        arguments: ["@router", "@annotation_reader", "@doctrine.orm.entity_manager", "@request_stack"]
 
     bigz_halapi.pagination_factory:
         class: bigz\halapi\Factory\PaginationFactory
