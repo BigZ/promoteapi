@@ -29,11 +29,19 @@ class JsonEventSubscriber implements EventSubscriberInterface
         );
     }
 
+    /**
+     * JsonEventSubscriber constructor.
+     * @param RelationFactory $relationFactory
+     */
     public function __construct(RelationFactory $relationFactory)
     {
         $this->relationFactory = $relationFactory;
     }
 
+    /**
+     * Add Hal Api Relations to serialized objects
+     * @param ObjectEvent $event
+     */
     public function onPostSerialize(ObjectEvent $event)
     {
         if ($event->getObject() instanceof PaginatedRepresentation) {

@@ -11,11 +11,21 @@ class RelationFactory
      */
     private $relations;
 
+    /**
+     * RelationFactory constructor.
+     * @param array $relations
+     */
     public function __construct(array $relations)
     {
         $this->relations = $relations;
     }
 
+    /**
+     * Get the relations of an Entity.
+     * Relations processors are passed to the constructor.
+     * @param $resource
+     * @return array
+     */
     public function getRelations($resource)
     {
         $resourceRelations = [];

@@ -2,6 +2,12 @@
 
 namespace bigz\halapi\Representation;
 
+/**
+ * A paginated collection representation.
+ * 
+ * Class PaginatedRepresentation
+ * @package bigz\halapi\Representation
+ */
 class PaginatedRepresentation
 {
     public $page;

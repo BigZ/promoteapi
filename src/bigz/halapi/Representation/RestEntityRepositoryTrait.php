@@ -2,6 +2,11 @@
 
 namespace bigz\halapi\Representation;
 
+/**
+ * Add a Rest features to entity repositories
+ * Class RestEntityRepositoryTrait
+ * @package bigz\halapi\Representation
+ */
 trait RestEntityRepositoryTrait
 {
     public function findAllSorted(array $sorting, array $filterValues, array $filerOperators)

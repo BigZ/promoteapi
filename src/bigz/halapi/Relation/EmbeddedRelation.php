@@ -16,6 +16,14 @@ class EmbeddedRelation extends AbstractRelation implements RelationInterface
      */
     private $serializer;
 
+    /**
+     * EmbeddedRelation constructor.
+     *
+     * @param RouterInterface $router
+     * @param Reader $annotationReader
+     * @param EntityManagerInterface $entityManager
+     * @param RequestStack $requestStack
+     */
     public function __construct(
         RouterInterface $router,
         Reader $annotationReader,
@@ -26,11 +34,17 @@ class EmbeddedRelation extends AbstractRelation implements RelationInterface
         $this->serializer = SerializerBuilder::create()->build();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getName()
     {
         return '_embedded';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getRelation($resource)
     {
         $reflectionClass = new \ReflectionClass($resource);
@@ -48,11 +62,21 @@ class EmbeddedRelation extends AbstractRelation implements RelationInterface
         return $embedded;
     }
 
+    /**
+     * @param $propertyName
+     * @param $requestedEmbedded
+     * @return bool
+     */
     private function isEmbeddedRequested($propertyName, $requestedEmbedded)
     {
         return in_array($propertyName, $requestedEmbedded);
     }
 
+    /**
+     * @param $resource
+     * @param $property
+     * @return array
+     */
     private function getEmbeddedContent($resource, $property)
     {
         $value = $resource->{'get'.ucfirst($property->getName())}();
@@ -60,6 +84,10 @@ class EmbeddedRelation extends AbstractRelation implements RelationInterface
         return $this->serializer->toArray($value);
     }
 
+    /**
+     * Get the embed query param.
+     * @return array
+     */
     private function getEmbeddedParams()
     {
         $request = $this->requestStack->getMasterRequest();

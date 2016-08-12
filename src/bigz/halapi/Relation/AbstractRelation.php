@@ -10,14 +10,34 @@ use Symfony\Component\Routing\RouterInterface;
 
 class AbstractRelation
 {
+    /**
+     * @var RouterInterface
+     */
     protected $router;
 
+    /**
+     * @var Reader
+     */
     protected $annotationReader;
 
+    /**
+     * @var EntityManagerInterface
+     */
     protected $entityManager;
 
+    /**
+     * @var RequestStack
+     */
     protected $requestStack;
 
+    /**
+     * AbstractRelation constructor.
+     * 
+     * @param RouterInterface $router
+     * @param Reader $annotationReader
+     * @param EntityManagerInterface $entityManager
+     * @param RequestStack $requestStack
+     */
     public function __construct(
         RouterInterface $router,
         Reader $annotationReader,
@@ -30,6 +50,12 @@ class AbstractRelation
         $this->requestStack = $requestStack;
     }
 
+    /**
+     * Does an entity's property has the @embeddable annotation ?
+     *
+     * @param $property
+     * @return bool
+     */
     protected function isEmbeddable($property)
     {
         return null !== $this->annotationReader->getPropertyAnnotation($property, Embeddable::class);

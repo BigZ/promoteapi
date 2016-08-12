@@ -8,12 +8,17 @@ use Doctrine\Common\Collections\Collection;
 
 class LinksRelation extends AbstractRelation implements RelationInterface
 {
-
+    /**
+     * @inheritdoc
+     */
     public function getName()
     {
         return '_links';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getRelation($resource)
     {
         $reflectionClass = new \ReflectionClass($resource);
@@ -34,6 +39,12 @@ class LinksRelation extends AbstractRelation implements RelationInterface
         return $links;
     }
 
+    /**
+     * Get the url of an entity based on the 'get_entity' route pattern
+     * @param $resource
+     * @param $reflectionClass
+     * @return array|void
+     */
     private function getSelfLink($resource, $reflectionClass)
     {
         if ($resource instanceof \Traversable) {
@@ -52,6 +63,12 @@ class LinksRelation extends AbstractRelation implements RelationInterface
         }
     }
 
+    /**
+     * Get the links of a collection
+     * @param $property
+     * @param $relationContent
+     * @return array|void
+     */
     private function getRelationLinks($property, $relationContent)
     {
         if ($relationContent instanceof Collection) {
@@ -67,6 +84,11 @@ class LinksRelation extends AbstractRelation implements RelationInterface
         return $this->getRelationLink($property, $relationContent);
     }
 
+    /**
+     * @param $property
+     * @param $relationContent
+     * @throws \Doctrine\ORM\Mapping\MappingException
+     */
     protected function getRelationLink($property, $relationContent)
     {
         $meta = $this->entityManager->getClassMetadata(get_class($relationContent));

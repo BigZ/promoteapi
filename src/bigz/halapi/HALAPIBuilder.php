@@ -29,6 +29,7 @@ class HALAPIBuilder
     }
 
     /**
+     *
      * @return \JMS\Serializer\Serializer
      */
     public function getSerializer()
@@ -40,9 +41,7 @@ class HALAPIBuilder
         $this->serializerBuilder
             ->addDefaultListeners()
             ->configureListeners(function (EventDispatcherInterface $dispatcher) use ($eventSubscribers) {
-                foreach ($eventSubscribers as $eventSubscriber) {
-                    $dispatcher->addSubscriber($eventSubscriber);
-                }
+                    $dispatcher->addSubscriber(new JsonEventSubscriber($this->relationFactory));
             })
         ;
 
