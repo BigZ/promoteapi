@@ -34,10 +34,6 @@ class HALAPIBuilder
      */
     public function getSerializer()
     {
-        $eventSubscribers = array(
-            new JsonEventSubscriber($this->relationFactory),
-        );
-
         $this->serializerBuilder
             ->addDefaultListeners()
             ->configureListeners(function (EventDispatcherInterface $dispatcher) use ($eventSubscribers) {

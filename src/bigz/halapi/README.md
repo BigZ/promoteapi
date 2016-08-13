@@ -1,38 +1,33 @@
-/artists?limit=2&page=2&sorting[id]=asc&filtervalue[name]=%27punk%27
+The documentation about the library should live here.
 
-```
-public function getArtistAction(Artist $artist)
-    {
-        $relationFactory = new RelationFactory(
-            $this->get('router'),
-            $this->get('annotation_reader'),
-            $this->get('doctrine.orm.entity_manager')
-        );
-        $halApiBuilder = new HALAPIBuilder($relationFactory);
-        $serializer = $halApiBuilder->getSerializer();
+If you're using symfony; use Bigz/HalApiBundle to make use of the services definition
 
-        return new Response($serializer->serialize($artist, 'json'));
-    }
-```
+If not, here's how to use it
 
-```
-public function getArtistsAction(ParamFetcher $paramFetcher)
-    {
-        $relationFactory = new RelationFactory(
-            $this->get('router'),
-            $this->get('annotation_reader'),
-            $this->get('doctrine.orm.entity_manager')
-        );
-        $halApiBuilder = new HALAPIBuilder($relationFactory);
-        $serializer = $halApiBuilder->getSerializer();
+``
+use Doctrine\Common\Annotations\Reader;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
 
-        $representation = new PaginationFactory(
-            $this->get('router'), $this->get('doctrine.orm.entity_manager')
-        );
+function SerializeWithHal(Entity $entity)
+{
+    $linksRelation = new LinksRelation(
+            RouterInterface $router,
+            Reader $annotationReader,
+            EntityManagerInterface $entityManager,
+            RequestStack $requestStack
+    );
+    $embeddedRelation = new EmbeddedRelation(
+            RouterInterface $router,
+            Reader $annotationReader,
+            EntityManagerInterface $entityManager,
+            RequestStack $requestStack
+    );
 
-        return new Response($serializer->serialize(
-            $representation->getRepresentation(Artist::class, $paramFetcher),
-            'json'
-        ));
-    }
+    $relationFactory = new RelationFactory([$linksRelation, $embeddedRelation]);
+    $builder = new HALAPIBuilder($relationFactory);
+
+    return $builder->gerSerializer()->serialize($entity);
+}
 ```
