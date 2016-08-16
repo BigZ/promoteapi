@@ -1,0 +1,3 @@
+services:
+    bigz_swagger2.formatter:
+        class: bigz\Swagger2Bundle\Formatter\Swagger2Formatter

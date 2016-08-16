@@ -10,19 +10,18 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use bigz\halapi\Representation\PaginatedRepresentation;
 
 class ArtistController extends FOSRestController
 {
     /**
      * Get artists.
      *
-     * @ApiDoc(resource=true,filters={
-     *      {"name"="page", "dataType"="integer"},
-     *      {"name"="limit", "dataType"="integer"},
-     *      {"name"="sorting", "dataType"="array", "pattern"="[field]=(asc|desc)"},
-     *      {"name"="filtervalue", "dataType"="array", "pattern"="[field]=value"},
-     *      {"name"="filteroperator", "dataType"="array", "pattern"="[field]=(<|>|<=|>=|=|!=)"}
-     *  })
+     * @ApiDoc(
+     *     resource=true,
+     *     filters=PaginatedRepresentation::FILTERS,
+     *     output="bigz\halapi\Representation\PaginatedRepresentation"
+     *     )
      *
      * @param ParamFetcher $paramFetcher
      *
@@ -36,7 +35,13 @@ class ArtistController extends FOSRestController
     /**
      * Get an artist.
      *
-     * @Apidoc()
+     * @Apidoc(
+     *  statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Artist not found"
+     *   },
+     *  output="AppBundle\Artist",
+     * )
      *
      * @param Artist $artist
      *
@@ -136,6 +141,13 @@ class ArtistController extends FOSRestController
         return ['status' => 'deleted', 'resource_id' => $resourceId];
     }
 
+    /**
+     * Upload a new artist picture
+     *
+     * @param Request $request
+     * @param Artist $artist
+     * @return array
+     */
     public function putArtistPictureAction(Request $request, Artist $artist)
     {
         $tmpFile = tmpfile();

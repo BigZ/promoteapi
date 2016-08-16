@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new Vich\UploaderBundle\VichUploaderBundle(),
             new AppBundle\AppBundle(),
             new bigz\HALAPIBundle\bigzHALAPIBundle(),
+            new bigz\Swagger2Bundle\BigzSwagger2Bundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

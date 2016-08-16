@@ -1,0 +1,28 @@
+{
+  "name": "promote-api",
+  "version": "1.0.0",
+  "description": "An api to promote your events / artists",
+  "main": "web/app.php",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "dredd": "^1.5.2"
+  },
+  "devDependencies": {
+    "swagger-tools": "^0.10.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BigZ/promoteapi.git"
+  },
+  "author": "Romain Richard",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BigZ/promoteapi/issues"
+  },
+  "homepage": "https://github.com/BigZ/promoteapi#readme"
+}

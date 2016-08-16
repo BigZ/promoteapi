@@ -103,3 +103,17 @@ vich_uploader:
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
+
+bigz_swagger2:
+    swagger: '2.0'
+    info:
+        title: Uber API
+        description: Move your app forward with the Uber API
+        termsOfService: http://helloreverb.com/terms/
+        version: "1.0.0"
+    host: api.uber.com
+    schemes:
+        - https
+    basePath: /v1
+    produces:
+        - application/json

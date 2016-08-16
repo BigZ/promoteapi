@@ -9,19 +9,14 @@ use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use bigz\halapi\Representation\PaginatedRepresentation;
 
 class GigController extends FOSRestController
 {
     /**
      * Get all gigs.
      *
-     * @ApiDoc(resource=true,filters={
-     *      {"name"="page", "dataType"="integer"},
-     *      {"name"="limit", "dataType"="integer"},
-     *      {"name"="sorting", "dataType"="array", "pattern"="[field]=(asc|desc)"},
-     *      {"name"="filtervalue", "dataType"="array", "pattern"="[field]=value"},
-     *      {"name"="filteroperator", "dataType"="array", "pattern"="[field]=(<|>|<=|>=|=|!=)"}
-     *  })
+     * @ApiDoc(resource=true, filters=PaginatedRepresentation::FILTERS)
      *
      * @param ParamFetcher $paramFetcher
      *
