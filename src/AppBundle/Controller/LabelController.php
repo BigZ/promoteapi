@@ -16,7 +16,13 @@ class LabelController extends FOSRestController
     /**
      * Get all labels.
      *
-     * @ApiDoc(resource=true,filters=PaginatedRepresentation::FILTERS)
+     * @ApiDoc(
+     *     resource=true,
+     *     filters=PaginatedRepresentation::FILTERS,
+     *     statusCodes = {
+     *         200 = "Returns the paginated artists collection",
+     *         400 = "Error"
+     *     })
      *
      * @param ParamFetcher $paramFetcher
      *
@@ -30,7 +36,10 @@ class LabelController extends FOSRestController
     /**
      * Get a Label.
      *
-     * @Apidoc()
+     * @Apidoc(output="AppBundle\Entity\Label", statusCodes = {
+     *         200 = "Returns the artist",
+     *         404 = "Not found"
+     *     })
      *
      * @param Label        $label
      * @param ParamFetcher $paramFetcher
@@ -49,7 +58,7 @@ class LabelController extends FOSRestController
      *
      * @ApiDoc(
      *  input="AppBundle\Form\Type\LabelType",
-     *  output="AppBundle\Label"
+     *  output="AppBundle\Entity\Label"
      * )
      *
      * @param Request $request
@@ -81,7 +90,7 @@ class LabelController extends FOSRestController
      *
      * @ApiDoc(
      *  input="AppBundle\Form\Type\LabelType",
-     *  output="AppBundle\Label"
+     *  output="AppBundle\Entity\Label"
      * )
      *
      * @param Request $request
@@ -110,7 +119,10 @@ class LabelController extends FOSRestController
      * Delete a label.
      *
      * @ApiDoc(
-     *  input="AppBundle\Label"
+     *     statusCodes = {
+     *         200 = "Returns the paginated artists collection",
+     *         400 = "Error"
+     *     }
      * )
      *
      * @param Label $label

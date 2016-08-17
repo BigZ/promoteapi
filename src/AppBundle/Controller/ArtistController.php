@@ -20,7 +20,11 @@ class ArtistController extends FOSRestController
      * @ApiDoc(
      *     resource=true,
      *     filters=PaginatedRepresentation::FILTERS,
-     *     output="bigz\halapi\Representation\PaginatedRepresentation"
+     *     output="bigz\halapi\Representation\PaginatedRepresentation",
+     *     statusCodes = {
+     *         200 = "Returns the paginated artists collection",
+     *         400 = "Error"
+     *     }
      *     )
      *
      * @param ParamFetcher $paramFetcher
@@ -40,7 +44,7 @@ class ArtistController extends FOSRestController
      *     200 = "Returned when successful",
      *     404 = "Artist not found"
      *   },
-     *  output="AppBundle\Artist",
+     *  output="AppBundle\Entity\Artist",
      * )
      *
      * @param Artist $artist
@@ -57,7 +61,7 @@ class ArtistController extends FOSRestController
      *
      * @ApiDoc(
      *  input="AppBundle\Form\Type\ArtistType",
-     *  output="AppBundle\Artist",
+     *  output="AppBundle\Entity\Artist",
      *  statusCodes = {
      *     200 = "Returned when successful",
      *     400 = "Returned when the form has errors"
@@ -82,7 +86,7 @@ class ArtistController extends FOSRestController
             $manager->persist($artist);
             $manager->flush();
 
-            return ['status' => 'created', 'resource_id' => $artist->getId()];
+            return $artist;
         }
 
         return $form;
@@ -93,7 +97,7 @@ class ArtistController extends FOSRestController
      *
      * @ApiDoc(
      *  input="AppBundle\Form\Type\ArtistType",
-     *  output="AppBundle\Artist"
+     *  output="AppBundle\Entity\Artist"
      * )
      *
      * @param Request $request
@@ -112,7 +116,7 @@ class ArtistController extends FOSRestController
             $manager->persist($artist);
             $manager->flush();
 
-            return ['status' => 'updated', 'resource_id' => $artist->getId()];
+            return $artist;
         }
 
         return $form;

@@ -47,7 +47,7 @@ class GigController extends FOSRestController
      *
      * @ApiDoc(
      *  input="AppBundle\Form\Type\GigType",
-     *  output="AppBundle\Gig"
+     *  output="AppBundle\Entity\Gig"
      * )
      *
      * @Security("is_granted('CREATE')")
@@ -79,7 +79,7 @@ class GigController extends FOSRestController
      *
      * @ApiDoc(
      *  input="AppBundle\Form\Type\GigType",
-     *  output="AppBundle\Gig"
+     *  output="AppBundle\Entity\Gig"
      * )
      *
      * @Security("is_granted('EDIT')")
@@ -109,7 +109,7 @@ class GigController extends FOSRestController
      *
      * @ApiDoc(
      *  input="AppBundle\Form\Type\GigType",
-     *  output="AppBundle\Gig"
+     *  output="AppBundle\Entity\Gig"
      * )
      *
      * @Security("is_granted('EDIT')")
@@ -137,9 +137,7 @@ class GigController extends FOSRestController
     /**
      * Delete an existing Gig.
      *
-     * @ApiDoc(
-     *  input="AppBundle\Entity\Gig"
-     * )
+     * @ApiDoc()
      *
      * @Security("is_granted('DELETE')")
      *

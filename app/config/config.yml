@@ -107,13 +107,13 @@ vich_uploader:
 bigz_swagger2:
     swagger: '2.0'
     info:
-        title: Uber API
-        description: Move your app forward with the Uber API
-        termsOfService: http://helloreverb.com/terms/
+        title: Promote API
+        description: Promote your band or label with this API
+        termsOfService: http://api.promote.me/tos
         version: "1.0.0"
-    host: api.uber.com
+    host: api.promote.me
     schemes:
         - https
-    basePath: /v1
+    basePath: /
     produces:
         - application/json

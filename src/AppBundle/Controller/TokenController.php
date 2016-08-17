@@ -17,7 +17,13 @@ class TokenController extends Controller
      * Get token.
      * Protected by login form (username & password as form-data to this page).
      *
-     * @ApiDoc()
+     * @ApiDoc(
+     *     statusCodes = {
+     *         200 = "Returned when successful",
+     *         400 = "Returned when the form has errors"
+     *     },
+     *     output="array"
+     * )
      *
      * @Route("/token")
      * @Method("POST")

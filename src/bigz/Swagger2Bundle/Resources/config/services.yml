@@ -1,3 +1,4 @@
 services:
     bigz_swagger2.formatter:
         class: bigz\Swagger2Bundle\Formatter\Swagger2Formatter
+        arguments: ["@doctrine.orm.entity_manager", "@annotation_reader"]

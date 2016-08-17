@@ -1,10 +1,41 @@
 <?php
 namespace bigz\Swagger2Bundle\Formatter;
 
+use Doctrine\Common\Annotations\Reader;
+use Doctrine\Common\Proxy\Proxy;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OneToOne;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use phpDocumentor\Reflection\DocBlockFactory;
+use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 
 class Swagger2Formatter
 {
+    /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    /**
+     * @var Reader
+     */
+    private $annotationReader;
+
+    private $docBlockFactory;
+
+    public function __construct(
+        EntityManager $entityManager, 
+        Reader $annotationReader
+    ) {
+        $this->entityManager = $entityManager;
+        $this->annotationReader = $annotationReader;
+        $this->docBlockFactory = DocBlockFactory::createInstance();
+    }
+
     public function format($content)
     {
         return [
@@ -15,7 +46,13 @@ class Swagger2Formatter
 
     private function getDefinitions($content)
     {
+        return array_merge($this->getFormTypeDefinitions($content), $this->getEntityDefinitions($content));
+    }
+
+    private function getFormTypeDefinitions($content)
+    {
         $definitions = [];
+
         foreach ($content as $resource) {
             /**
              * @var $annotation ApiDoc
@@ -34,13 +71,120 @@ class Swagger2Formatter
         return $definitions;
     }
 
+    private function getEntityDefinitions($content)
+    {
+        $definitions = [];
+
+        foreach ($content as $resource) {
+            /**
+             * @var $annotation ApiDoc
+             */
+            $annotation = $resource['annotation'];
+            $className = $annotation->getOutput();
+            if (!$className || !class_exists($className)) {
+                continue;
+            }
+
+            $definitions[$this->getShortName($className)] = [
+                'type' => 'object',
+                'properties' => $this->isEntity($className) ?
+                    $this->getEntityFields($className): $this->getClassFields($className)
+            ];
+        }
+
+        return $definitions;
+    }
+    
+    private function getEntityFields($className)
+    {
+        $reflectionClass = new \ReflectionClass($className);
+        $properties = [];
+
+        // TODO exclusion strategy
+        foreach ($reflectionClass->getProperties() as $property) {
+            $annotations = $this->annotationReader->getPropertyAnnotations($property);
+
+            foreach ($annotations as $annotation) {
+                if ($annotation instanceof Column) {
+                    $type = $annotation->type;
+                    $properties[$property->getName()] = [];
+                    if (in_array($type, ['datetime', 'text'])) {
+                        $properties[$property->getName()]['format'] = $type;
+                        $type = 'string';
+                    }
+
+                    $properties[$property->getName()]['type'] = $type;
+                }
+                if (
+                    $annotation instanceof OneToMany ||
+                    $annotation instanceof OneToOne
+                ) {
+                    $properties[$property->getName()] = ['type' => 'integer'];
+                }
+
+                if ($annotation instanceof ManyToMany) {
+                    $properties[$property->getName()] = ['type' => 'array', 'items' => ['type' => 'integer']];
+                }
+            }
+        }
+
+        return $properties;
+    }
+
+    private function getClassFields($className)
+    {
+        try {
+            $reflectionClass = new \ReflectionClass($className);
+        } catch (\ReflectionException $exception) {
+            return  $className;
+        }
+
+        $properties = [];
+        foreach ($reflectionClass->getProperties() as $property) {
+            $docblock = $this->docBlockFactory->create($property);
+            $tags = $docblock->getTagsByName('var');
+            if (is_array($tags)) {
+                $type = (string)$tags[0]->getType();
+                $properties[$property->getName()] = [];
+                if (in_array($type, ['datetime', 'text'])) {
+                    $properties[$property->getName()]['format'] = $type;
+                    $type = 'string';
+                }
+                $properties[$property->getName()]['type'] = $type;
+
+                // TODO it seems a bit hardcoded, right ?
+                if ($type == 'array') {
+                    $properties[$property->getName()]['items'] = ['type' => 'string'];
+                }
+            }
+        }
+
+        return $properties;
+    }
+
+    /**
+     * Fields of the form type.
+     * @param $children
+     * @return array
+     */
     private function getDefinitionProperties($children)
     {
         $properties = [];
         foreach ($children as $childName => $child) {
-            $properties[$childName] = [
-                'type' => $child['actualType'],
-            ];
+            $type = (string)$child['actualType'];
+            $properties[$childName] = [];
+
+            if (in_array($type, ['datetime', 'text'])) {
+                $properties[$childName]['format'] = $type;
+                $type = 'string';
+            }
+
+            $properties[$childName]['type'] = $type;
+
+            if ($type == 'file') {
+                unset($properties[$childName]);
+            }
+
         }
 
         return $properties;
@@ -145,12 +289,19 @@ class Swagger2Formatter
         $filters = [];
 
         foreach ($resource->getFilters() as $filterName => $filter) {
-            $filters[] = [
+            $swaggFilter = [
                 'name' => $filterName,
                 'in' => 'query',
                 'type' => $filter['dataType'],
                 'required' => false
             ];
+
+            // TODO it seems a bit hardcoded, right ?
+            if ($filter['dataType'] == 'array') {
+                $swaggFilter['items'] = ['type' => 'string'];
+            }
+
+            $filters[] = $swaggFilter;
         }
 
         return $filters;
@@ -168,10 +319,37 @@ class Swagger2Formatter
         }
 
         foreach ($annotation->getParsedResponseMap() as $code => $response) {
-            $responses[$code]['schema'] = ['$ref' => '#/definitions/'.$this->getShortName($response['type']['class'])];
+            if (class_exists($response['type']['class'])) {
+                $responses[$code]['schema'] = ['$ref' => '#/definitions/'.$this->getShortName($response['type']['class'])];
+            }
+            if (isset($responses[$code]) && empty($responses[$code]['description'])) {
+                $responses[$code]['description'] = 'Default Response';
+            }
+        }
+
+        if (!$responses) {
+            $responses[200] = ['description' => 'Success'];
+            $responses[400] = ['description' => 'Error'];
         }
 
         return $responses;
+    }
+
+    /**
+     * @param EntityManager $em
+     * @param string|object $class
+     *
+     * @return boolean
+     */
+    function isEntity($class)
+    {
+        if (is_object($class)) {
+            $class = ($class instanceof Proxy)
+                ? get_parent_class($class)
+                : get_class($class);
+        }
+
+        return ! $this->entityManager->getMetadataFactory()->isTransient($class);
     }
 
     private function getShortName($name)

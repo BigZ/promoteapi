@@ -22,7 +22,7 @@ class PaginatedRepresentation
     ];
 
     /**
-     * @var string
+     * @var string $page
      */
     public $page;
 

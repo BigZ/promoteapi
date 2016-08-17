@@ -71,3 +71,18 @@ You can sort the result by any property
 By default, relations are not embeded. You can change this behaviour by specifiying wich embedeed entities you need.
 
 `/artists/1?embed[]=gigs&embed[]=labels`
+
+
+### Testing
+
+Dump the Swagger definition
+`php bin/console swagger2:dump`
+
+Test it with dredd !
+
+### Documentation
+
+Dump the Swagger definition
+`php bin/console swagger2:dump`
+
+Use swagger ui :)
