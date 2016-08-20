@@ -42,7 +42,7 @@ class ArtistVoter extends Voter
         }
 
         // Admin can do it
-        if ($this->decisionManager->decide($token, ['ROLE_ADMIN'])) {
+        if (in_array('ROLE_ADMIN', $user->getRoles())) {
             return true;
         }
 

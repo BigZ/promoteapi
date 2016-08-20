@@ -16,4 +16,4 @@
 /web/bundles/
 /.env
 /node_modules
-/swagger-docs
+/swagger.yml

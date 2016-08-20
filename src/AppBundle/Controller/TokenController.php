@@ -19,10 +19,10 @@ class TokenController extends Controller
      *
      * @ApiDoc(
      *     statusCodes = {
-     *         200 = "Returned when successful",
-     *         400 = "Returned when the form has errors"
+     *         403 = "Returned when the credentials are invalid"
      *     },
-     *     output="array"
+     *     input="AppBundle\Form\Type\AuthenticatorType",
+     *     output="string"
      * )
      *
      * @Route("/token")
@@ -31,6 +31,6 @@ class TokenController extends Controller
      */
     public function getTokenAction()
     {
-        return ['token' => $this->getUser()->getApiKey()];
+        return $this->getUser()->getApiKey();
     }
 }

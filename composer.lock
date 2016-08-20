@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4fe4d75d0c245f376a634db054aafae2",
-    "content-hash": "6e8a6b544aaab78aad164cb9ba43b537",
+    "hash": "dc2a2737ad5f46e39a967666d66e71e5",
+    "content-hash": "b13b041e0116a4ce0042d82b1ff57f6c",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -4296,6 +4296,54 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "ddelnano/dredd-hooks-php",
+            "version": "1.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ddelnano/dredd-hooks-php.git",
+                "reference": "2d16826709d63c3a3face0545ff25e0b34f825c5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ddelnano/dredd-hooks-php/zipball/2d16826709d63c3a3face0545ff25e0b34f825c5",
+                "reference": "2d16826709d63c3a3face0545ff25e0b34f825c5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.*",
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "^2.5"
+            },
+            "bin": [
+                "bin/dredd-hooks-php"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dredd\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Domenic Del Nano",
+                    "email": "ddelnano@gmail.com"
+                }
+            ],
+            "description": "PHP hooks for the Dredd testing tool",
+            "homepage": "https://github.com/ddelnano/dredd-hooks-php/wiki",
+            "keywords": [
+                "dredd"
+            ],
+            "time": "2016-05-15 17:30:06"
+        },
         {
             "name": "friendsofphp/php-cs-fixer",
             "version": "v1.11.6",

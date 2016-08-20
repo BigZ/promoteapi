@@ -21,7 +21,6 @@ class BigzSwagger2Extension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('bigz_swagger2.config', $config);
         $container->setParameter('bigz_swagger2.swagger', $config['swagger']);
         $container->setParameter('bigz_swagger2.info.title', $config['info']['title']);
         $container->setParameter('bigz_swagger2.info.description', $config['info']['title']);
@@ -30,6 +29,9 @@ class BigzSwagger2Extension extends Extension
         $container->setParameter('bigz_swagger2.schemes', $config['schemes']);
         $container->setParameter('bigz_swagger2.base_path', $config['basePath']);
         $container->setParameter('bigz_swagger2.produces', $config['produces']);
+        $container->setParameter('bigz_swagger2.security', $config['security']);
+
+        $container->setParameter('bigz_swagger2.config', $config);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

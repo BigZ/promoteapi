@@ -16,6 +16,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @ORM\Table(name="artist")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArtistRepository")
+ * @ORM\HasLifecycleCallbacks
  *
  * @ExclusionPolicy("all")
  * @Vich\Uploadable()
@@ -326,5 +327,14 @@ class Artist
     public function getCreatedBy()
     {
         return $this->createdBy;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps()
+    {
+        $this->setUpdatedAt(new \DateTime('now'));
     }
 }

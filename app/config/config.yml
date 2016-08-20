@@ -67,6 +67,7 @@ fos_rest:
     body_listener: true
     format_listener: true
     view:
+        empty_content: 204
         view_response_listener: 'force'
         formats:
             json : true
@@ -117,3 +118,6 @@ bigz_swagger2:
     basePath: /
     produces:
         - application/json
+    security:
+        type: apiKey
+        name: X-AUTH-TOKEN

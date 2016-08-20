@@ -9,7 +9,9 @@ use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use bigz\halapi\Representation\PaginatedRepresentation;
+use Symfony\Component\HttpFoundation\Response;
 
 class LabelController extends FOSRestController
 {
@@ -19,6 +21,7 @@ class LabelController extends FOSRestController
      * @ApiDoc(
      *     resource=true,
      *     filters=PaginatedRepresentation::FILTERS,
+     *     output="bigz\halapi\Representation\PaginatedRepresentation",
      *     statusCodes = {
      *         200 = "Returns the paginated artists collection",
      *         400 = "Error"
@@ -30,7 +33,7 @@ class LabelController extends FOSRestController
      */
     public function getLabelsAction(ParamFetcher $paramFetcher)
     {
-        return $this->getPaginatedRepresentation('label', $paramFetcher);
+        return $this->get('bigz_halapi.pagination_factory')->getRepresentation(Label::class, $paramFetcher);
     }
 
     /**
@@ -46,11 +49,9 @@ class LabelController extends FOSRestController
      *
      * @return array
      */
-    public function getLabelAction(Label $label, ParamFetcher $paramFetcher)
+    public function getLabelAction(Label $label)
     {
-        $this->paramFetcher = $paramFetcher;
-
-        return $this->getResourceRepresentation($label);
+        return $label;
     }
 
     /**
@@ -63,7 +64,7 @@ class LabelController extends FOSRestController
      *
      * @param Request $request
      *
-     * @Security("is_granted('CREATE')")
+     * @Security("is_granted('create')")
      *
      * @return mixed
      */
@@ -79,7 +80,7 @@ class LabelController extends FOSRestController
             $manager->persist($label);
             $manager->flush();
 
-            return ['status' => 'created', 'resource_id' => $label->getId()];
+            return $label;
         }
 
         return $form;
@@ -95,7 +96,7 @@ class LabelController extends FOSRestController
      *
      * @param Request $request
      *
-     * @Security("is_granted('EDIT')")
+     * @Security("is_granted('edit')")
      *
      * @return mixed
      */
@@ -109,7 +110,7 @@ class LabelController extends FOSRestController
             $manager->persist($label);
             $manager->flush();
 
-            return ['status' => 'updated', 'resource_id' => $label->getId()];
+            return $label->getId();
         }
 
         return $form;
@@ -118,26 +119,33 @@ class LabelController extends FOSRestController
     /**
      * Delete a label.
      *
-     * @ApiDoc(
-     *     statusCodes = {
-     *         200 = "Returns the paginated artists collection",
-     *         400 = "Error"
-     *     }
+     * @ApiDoc(statusCodes = {
+     *     204 = "Label deleted",
+     *     404 = "Label not found"
+     *   }
      * )
+     * @Security("is_granted('delete')")
      *
      * @param Label $label
+     *
+     * @Rest\View(statusCode=204)
      *
      * @return array
      */
     public function deleteLabelAction(Label $label)
     {
-        $resourceId = $label->getId();
         $manager = $this->getDoctrine()->getManager();
 
         $manager->remove($label);
         $manager->flush();
 
-        return ['status' => 'deleted', 'resource_id' => $resourceId];
+        // Dirty Fix for php webserver
+        // see https://github.com/symfony/symfony/issues/12744
+        header_register_callback(function() {
+            header_remove('Content-type');
+        });
+
+        return new Response('', 204);
     }
 
     protected function getRepository()

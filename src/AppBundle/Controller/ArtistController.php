@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use bigz\halapi\Representation\PaginatedRepresentation;
+use Symfony\Component\HttpFoundation\Response;
 
 class ArtistController extends FOSRestController
 {
@@ -102,7 +103,7 @@ class ArtistController extends FOSRestController
      *
      * @param Request $request
      *
-     * @Security("is_granted('EDIT')")
+     * @Security("is_granted('edit')")
      *
      * @return mixed
      */
@@ -125,10 +126,12 @@ class ArtistController extends FOSRestController
     /**
      * Delete an Artist.
      *
-     * @ApiDoc(
-     *  input="AppBundle\Artist"
+     * @ApiDoc(statusCodes = {
+     *     204 = "Artist deleted",
+     *     404 = "Artist not found"
+     *   }
      * )
-     * @Security("is_granted('DELETE')")
+     * @Security("is_granted('delete')")
      *
      * @param Artist $artist
      *
@@ -136,13 +139,19 @@ class ArtistController extends FOSRestController
      */
     public function deleteArtistAction(Artist $artist)
     {
-        $resourceId = $artist->getId();
         $manager = $this->getDoctrine()->getManager();
 
         $manager->remove($artist);
         $manager->flush();
 
-        return ['status' => 'deleted', 'resource_id' => $resourceId];
+        // Dirty Fix for php webserver
+        // see https://github.com/symfony/symfony/issues/12744
+        header_register_callback(function() {
+            header_remove('Content-type');
+            header('Content-Type: application/json');
+        });
+
+        return new Response('{}', 204);
     }
 
     /**
@@ -165,7 +174,7 @@ class ArtistController extends FOSRestController
         $manager->persist($artist);
         $manager->flush();
 
-        return ['status' => 'updated', 'resource_id' => $artist->getId()];
+        return $artist->getId();
     }
 
     protected function getRepository()

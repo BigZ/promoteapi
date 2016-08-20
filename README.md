@@ -79,10 +79,9 @@ Dump the Swagger definition
 `php bin/console swagger2:dump`
 
 Test it with dredd !
+`npm install`
+`dredd`
 
 ### Documentation
 
-Dump the Swagger definition
-`php bin/console swagger2:dump`
-
-Use swagger ui :)
+Use swagger-ui :)

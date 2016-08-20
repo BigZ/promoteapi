@@ -10,13 +10,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use bigz\halapi\Representation\PaginatedRepresentation;
+use Symfony\Component\HttpFoundation\Response;
 
 class GigController extends FOSRestController
 {
     /**
      * Get all gigs.
      *
-     * @ApiDoc(resource=true, filters=PaginatedRepresentation::FILTERS)
+     * @ApiDoc(resource=true, filters=PaginatedRepresentation::FILTERS,
+     *     output="bigz\halapi\Representation\PaginatedRepresentation",
+     *     statusCodes = {
+     *         200 = "Returns the paginated artists collection",
+     *         400 = "Error"
+     *     })
      *
      * @param ParamFetcher $paramFetcher
      *
@@ -30,7 +36,7 @@ class GigController extends FOSRestController
     /**
      * Get a gig.
      *
-     * @ApiDoc()
+     * @ApiDoc(output="AppBundle\Entity\Gig")
      *
      * @param Gig          $gig
      * @param ParamFetcher $paramFetcher
@@ -50,7 +56,7 @@ class GigController extends FOSRestController
      *  output="AppBundle\Entity\Gig"
      * )
      *
-     * @Security("is_granted('CREATE')")
+     * @Security("is_granted('create')")
      *
      * @param Request $request
      *
@@ -68,7 +74,7 @@ class GigController extends FOSRestController
             $manager->persist($gig);
             $manager->flush();
 
-            return ['status' => 'created', 'resource_id' => $gig->getId()];
+            return $gig;
         }
 
         return $form;
@@ -82,7 +88,7 @@ class GigController extends FOSRestController
      *  output="AppBundle\Entity\Gig"
      * )
      *
-     * @Security("is_granted('EDIT')")
+     * @Security("is_granted('edit')")
      *
      * @param Request $request
      *
@@ -98,7 +104,7 @@ class GigController extends FOSRestController
             $manager->persist($gig);
             $manager->flush();
 
-            return ['status' => 'updated', 'resource_id' => $gig->getId()];
+            return $gig;
         }
 
         return $form;
@@ -112,7 +118,7 @@ class GigController extends FOSRestController
      *  output="AppBundle\Entity\Gig"
      * )
      *
-     * @Security("is_granted('EDIT')")
+     * @Security("is_granted('edit')")
      *
      * @param Request $request
      *
@@ -137,9 +143,12 @@ class GigController extends FOSRestController
     /**
      * Delete an existing Gig.
      *
-     * @ApiDoc()
+     * @ApiDoc(statusCodes = {
+     *     204 = "Gig deleted",
+     *     404 = "Gig not found"
+     *   })
      *
-     * @Security("is_granted('DELETE')")
+     * @Security("is_granted('delete')")
      *
      * @param Gig $gig
      *
@@ -147,13 +156,19 @@ class GigController extends FOSRestController
      */
     public function deleteGigAction(Gig $gig)
     {
-        $resourceId = $gig->getId();
         $manager = $this->getDoctrine()->getManager();
 
         $manager->remove($gig);
         $manager->flush();
 
-        return ['status' => 'deleted', 'resource_id' => $resourceId];
+        // Dirty Fix for php webserver
+        // see https://github.com/symfony/symfony/issues/12744
+        header_register_callback(function() {
+            header_remove('Content-type');
+            header('Content-Type: application/json');
+        });
+
+        return new Response('{}', 204);
     }
 
     protected function getRepository()

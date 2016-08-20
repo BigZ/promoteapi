@@ -9,23 +9,19 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class GigType extends AbstractType
+class AuthenticatorType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('startDate', DateTimeType::class)
-            ->add('endDate', DateTimeType::class)
-            ->add('venue', TextareaType::class)
-            ->add('address', TextareaType::class)
-            ->add('facebookLink', TextareaType::class);
+            ->add('username', TextType::class)
+            ->add('password', TextType::class);
+
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Gig',
             'csrf_protection' => false,
         ));
     }

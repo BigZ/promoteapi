@@ -25,16 +25,16 @@ class Swager2DumpCommand extends ContainerAwareCommand
     {
         $container = $this->getContainer();
         $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-
-        $header = $container->getParameter('bigz_swagger2.config');
+        $container->get('bigz_swagger2.formatter')->setConfig($container->getParameter('bigz_swagger2.config'));
         $content = $container->get('bigz_swagger2.formatter')->format($extractor->all());
-
-        $headerYaml = Yaml::dump($header);
         $contentYaml = Yaml::dump($content, 10);
+        // dirty fix symfony bug
+        // See https://github.com/symfony/symfony/issues/15781
+        $contentYaml = str_replace(': {  }', ': []', $contentYaml);
 
         file_put_contents(
             __DIR__.'/../../../../'.$input->getArgument('output-file'),
-            $headerYaml.$contentYaml
+            $contentYaml
         );
     }
 }

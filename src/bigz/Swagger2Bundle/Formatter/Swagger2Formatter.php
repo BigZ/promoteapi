@@ -10,11 +10,14 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use phpDocumentor\Reflection\DocBlockFactory;
-use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
-use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 
 class Swagger2Formatter
 {
+    /**
+     * @var array
+     */
+    private $config;
+
     /**
      * @var EntityManager
      */
@@ -25,6 +28,9 @@ class Swagger2Formatter
      */
     private $annotationReader;
 
+    /**
+     * @var DocBlockFactory
+     */
     private $docBlockFactory;
 
     public function __construct(
@@ -36,12 +42,44 @@ class Swagger2Formatter
         $this->docBlockFactory = DocBlockFactory::createInstance();
     }
 
+    public function setConfig($config)
+    {
+        $this->config = $config;
+    }
+
     public function format($content)
     {
-        return [
+        $formattedContent = [
             'paths' => $this->getPaths($content),
             'definitions' => $this->getDefinitions($content)
         ];
+        
+        if (isset($this->config['security']['type'])) {
+            $formattedContent['securityDefinitions'] = $this->getSecurity();
+            $formattedContent['security'][] = ['UserSecurity' => []];
+        }
+
+        $header = $this->config;
+        unset($header['security']);
+
+        return array_merge($header, $formattedContent);
+    }
+
+    private function getSecurity()
+    {
+        if ($this->config['security']['type'] == 'basic') {
+            return ['UserSecurity' => ['type' => 'basic']];
+        }
+
+        if ($this->config['security']['type'] == 'apiKey') {
+            return ['UserSecurity' => [
+                'type' => 'apiKey',
+                'in' => $this->config['security']['in'],
+                'name' => $this->config['security']['name'],
+            ]];
+        }
+
+        // TODO oauth implementation
     }
 
     private function getDefinitions($content)
@@ -154,7 +192,7 @@ class Swagger2Formatter
 
                 // TODO it seems a bit hardcoded, right ?
                 if ($type == 'array') {
-                    $properties[$property->getName()]['items'] = ['type' => 'string'];
+                    $properties[$property->getName()]['items'] = ['type' => 'object'];
                 }
             }
         }
@@ -277,6 +315,7 @@ class Swagger2Formatter
                 'name' => $requirementName,
                 'in' => 'path',
                 'required' => true,
+                'x-example' => 1, // @TODO take it from somewhere maybe ?
                 'type' => 'integer' // @TODO this may be a string. Check it out with the EntityManager
             ];
         }
@@ -289,12 +328,21 @@ class Swagger2Formatter
         $filters = [];
 
         foreach ($resource->getFilters() as $filterName => $filter) {
+
             $swaggFilter = [
                 'name' => $filterName,
                 'in' => 'query',
                 'type' => $filter['dataType'],
                 'required' => false
             ];
+
+            if (isset($filter['default'])) {
+                $swaggFilter['default'] = $filter['default'];
+            }
+
+            if (isset($filter['pattern'])) {
+                $swaggFilter['pattern'] = $filter['pattern'];
+            }
 
             // TODO it seems a bit hardcoded, right ?
             if ($filter['dataType'] == 'array') {
