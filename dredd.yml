@@ -1,7 +1,5 @@
-dry-run: null
 hookfiles: ./app/DreddHook/*.php
 language: vendor/bin/dredd-hooks-php
-sandbox: false
 server: 'php bin/console server:run'
 server-wait: 3
 init: false
@@ -12,7 +10,6 @@ reporter: []
 output: []
 header: []
 sorted: false
-user: null
 inline-errors: false
 details: false
 method: []

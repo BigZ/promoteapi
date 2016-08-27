@@ -31,7 +31,7 @@ class Swager2DumpCommand extends ContainerAwareCommand
         $contentYaml = str_replace(': {  }', ': []', $contentYaml);
 
         file_put_contents(
-            __DIR__.'/../../../../'.$input->getArgument('output-file'),
+            $container->get('kernel')->getRootDir().'/../'.$input->getArgument('output-file'),
             $contentYaml
         );
     }
