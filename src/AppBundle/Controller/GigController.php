@@ -163,7 +163,7 @@ class GigController extends FOSRestController
 
         // Dirty Fix for php webserver
         // see https://github.com/symfony/symfony/issues/12744
-        header_register_callback(function() {
+        header_register_callback(function () {
             header_remove('Content-type');
             header('Content-Type: application/json');
         });

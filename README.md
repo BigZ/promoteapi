@@ -73,6 +73,21 @@ By default, relations are not embeded. You can change this behaviour by specifiy
 `/artists/1?embed[]=gigs&embed[]=labels`
 
 
+##### Uploading
+
+Upload a file as a binary in the content, specifying it's content-type in the header (image/* for instance)
+
+```
+ PUT /artists/2/picture HTTP/1.1
+ Host: localhost:8000
+ X-AUTH-TOKEN: 123
+ Content-Type: image/*
+ Cache-Control: no-cache
+ Postman-Token: 0d0ab553-44e4-5710-f582-831123a6ed2f
+
+ *image binary content*
+```
+
 ### Testing
 
 Dump the Swagger definition

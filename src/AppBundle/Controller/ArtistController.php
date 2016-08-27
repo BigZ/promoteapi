@@ -146,7 +146,7 @@ class ArtistController extends FOSRestController
 
         // Dirty Fix for php webserver
         // see https://github.com/symfony/symfony/issues/12744
-        header_register_callback(function() {
+        header_register_callback(function () {
             header_remove('Content-type');
             header('Content-Type: application/json');
         });
@@ -155,26 +155,34 @@ class ArtistController extends FOSRestController
     }
 
     /**
-     * Upload a new artist picture
+     * Upload a new artist picture.
      *
      * @param Request $request
-     * @param Artist $artist
+     * @param Artist  $artist
+     *
      * @return array
      */
     public function putArtistPictureAction(Request $request, Artist $artist)
     {
         $tmpFile = tmpfile();
         $tmpFilePath = stream_get_meta_data($tmpFile)['uri'];
-
         file_put_contents($tmpFilePath, $request->getContent());
-        $file = new UploadedFile($tmpFilePath, $tmpFilePath);
 
+        // The last parameter (test) allow you to skip some validation steps that fails when
+        // the image is not uploaded through a POST HTTP Form
+        $file = new UploadedFile($tmpFilePath, 'image.jpg', null, null, null, true);
         $artist->setImageFile($file);
+
+        $errors = $this->get('validator')->validate($artist);
+        if (count($errors) > 0) {
+            return new Response((string) $errors, 415);
+        }
+
         $manager = $this->getDoctrine()->getManager();
         $manager->persist($artist);
         $manager->flush();
 
-        return $artist->getId();
+        return $artist;
     }
 
     protected function getRepository()

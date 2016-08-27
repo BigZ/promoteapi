@@ -6,7 +6,6 @@ namespace bigz\halapi\Representation;
  * A paginated collection representation.
  * 
  * Class PaginatedRepresentation
- * @package bigz\halapi\Representation
  */
 class PaginatedRepresentation
 {
@@ -24,7 +23,7 @@ class PaginatedRepresentation
     ];
 
     /**
-     * @var string $page
+     * @var string
      */
     public $page;
 
@@ -45,6 +44,7 @@ class PaginatedRepresentation
 
     /**
      * PaginatedRepresentation constructor.
+     *
      * @param $page
      * @param $limit
      * @param $links

@@ -16,6 +16,7 @@ interface RelationInterface
      * Get the content of the relation.
      *
      * @param $resource
+     *
      * @return null|string|array
      */
     public function getRelation($resource);

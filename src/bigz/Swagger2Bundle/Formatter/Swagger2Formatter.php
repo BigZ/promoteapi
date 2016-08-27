@@ -1,4 +1,5 @@
 <?php
+
 namespace bigz\Swagger2Bundle\Formatter;
 
 use Doctrine\Common\Annotations\Reader;
@@ -34,7 +35,7 @@ class Swagger2Formatter
     private $docBlockFactory;
 
     public function __construct(
-        EntityManager $entityManager, 
+        EntityManager $entityManager,
         Reader $annotationReader
     ) {
         $this->entityManager = $entityManager;
@@ -51,9 +52,9 @@ class Swagger2Formatter
     {
         $formattedContent = [
             'paths' => $this->getPaths($content),
-            'definitions' => $this->getDefinitions($content)
+            'definitions' => $this->getDefinitions($content),
         ];
-        
+
         if (isset($this->config['security']['type'])) {
             $formattedContent['securityDefinitions'] = $this->getSecurity();
             $formattedContent['security'][] = ['UserSecurity' => []];
@@ -93,14 +94,14 @@ class Swagger2Formatter
 
         foreach ($content as $resource) {
             /**
-             * @var $annotation ApiDoc
+             * @var ApiDoc
              */
             $annotation = $resource['annotation'];
             foreach ($annotation->getParameters() as $parameter) {
                 if ($parameter['actualType'] == 'model') {
                     $definitions[$this->getShortName($parameter['subType'])] = [
                         'type' => 'object',
-                        'properties' => $this->getDefinitionProperties($parameter['children'])
+                        'properties' => $this->getDefinitionProperties($parameter['children']),
                     ];
                 }
             }
@@ -115,7 +116,7 @@ class Swagger2Formatter
 
         foreach ($content as $resource) {
             /**
-             * @var $annotation ApiDoc
+             * @var ApiDoc
              */
             $annotation = $resource['annotation'];
             $className = $annotation->getOutput();
@@ -126,13 +127,13 @@ class Swagger2Formatter
             $definitions[$this->getShortName($className)] = [
                 'type' => 'object',
                 'properties' => $this->isEntity($className) ?
-                    $this->getEntityFields($className): $this->getClassFields($className)
+                    $this->getEntityFields($className) : $this->getClassFields($className),
             ];
         }
 
         return $definitions;
     }
-    
+
     private function getEntityFields($className)
     {
         $reflectionClass = new \ReflectionClass($className);
@@ -182,7 +183,7 @@ class Swagger2Formatter
             $docblock = $this->docBlockFactory->create($property);
             $tags = $docblock->getTagsByName('var');
             if (is_array($tags)) {
-                $type = (string)$tags[0]->getType();
+                $type = (string) $tags[0]->getType();
                 $properties[$property->getName()] = [];
                 if (in_array($type, ['datetime', 'text'])) {
                     $properties[$property->getName()]['format'] = $type;
@@ -202,14 +203,16 @@ class Swagger2Formatter
 
     /**
      * Fields of the form type.
+     *
      * @param $children
+     *
      * @return array
      */
     private function getDefinitionProperties($children)
     {
         $properties = [];
         foreach ($children as $childName => $child) {
-            $type = (string)$child['actualType'];
+            $type = (string) $child['actualType'];
             $properties[$childName] = [];
 
             if (in_array($type, ['datetime', 'text'])) {
@@ -222,7 +225,6 @@ class Swagger2Formatter
             if ($type == 'file') {
                 unset($properties[$childName]);
             }
-
         }
 
         return $properties;
@@ -232,10 +234,9 @@ class Swagger2Formatter
     {
         $paths = [];
 
-        foreach ($content as $resource)
-        {
+        foreach ($content as $resource) {
             /**
-             * @var $annotation ApiDoc
+             * @var ApiDoc
              */
             $annotation = $resource['annotation'];
             $resourceName = $annotation->getRoute()->getPath();
@@ -248,7 +249,7 @@ class Swagger2Formatter
                 'summary' => $annotation->getDescription(),
                 'description' => $annotation->getDocumentation(),
                 'parameters' => $this->getParameters($annotation),
-                'responses' => $this->getResponses($annotation)
+                'responses' => $this->getResponses($annotation),
             ]);
             $paths[$resourceName][strtolower($annotation->getMethod())] = $path;
         }
@@ -267,8 +268,7 @@ class Swagger2Formatter
             $result[] = $filter;
         }
 
-        foreach ($resource->getParameters() as $parameterName => $parameter)
-        {
+        foreach ($resource->getParameters() as $parameterName => $parameter) {
             $values = array_merge(
                 [
                     'name' => $parameterName,
@@ -293,13 +293,13 @@ class Swagger2Formatter
             return [
                 'in' => 'body',
                 'schema' => [
-                    '$ref' => '#/definitions/'.$this->getShortName($parameter['subType'])
-                ]
+                    '$ref' => '#/definitions/'.$this->getShortName($parameter['subType']),
+                ],
             ];
         }
 
         return [
-            'type' => $parameter['dataType']
+            'type' => $parameter['dataType'],
         ];
     }
 
@@ -316,7 +316,7 @@ class Swagger2Formatter
                 'in' => 'path',
                 'required' => true,
                 'x-example' => 1, // @TODO take it from somewhere maybe ?
-                'type' => 'integer' // @TODO this may be a string. Check it out with the EntityManager
+                'type' => 'integer', // @TODO this may be a string. Check it out with the EntityManager
             ];
         }
 
@@ -328,12 +328,11 @@ class Swagger2Formatter
         $filters = [];
 
         foreach ($resource->getFilters() as $filterName => $filter) {
-
             $swaggFilter = [
                 'name' => $filterName,
                 'in' => 'query',
                 'type' => $filter['dataType'],
-                'required' => false
+                'required' => false,
             ];
 
             if (isset($filter['default'])) {
@@ -387,9 +386,9 @@ class Swagger2Formatter
      * @param EntityManager $em
      * @param string|object $class
      *
-     * @return boolean
+     * @return bool
      */
-    function isEntity($class)
+    public function isEntity($class)
     {
         if (is_object($class)) {
             $class = ($class instanceof Proxy)
@@ -397,7 +396,7 @@ class Swagger2Formatter
                 : get_class($class);
         }
 
-        return ! $this->entityManager->getMetadataFactory()->isTransient($class);
+        return !$this->entityManager->getMetadataFactory()->isTransient($class);
     }
 
     private function getShortName($name)

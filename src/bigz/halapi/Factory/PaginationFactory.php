@@ -39,7 +39,9 @@ class PaginationFactory
 
     /**
      * Get a paginated representation of a collection of entities.
+     *
      * @param $className
+     *
      * @return PaginatedRepresentation
      */
     public function getRepresentation($className)
@@ -73,6 +75,7 @@ class PaginationFactory
 
     /**
      * Get the pagination parameters, filtered.
+     *
      * @return array
      */
     private function addPaginationParams()
@@ -105,12 +108,13 @@ class PaginationFactory
     }
 
     /**
-     * Return the url of a resource based on the 'get_entity' route name convention
+     * Return the url of a resource based on the 'get_entity' route name convention.
      *
      * @param $name
      * @param $limit
      * @param $page
      * @param $sorting
+     *
      * @return mixed
      */
     private function getPaginatedRoute($name, $limit, $page, $sorting)

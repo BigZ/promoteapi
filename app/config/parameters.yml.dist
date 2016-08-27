@@ -21,3 +21,4 @@ parameters:
     awss3_key: awsKey
     awss3_secret: awsSecret
     awss3_bucket: awsBucket
+    awss3_region: awsRegion

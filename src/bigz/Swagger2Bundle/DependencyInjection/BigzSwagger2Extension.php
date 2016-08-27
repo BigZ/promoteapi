@@ -8,8 +8,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
 /**
- * Class BigzSwagger2Extension
- * @package bigz\Swagger2Bundle\DependencyInjection
+ * Class BigzSwagger2Extension.
  */
 class BigzSwagger2Extension extends Extension
 {

@@ -29,7 +29,6 @@ class HALAPIBuilder
     }
 
     /**
-     *
      * @return \JMS\Serializer\Serializer
      */
     public function getSerializer()

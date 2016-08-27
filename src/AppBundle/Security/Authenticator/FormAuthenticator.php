@@ -1,26 +1,32 @@
 <?php
 
-namespace AppBundle\Security;
+namespace AppBundle\Security\Authenticator;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Doctrine\ORM\EntityManager;
 
-class TokenAuthenticator extends AbstractGuardAuthenticator
+class FormAuthenticator extends AbstractGuardAuthenticator
 {
     /**
-     * @var EntityManager
+     * @var UserPasswordEncoder
      */
-    private $entityManager;
+    private $encoder;
 
-    public function __construct(EntityManager $entityManager)
+    /**
+     * FormAuthenticator constructor.
+     *
+     * @param UserPasswordEncoder $encoder
+     */
+    public function __construct(UserPasswordEncoder $encoder)
     {
-        $this->entityManager = $entityManager;
+        $this->encoder = $encoder;
     }
 
     /**
@@ -28,13 +34,10 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        if (!$token = $request->headers->get('X-AUTH-TOKEN')) {
-            return;
-        }
-
-        return array(
-            'token' => $token,
-        );
+        return [
+            'username' => $request->request->get('username'),
+            'password' => $request->request->get('password'),
+        ];
     }
 
     /**
@@ -42,10 +45,9 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $apiKey = $credentials['token'];
+        $username = $credentials['username'];
 
-        return $this->entityManager->getRepository('AppBundle:User')
-            ->findOneBy(['apiKey' => $apiKey]);
+        return $userProvider->loadUserByUsername($username);
     }
 
     /**
@@ -53,6 +55,12 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user)
     {
+        $plainPassword = $credentials['password'];
+
+        if (!$this->encoder->isPasswordValid($user, $plainPassword)) {
+            throw new BadCredentialsException();
+        }
+
         return true;
     }
 
@@ -69,9 +77,9 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        $data = [
+        $data = array(
             'message' => strtr($exception->getMessageKey(), $exception->getMessageData()),
-        ];
+        );
 
         return new JsonResponse($data, 403);
     }
@@ -81,9 +89,10 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        $data = [
+        $data = array(
+            // you might translate this message
             'message' => 'Authentication Required',
-        ];
+        );
 
         return new JsonResponse($data, 401);
     }

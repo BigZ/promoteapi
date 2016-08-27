@@ -31,6 +31,7 @@ class JsonEventSubscriber implements EventSubscriberInterface
 
     /**
      * JsonEventSubscriber constructor.
+     *
      * @param RelationFactory $relationFactory
      */
     public function __construct(RelationFactory $relationFactory)
@@ -39,7 +40,8 @@ class JsonEventSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Add Hal Api Relations to serialized objects
+     * Add Hal Api Relations to serialized objects.
+     *
      * @param ObjectEvent $event
      */
     public function onPostSerialize(ObjectEvent $event)
@@ -47,7 +49,7 @@ class JsonEventSubscriber implements EventSubscriberInterface
         if ($event->getObject() instanceof PaginatedRepresentation) {
             return;
         }
-        
+
         foreach ($this->relationFactory->getRelations($event->getObject()) as $relationKey => $relation) {
             $event->getVisitor()->addData($relationKey, $relation);
         }

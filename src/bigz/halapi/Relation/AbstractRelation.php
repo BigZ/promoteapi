@@ -33,10 +33,10 @@ class AbstractRelation
     /**
      * AbstractRelation constructor.
      * 
-     * @param RouterInterface $router
-     * @param Reader $annotationReader
+     * @param RouterInterface        $router
+     * @param Reader                 $annotationReader
      * @param EntityManagerInterface $entityManager
-     * @param RequestStack $requestStack
+     * @param RequestStack           $requestStack
      */
     public function __construct(
         RouterInterface $router,
@@ -54,6 +54,7 @@ class AbstractRelation
      * Does an entity's property has the @embeddable annotation ?
      *
      * @param $property
+     *
      * @return bool
      */
     protected function isEmbeddable($property)

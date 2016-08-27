@@ -2,7 +2,6 @@
 
 namespace bigz\halapi\Relation;
 
-use bigz\halapi\Relation\RelationInterface;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerBuilder;
@@ -19,10 +18,10 @@ class EmbeddedRelation extends AbstractRelation implements RelationInterface
     /**
      * EmbeddedRelation constructor.
      *
-     * @param RouterInterface $router
-     * @param Reader $annotationReader
+     * @param RouterInterface        $router
+     * @param Reader                 $annotationReader
      * @param EntityManagerInterface $entityManager
-     * @param RequestStack $requestStack
+     * @param RequestStack           $requestStack
      */
     public function __construct(
         RouterInterface $router,
@@ -35,7 +34,7 @@ class EmbeddedRelation extends AbstractRelation implements RelationInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -43,7 +42,7 @@ class EmbeddedRelation extends AbstractRelation implements RelationInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getRelation($resource)
     {
@@ -65,6 +64,7 @@ class EmbeddedRelation extends AbstractRelation implements RelationInterface
     /**
      * @param $propertyName
      * @param $requestedEmbedded
+     *
      * @return bool
      */
     private function isEmbeddedRequested($propertyName, $requestedEmbedded)
@@ -75,6 +75,7 @@ class EmbeddedRelation extends AbstractRelation implements RelationInterface
     /**
      * @param $resource
      * @param $property
+     *
      * @return array
      */
     private function getEmbeddedContent($resource, $property)
@@ -86,6 +87,7 @@ class EmbeddedRelation extends AbstractRelation implements RelationInterface
 
     /**
      * Get the embed query param.
+     *
      * @return array
      */
     private function getEmbeddedParams()

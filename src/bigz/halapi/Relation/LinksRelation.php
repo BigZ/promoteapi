@@ -2,14 +2,12 @@
 
 namespace bigz\halapi\Relation;
 
-use bigz\halapi\Factory\AbstractRelationFactory;
-use bigz\halapi\Relation\RelationInterface;
 use Doctrine\Common\Collections\Collection;
 
 class LinksRelation extends AbstractRelation implements RelationInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -17,7 +15,7 @@ class LinksRelation extends AbstractRelation implements RelationInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getRelation($resource)
     {
@@ -40,9 +38,11 @@ class LinksRelation extends AbstractRelation implements RelationInterface
     }
 
     /**
-     * Get the url of an entity based on the 'get_entity' route pattern
+     * Get the url of an entity based on the 'get_entity' route pattern.
+     *
      * @param $resource
      * @param $reflectionClass
+     *
      * @return array|void
      */
     private function getSelfLink($resource, $reflectionClass)
@@ -64,9 +64,11 @@ class LinksRelation extends AbstractRelation implements RelationInterface
     }
 
     /**
-     * Get the links of a collection
+     * Get the links of a collection.
+     *
      * @param $property
      * @param $relationContent
+     *
      * @return array|void
      */
     private function getRelationLinks($property, $relationContent)
@@ -87,6 +89,7 @@ class LinksRelation extends AbstractRelation implements RelationInterface
     /**
      * @param $property
      * @param $relationContent
+     *
      * @throws \Doctrine\ORM\Mapping\MappingException
      */
     protected function getRelationLink($property, $relationContent)

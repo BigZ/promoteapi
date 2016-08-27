@@ -63,6 +63,7 @@ swiftmailer:
     spool:     { type: memory }
 
 fos_rest:
+    exception: false
     param_fetcher_listener: true
     body_listener: true
     format_listener: true
@@ -98,7 +99,6 @@ vich_uploader:
     storage: flysystem
     mappings:
         artist_image:
-            uri_prefix: http://amazon.com/
             upload_destination: awss3_fs
             namer: vich_uploader.namer_uniqid
             inject_on_load:     false

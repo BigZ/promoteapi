@@ -13,6 +13,7 @@ class RelationFactory
 
     /**
      * RelationFactory constructor.
+     *
      * @param array $relations
      */
     public function __construct(array $relations)
@@ -23,7 +24,9 @@ class RelationFactory
     /**
      * Get the relations of an Entity.
      * Relations processors are passed to the constructor.
+     *
      * @param $resource
+     *
      * @return array
      */
     public function getRelations($resource)
@@ -35,8 +38,7 @@ class RelationFactory
                 $relationContent = $relation->getRelation($resource);
 
                 if ($relationContent) {
-                    $resourceRelations[$relation->getName()] = $relation->getRelation($resource);
-
+                    $resourceRelations[$relation->getName()] = $relationContent;
                 }
             }
         }

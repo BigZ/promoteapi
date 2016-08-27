@@ -6,10 +6,10 @@ parameters:
 services:
     #Authenticators
     app.token_authenticator:
-        class: AppBundle\Security\TokenAuthenticator
+        class: AppBundle\Security\Authenticator\TokenAuthenticator
         arguments: ['@doctrine.orm.entity_manager']
     app.form_authenticator:
-        class: AppBundle\Security\FormAuthenticator
+        class: AppBundle\Security\Authenticator\FormAuthenticator
         arguments: ['@security.password_encoder']
 
     #Voters
@@ -38,13 +38,13 @@ services:
         arguments:
             -
                 version: "latest"
-                region: "eu-central-1"
+                region: "%awss3_region%"
                 credentials:
                     key: "%awss3_key%"
                     secret: "%awss3_secret%"
 
-    # Serializer Handlers
-    app.serializer.filename_handler:
-        class: AppBundle\Handler\FilenameHandler
+    app.s3_public_url_subscriber:
+        class: AppBundle\Subscriber\S3PublicUrlSubscriber
+        arguments: ['@annotations.cached_reader', "%awss3_region%", "%awss3_bucket%"]
         tags:
-            - { name: jms_serializer.subscribing_handler, type: Artist, format: json}
+            - { name: jms_serializer.event_subscriber }
