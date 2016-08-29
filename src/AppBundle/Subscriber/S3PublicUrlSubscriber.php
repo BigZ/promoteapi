@@ -67,9 +67,12 @@ class S3PublicUrlSubscriber implements EventSubscriberInterface
             if ($field = $this->reader->getPropertyAnnotation($property, UploadableField::class)) {
                 // For the tests sake
                 $object = $event->getObject();
-                $fileName = $field->getFileNameProperty();
-                $publicUrl = $this->getPublicUrl($object->{'get'.ucfirst($fileName)}());
-                $object->{'set'.ucfirst($fileName)}($publicUrl);
+                $fileNameProperty = $field->getFileNameProperty();
+                $fileName = $object->{'get'.ucfirst($fileNameProperty)}();
+                if ($fileName) {
+                    $publicUrl = $this->getPublicUrl($fileName);
+                    $object->{'set'.ucfirst($fileNameProperty)}($publicUrl);
+                }
             }
         }
     }
