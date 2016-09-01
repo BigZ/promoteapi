@@ -20,9 +20,10 @@ class S3PublicUrlSubscriberTest extends TestCase
         $eventMock = $this->createMock(\JMS\Serializer\EventDispatcher\PreSerializeEvent::class);
         $fieldMock = $this->createMock(UploadableField::class);
 
-        // We habe an image called test.jpg
+        // We have an image called test.jpg
         $testObjectMock->expects($this->once())->method('getImageName')->willReturn('test.jpg');
         $testObjectMock->expects($this->once())->method('setImageName');
+        
         // A ReflectionClass of a mock will not return the same than on the original class.
         $eventMock->method('getObject')->willReturnOnConsecutiveCalls($testObject, $testObjectMock);
         $fieldMock->expects($this->once())->method('getFileNameProperty')->willReturn('imageName');
@@ -54,7 +55,7 @@ class S3PublicUrlSubscriberTest extends TestCase
         $eventMock = $this->createMock(\JMS\Serializer\EventDispatcher\PreSerializeEvent::class);
         $fieldMock = $this->createMock(UploadableField::class);
 
-        // no image uploaded yet
+        // No image uploaded yet
         $testObjectMock->expects($this->once())->method('getImageName')->willReturn(null);
         $testObjectMock->expects($this->never())->method('setImageName');
         // A ReflectionClass of a mock will not return the same than on the original class.

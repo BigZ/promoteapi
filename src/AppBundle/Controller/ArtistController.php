@@ -90,7 +90,9 @@ class ArtistController extends FOSRestController
             return $artist;
         }
 
-        return $form;
+        $view = $this->view($form, 400);
+
+        return $this->handleView($view);
     }
 
     /**
@@ -109,7 +111,7 @@ class ArtistController extends FOSRestController
      */
     public function putArtistAction(Request $request, Artist $artist)
     {
-        $form = $this->createForm(ArtistType::class, $artist);
+        $form = $this->createForm(ArtistType::class, $artist, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -120,7 +122,7 @@ class ArtistController extends FOSRestController
             return $artist;
         }
 
-        return $form;
+        return $this->view($form, 400);
     }
 
     /**
