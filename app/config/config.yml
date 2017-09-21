@@ -63,7 +63,9 @@ swiftmailer:
     spool:     { type: memory }
 
 fos_rest:
-    exception: false
+    exception:
+        codes:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
     param_fetcher_listener: true
     body_listener: true
     format_listener: true
@@ -105,19 +107,19 @@ vich_uploader:
             delete_on_update:   true
             delete_on_remove:   true
 
-bigz_swagger2:
-    swagger: '2.0'
-    info:
-        title: Promote API
-        description: Promote your band or label with this API
-        termsOfService: http://api.promote.me/tos
-        version: "1.0.0"
-    host: api.promote.me
-    schemes:
-        - https
-    basePath: /
-    produces:
-        - application/json
-    security:
-        type: apiKey
-        name: X-AUTH-TOKEN
+#bigz_swagger2:
+#    swagger: '2.0'
+#    info:
+#        title: Promote API
+#        description: Promote your band or label with this API
+#        termsOfService: http://api.promote.me/tos
+#        version: "1.0.0"
+#    host: api.promote.me
+#    schemes:
+#        - https
+#    basePath: /
+#    produces:
+#        - application/json
+#    security:
+#        type: apiKey
+#        name: X-AUTH-TOKEN

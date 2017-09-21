@@ -34,9 +34,20 @@ else
     fail
 fi
 
-section "installing vendor\033[0m"
+section "installing php vendor\033[0m"
 START_TIME=$SECONDS
 composer install --optimize-autoloader --ansi
+if [ $? -eq 0 ]; then
+    success
+else
+    fail
+fi
+ELAPSED_TIME=$(($SECONDS - $START_TIME))
+elapsed $ELAPSED_TIME
+
+section "installing js vendor\033[0m"
+START_TIME=$SECONDS
+npm install --optimize-autoloader --ansi
 if [ $? -eq 0 ]; then
     success
 else

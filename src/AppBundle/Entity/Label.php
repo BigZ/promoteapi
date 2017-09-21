@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
-use bigz\halapi\Annotation\Embeddable;
+use Halapi\Annotation\Embeddable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

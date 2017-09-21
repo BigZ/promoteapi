@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
-use bigz\halapi\Annotation\Embeddable;
+use Halapi\Annotation\Embeddable;
 use AppBundle\Annotation\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
@@ -248,7 +248,7 @@ class Artist
     /**
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
      *
-     * @return Product
+     * @return $this
      */
     public function setImageFile(File $image = null)
     {
@@ -272,7 +272,7 @@ class Artist
     /**
      * @param string $imageName
      *
-     * @return Product
+     * @return $this
      */
     public function setImageName($imageName)
     {

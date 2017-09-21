@@ -13,7 +13,7 @@ class LabelType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
+            ->add('name', TextType::class, ['required' => false])
             ->add('slug', TextType::class)
             ->add('description', TextareaType::class);
     }

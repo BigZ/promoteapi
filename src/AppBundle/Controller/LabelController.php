@@ -4,17 +4,20 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Label;
 use AppBundle\Form\Type\LabelType;
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\ControllerTrait;
 use FOS\RestBundle\Request\ParamFetcher;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use bigz\halapi\Representation\PaginatedRepresentation;
+use Halapi\Representation\PaginatedRepresentation;
 use Symfony\Component\HttpFoundation\Response;
 
-class LabelController extends FOSRestController
+class LabelController extends Controller
 {
+    use ControllerTrait;
+
     /**
      * Get all labels.
      *
@@ -40,7 +43,7 @@ class LabelController extends FOSRestController
      * Get a Label.
      *
      * @Apidoc(output="AppBundle\Entity\Label", statusCodes = {
-     *         200 = "Returns the artist",
+     *         200 = "Returns the label",
      *         404 = "Not found"
      *     })
      *
@@ -59,7 +62,11 @@ class LabelController extends FOSRestController
      *
      * @ApiDoc(
      *  input="AppBundle\Form\Type\LabelType",
-     *  output="AppBundle\Entity\Label"
+     *  output="AppBundle\Entity\Label",
+     *     statusCodes = {
+     *     201 = "Label created",
+     *     400 = "Invalid data submission"
+     *   }
      * )
      *
      * @param Request $request
@@ -80,10 +87,10 @@ class LabelController extends FOSRestController
             $manager->persist($label);
             $manager->flush();
 
-            return $label;
+            return $this->view($label, 201);
         }
 
-        return $form;
+        return $this->view($form, 400);
     }
 
     /**
@@ -91,7 +98,11 @@ class LabelController extends FOSRestController
      *
      * @ApiDoc(
      *  input="AppBundle\Form\Type\LabelType",
-     *  output="AppBundle\Entity\Label"
+     *  output="AppBundle\Entity\Label",
+     *  statusCodes = {
+     *     200 = "Label updated",
+     *     404 = "Label not found"
+     *   }
      * )
      *
      * @param Request $request
@@ -102,7 +113,7 @@ class LabelController extends FOSRestController
      */
     public function putLabelAction(Request $request, Label $label)
     {
-        $form = $this->createForm(LabelType::class, $label);
+        $form = $this->createForm(LabelType::class, $label, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -110,10 +121,44 @@ class LabelController extends FOSRestController
             $manager->persist($label);
             $manager->flush();
 
-            return $label->getId();
+            return $label;
         }
 
-        return $form;
+        return $this->view($form, 400);
+    }
+
+    /**
+     * Patch a label.
+     *
+     * @ApiDoc(
+     *  input="AppBundle\Form\Type\LabelType",
+     *  output="AppBundle\Entity\Label",
+     *  statusCodes = {
+     *     200 = "Label patched",
+     *     404 = "Label not found"
+     *   }
+     * )
+     *
+     * @param Request $request
+     *
+     * @Security("is_granted('edit')")
+     *
+     * @return mixed
+     */
+    public function patchLabelAction(Request $request, Label $label)
+    {
+        $form = $this->createForm(LabelType::class, $label, ['method' => 'PATCH']);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($label);
+            $manager->flush();
+
+            return $label;
+        }
+
+        return $this->view($form, 400);
     }
 
     /**

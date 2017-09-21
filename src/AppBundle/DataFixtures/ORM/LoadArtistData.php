@@ -6,6 +6,7 @@ use AppBundle\Entity\Artist;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -18,6 +19,7 @@ class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
                 'bio' => 'Bob is a <b>reggae</b> legend',
                 'createdBy' => 'user1',
                 'labels' => ['island-records', 'tuff-gong'],
+                'imageFile' => 'bob-marley.jpg'
             ],
             [
                 'name' => 'Peter Tosh',
@@ -56,10 +58,30 @@ class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
                 $artist->addLabel($manager->getRepository('AppBundle:Label')->findOneBySlug($label));
             }
 
+            if (isset($data['imageFile'])) {
+                $file = new UploadedFile(
+                    $this->getImageFixtureDir().$data['imageFile'],
+                    $data['imageFile'],
+                    null,
+                    null,
+                    null,
+                    true
+                );
+                $artist->setImageFile($file);
+            }
+
             $manager->persist($artist);
         }
 
         $manager->flush();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getImageFixtureDir()
+    {
+        return __DIR__.'/../Images/Artist/';
     }
 
     public function getOrder()

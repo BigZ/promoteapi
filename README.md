@@ -6,10 +6,31 @@ An api to promote your events / artists
 [![Build Status](https://travis-ci.org/BigZ/promoteapi.svg?branch=master)](https://travis-ci.org/BigZ/promoteapi)
 ## Install and run
 
+## Database connection
 Add a .env file at the root of the project to configure you env-dependant variables
 
 ```
 DATABASE_URL="postgres://user:password@127.0.0.1/dbname"
+```
+
+## Run composer
+
+```
+composer install
+```
+and fill your credentials for database and an s3 bucket (used for image upload)
+
+## Run migrations
+
+```
+php bin/console do:mi:mi
+```
+
+
+## Run fixtures
+
+```
+php bin/console do:fi:lo
 ```
 
 ## Use
@@ -54,17 +75,28 @@ You can sort the result by any property
      "artist": {
          "name": "eminem",
          "slug": "eminem",
-         "bio": "rapper from detroit"
+         "bio": "rapper from detroit",
+         "labels": [1, 2]
      }
  }`
 
  will return
 
 `{
-  "status": "created",
-  "resource_id": 42
-}`
+   "id": 2,
+   "name": "eminem",
+   "slug": "eminem",
+   "bio": "rapper from detroit",
+   "_links": {
+     "self": "/artists/2",
+     "labels": [
+       "/labels/1",
+       "/labels/2"
+     ]
+   }
+ }`
 
+PUT & PATCH works the same way
 
 #### Embedding
 

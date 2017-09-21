@@ -4,28 +4,32 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Artist;
 use AppBundle\Form\Type\ArtistType;
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\ControllerTrait;
 use FOS\RestBundle\Request\ParamFetcher;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use bigz\halapi\Representation\PaginatedRepresentation;
+use Halapi\Representation\PaginatedRepresentation;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
-class ArtistController extends FOSRestController
+class ArtistController extends Controller
 {
+    use ControllerTrait;
+
     /**
      * Get artists.
      *
      * @ApiDoc(
      *     resource=true,
      *     filters=PaginatedRepresentation::FILTERS,
-     *     output="bigz\halapi\Representation\PaginatedRepresentation",
+     *     output="Halapi\Representation\PaginatedRepresentation",
      *     statusCodes = {
-     *         200 = "Returns the paginated artists collection",
+     *         200 = "Returns the paginated artist collection",
      *         400 = "Error"
-     *     }
+     *       }
      *     )
      *
      * @param ParamFetcher $paramFetcher
@@ -42,7 +46,7 @@ class ArtistController extends FOSRestController
      *
      * @Apidoc(
      *  statusCodes = {
-     *     200 = "Returned when successful",
+     *     200 = "Returns an artist",
      *     404 = "Artist not found"
      *   },
      *  output="AppBundle\Entity\Artist",
@@ -64,8 +68,8 @@ class ArtistController extends FOSRestController
      *  input="AppBundle\Form\Type\ArtistType",
      *  output="AppBundle\Entity\Artist",
      *  statusCodes = {
-     *     200 = "Returned when successful",
-     *     400 = "Returned when the form has errors"
+     *     200 = "Artist created",
+     *     400 = "Invalid request",
      *   }
      * )
      *
@@ -90,9 +94,7 @@ class ArtistController extends FOSRestController
             return $artist;
         }
 
-        $view = $this->view($form, 400);
-
-        return $this->handleView($view);
+        return $this->view($form, 400);
     }
 
     /**
@@ -100,7 +102,12 @@ class ArtistController extends FOSRestController
      *
      * @ApiDoc(
      *  input="AppBundle\Form\Type\ArtistType",
-     *  output="AppBundle\Entity\Artist"
+     *  output="AppBundle\Entity\Artist",
+     *  statusCodes = {
+     *     200 = "Artist patched",
+     *     400 = "Invalid request",
+     *     404 = "Artist not found"
+     *   }
      * )
      *
      * @param Request $request
@@ -112,6 +119,41 @@ class ArtistController extends FOSRestController
     public function putArtistAction(Request $request, Artist $artist)
     {
         $form = $this->createForm(ArtistType::class, $artist, ['method' => 'PUT']);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($artist);
+            $manager->flush();
+
+            return $artist;
+        }
+
+        return $this->view($form, 400);
+    }
+
+    /**
+     * Pacth an Artist.
+     *
+     * @ApiDoc(
+     *  input="AppBundle\Form\Type\ArtistType",
+     *  output="AppBundle\Entity\Artist",
+     *  statusCodes = {
+     *     200 = "Artist updated",
+     *     400 = "Invalid request",
+     *     404 = "Artist not found"
+     *   }
+     * )
+     *
+     * @param Request $request
+     *
+     * @Security("is_granted('edit')")
+     *
+     * @return mixed
+     */
+    public function patchArtistAction(Request $request, Artist $artist)
+    {
+        $form = $this->createForm(ArtistType::class, $artist, ['method' => 'PATCH']);
         $form->handleRequest($request);
 
         if ($form->isValid()) {

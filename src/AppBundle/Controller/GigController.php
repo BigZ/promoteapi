@@ -4,16 +4,19 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Gig;
 use AppBundle\Form\Type\GigType;
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\ControllerTrait;
 use FOS\RestBundle\Request\ParamFetcher;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use bigz\halapi\Representation\PaginatedRepresentation;
+use Halapi\Representation\PaginatedRepresentation;
 use Symfony\Component\HttpFoundation\Response;
 
-class GigController extends FOSRestController
+class GigController extends Controller
 {
+    use ControllerTrait;
+
     /**
      * Get all gigs.
      *
@@ -39,7 +42,6 @@ class GigController extends FOSRestController
      * @ApiDoc(output="AppBundle\Entity\Gig")
      *
      * @param Gig          $gig
-     * @param ParamFetcher $paramFetcher
      *
      * @return array
      */
@@ -77,7 +79,7 @@ class GigController extends FOSRestController
             return $gig;
         }
 
-        return $form;
+        return $this->view($form, 400);
     }
 
     /**
@@ -96,7 +98,7 @@ class GigController extends FOSRestController
      */
     public function putGigAction(Request $request, Gig $gig)
     {
-        $form = $this->createForm(GigType::class, $gig);
+        $form = $this->createForm(GigType::class, $gig, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -107,7 +109,7 @@ class GigController extends FOSRestController
             return $gig;
         }
 
-        return $form;
+        return $this->view($form, 400);
     }
 
     /**
@@ -126,7 +128,7 @@ class GigController extends FOSRestController
      */
     public function patchGigAction(Request $request, Gig $gig)
     {
-        $form = $this->createForm(GigType::class, $gig);
+        $form = $this->createForm(GigType::class, $gig, ['method' => 'PATCH']);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -134,10 +136,10 @@ class GigController extends FOSRestController
             $manager->persist($gig);
             $manager->flush();
 
-            return ['status' => 'updated', 'resource_id' => $gig->getId()];
+            return $gig;
         }
 
-        return $form;
+        return $this->view($form, 400);
     }
 
     /**
