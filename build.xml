@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="promote-api" default="full-build">
-    <property name="console" value="${basedir}/bin/console"/>
-    <property name="pdepend" value="${basedir}/vendor/bin/pdepend"/>
-    <property name="phpcpd"  value="${basedir}/vendor/bin/phpcpd"/>
-    <property name="phpcs"   value="${basedir}/vendor/bin/phpcs"/>
-    <property name="phpdox"  value="${basedir}/vendor/bin/phpdox"/>
-    <property name="phploc"  value="${basedir}/vendor/bin/phploc"/>
-    <property name="phpmd"   value="${basedir}/vendor/bin/phpmd"/>
-    <property name="phpunit" value="${basedir}/vendor/bin/phpunit"/>
-    <property name="dredd" value="${basedir}/node_modules/.bin/dredd"/>
+    <property name="console" value="./bin/console"/>
+    <property name="pdepend" value="./vendor/bin/pdepend"/>
+    <property name="phpcpd"  value="./vendor/bin/phpcpd"/>
+    <property name="phpcs"   value="./vendor/bin/phpcs"/>
+    <property name="phpdox"  value="./vendor/bin/phpdox"/>
+    <property name="phploc"  value="./vendor/bin/phploc"/>
+    <property name="phpmd"   value="./vendor/bin/phpmd"/>
+    <property name="phpunit" value="./vendor/bin/phpunit"/>
+    <property name="dredd" value="./node_modules/.bin/dredd"/>
 
     <target name="full-build"
-            depends="prepare,static-analysis,phpunit,dredd,phpdox,-check-failure"
+            depends="prepare,static-analysis,phpunit,dredd,phpdox"
             description="Performs static analysis, runs the tests, and generates project documentation"/>
 
     <target name="tests"
-            depends="prepare,lint,phpunit-no-coverage,dredd,-check-failure"
+            depends="prepare,lint,phpmd,phpcs,phploc,phpunit-no-coverage,dredd"
             description="Performs a lint check and runs the tests (without generating code coverage reports)"/>
 
     <target name="static-analysis"
@@ -25,11 +25,11 @@
     <target name="clean"
             unless="clean.done"
             description="Cleanup build artifacts">
-        <delete dir="${basedir}/build/api"/>
-        <delete dir="${basedir}/build/coverage"/>
-        <delete dir="${basedir}/build/logs"/>
-        <delete dir="${basedir}/build/pdepend"/>
-        <delete dir="${basedir}/build/phpdox"/>
+        <delete dir="./build/api"/>
+        <delete dir="./build/coverage"/>
+        <delete dir="./build/logs"/>
+        <delete dir="./build/pdepend"/>
+        <delete dir="./build/phpdox"/>
         <property name="clean.done" value="true"/>
     </target>
 
@@ -93,28 +93,26 @@
             unless="prepare.done"
             depends="clean,composer,npm,drop-schema,migrate,fixture"
             description="Prepare for build">
-        <mkdir dir="${basedir}/build/api"/>
-        <mkdir dir="${basedir}/build/coverage"/>
-        <mkdir dir="${basedir}/build/logs"/>
-        <mkdir dir="${basedir}/build/pdepend"/>
-        <mkdir dir="${basedir}/build/phpdox"/>
+        <mkdir dir="./build/api"/>
+        <mkdir dir="./build/coverage"/>
+        <mkdir dir="./build/logs"/>
+        <mkdir dir="./build/pdepend"/>
+        <mkdir dir="./build/phpdox"/>
         <property name="prepare.done" value="true"/>
     </target>
 
     <target name="lint"
             unless="lint.done"
             description="Perform syntax check of sourcecode files">
-        <apply executable="php" taskname="lint">
+        <apply executable="php" taskname="lint" passthru="true">
             <arg value="-l" />
 
-            <fileset dir="${basedir}/src">
+            <fileset dir="./src">
                 <include name="**/*.php" />
-                <modified />
             </fileset>
 
-            <fileset dir="${basedir}/tests">
+            <fileset dir="./tests">
                 <include name="**/*.php" />
-                <modified />
             </fileset>
         </apply>
 
@@ -126,8 +124,8 @@
             description="Measure project size using PHPLOC and print human readable output. Intended for usage on the command line.">
         <exec executable="${phploc}" taskname="phploc">
             <arg value="--count-tests" />
-            <arg path="${basedir}/src" />
-            <arg path="${basedir}/tests" />
+            <arg path="./src" />
+            <arg path="./tests" />
         </exec>
 
         <property name="phploc.done" value="true"/>
@@ -140,11 +138,11 @@
         <exec executable="${phploc}" taskname="phploc">
             <arg value="--count-tests" />
             <arg value="--log-csv" />
-            <arg path="${basedir}/build/logs/phploc.csv" />
+            <arg path="./build/logs/phploc.csv" />
             <arg value="--log-xml" />
-            <arg path="${basedir}/build/logs/phploc.xml" />
-            <arg path="${basedir}/src" />
-            <arg path="${basedir}/tests" />
+            <arg path="./build/logs/phploc.xml" />
+            <arg path="./src" />
+            <arg path="./tests" />
         </exec>
 
         <property name="phploc.done" value="true"/>
@@ -155,10 +153,10 @@
             depends="prepare"
             description="Calculate software metrics using PHP_Depend and log result in XML format. Intended for usage within a continuous integration environment.">
         <exec executable="${pdepend}" taskname="pdepend">
-            <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
-            <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
-            <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
-            <arg path="${basedir}/src" />
+            <arg value="--jdepend-xml=./build/logs/jdepend.xml" />
+            <arg value="--jdepend-chart=./build/pdepend/dependencies.svg" />
+            <arg value="--overview-pyramid=./build/pdepend/overview-pyramid.svg" />
+            <arg path="./src" />
         </exec>
 
         <property name="pdepend.done" value="true"/>
@@ -168,9 +166,9 @@
             unless="phpmd.done"
             description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="${phpmd}" taskname="phpmd">
-            <arg path="${basedir}/src" />
+            <arg path="./src" />
             <arg value="text" />
-            <arg path="${basedir}/build/phpmd.xml" />
+            <arg path="./build/phpmd.xml" />
         </exec>
 
         <property name="phpmd.done" value="true"/>
@@ -181,11 +179,11 @@
             depends="prepare"
             description="Perform project mess detection using PHPMD and log result in XML format. Intended for usage within a continuous integration environment.">
         <exec executable="${phpmd}" taskname="phpmd">
-            <arg path="${basedir}/src" />
+            <arg path="./src" />
             <arg value="xml" />
-            <arg path="${basedir}/build/phpmd.xml" />
+            <arg path="./build/phpmd.xml" />
             <arg value="--reportfile" />
-            <arg path="${basedir}/build/logs/pmd.xml" />
+            <arg path="./build/logs/pmd.xml" />
         </exec>
 
         <property name="phpmd.done" value="true"/>
@@ -194,12 +192,12 @@
     <target name="phpcs"
             unless="phpcs.done"
             description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
-        <exec executable="${phpcs}" taskname="phpcs">
-            <arg value="--standard=PSR2" />
+        <exec executable="${phpcs}" taskname="phpcs" passthru="true" checkreturn="true">
+            <arg value="--standard=./vendor/escapestudios/symfony2-coding-standard/Symfony/ruleset.xml" />
             <arg value="--extensions=php" />
             <arg value="--ignore=autoload.php" />
-            <arg path="${basedir}/src" />
-            <arg path="${basedir}/tests" />
+            <arg path="./src" />
+            <arg path="./tests" />
         </exec>
 
         <property name="phpcs.done" value="true"/>
@@ -211,12 +209,12 @@
             description="Find coding standard violations using PHP_CodeSniffer and log result in XML format. Intended for usage within a continuous integration environment.">
         <exec executable="${phpcs}" output="/dev/null" taskname="phpcs">
             <arg value="--report=checkstyle" />
-            <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
+            <arg value="--report-file=./build/logs/checkstyle.xml" />
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
             <arg value="--ignore=autoload.php" />
-            <arg path="${basedir}/src" />
-            <arg path="${basedir}/tests" />
+            <arg path="./src" />
+            <arg path="./tests" />
         </exec>
 
         <property name="phpcs.done" value="true"/>
@@ -225,8 +223,8 @@
     <target name="phpcpd"
             unless="phpcpd.done"
             description="Find duplicate code using PHPCPD and print human readable output. Intended for usage on the command line before committing.">
-        <exec executable="${phpcpd}" taskname="phpcpd">
-            <arg path="${basedir}/src" />
+        <exec executable="${phpcpd}" taskname="phpcpd" passthru="true">
+            <arg path="./src" />
         </exec>
 
         <property name="phpcpd.done" value="true"/>
@@ -238,8 +236,8 @@
             description="Find duplicate code using PHPCPD and log result in XML format. Intended for usage within a continuous integration environment.">
         <exec executable="${phpcpd}" taskname="phpcpd">
             <arg value="--log-pmd" />
-            <arg path="${basedir}/build/logs/pmd-cpd.xml" />
-            <arg path="${basedir}/src" />
+            <arg path="./build/logs/pmd-cpd.xml" />
+            <arg path="./src" />
         </exec>
 
         <property name="phpcpd.done" value="true"/>
@@ -249,7 +247,7 @@
             unless="phpdox.done"
             depends="phploc-ci,phpcs-ci,phpmd-ci"
             description="Generate project documentation using phpDox">
-        <exec executable="${phpdox}" dir="${basedir}/build" taskname="phpdox"/>
+        <exec executable="${phpdox}" dir="./build" taskname="phpdox"/>
 
         <property name="phpdox.done" value="true"/>
     </target>
@@ -258,15 +256,15 @@
             unless="phpunit.done"
             depends="prepare"
             description="Run unit tests with PHPUnit">
-        <exec executable="${phpunit}" resultproperty="result.phpunit" taskname="phpunit">
+        <exec executable="${phpunit}" taskname="phpunit" checkreturn="true" passthru="true">
             <arg value="--configuration"/>
-            <arg path="${basedir}/phpunit.xml"/>
+            <arg path="./phpunit.xml"/>
             <arg value="--coverage-html"/>
-            <arg value="{basedir}/build/coverage"/>
+            <arg value="./build/coverage"/>
             <arg value="--coverage-clover"/>
-            <arg value="{basedir}/build/logs/clover.xml"/>
-            <arg value="--coverage-junit"/>
-            <arg value="{basedir}/build/logs/junit.xml"/>
+            <arg value="./build/logs/clover.xml"/>
+            <arg value="--coverage-xml"/>
+            <arg value="./build/logs/junit.xml"/>
         </exec>
 
         <property name="phpunit.done" value="true"/>
@@ -276,9 +274,9 @@
             unless="phpunit.done"
             depends="prepare"
             description="Run unit tests with PHPUnit (without generating code coverage reports)">
-        <exec executable="${phpunit}" taskname="phpunit" resultproperty="result.phpunit">
+        <exec executable="${phpunit}" taskname="phpunit" checkreturn="true" passthru="true">
             <arg value="--configuration"/>
-            <arg path="${basedir}/phpunit.xml"/>
+            <arg path="./phpunit.xml"/>
         </exec>
 
         <property name="phpunit.done" value="true"/>
@@ -288,27 +286,10 @@
             unless="dredd.done"
             depends="prepare"
             description="Run functional tests with Dredd">
-        <exec executable="${dredd}" resultproperty="result.dredd">
+        <exec executable="${dredd}" checkreturn="true" passthru="true">
             <arg value="--sorted"/>
         </exec>
 
         <property name="dredd.done" value="true"/>
-    </target>
-
-    <target name="-check-failure">
-        <fail message="PHPUnit did not finish successfully">
-            <condition>
-                <not>
-                    <equals arg1="${result.phpunit}" arg2="0"/>
-                </not>
-            </condition>
-        </fail>
-        <fail message="Dredd did not finish successfully">
-            <condition>
-                <not>
-                    <equals arg1="${result.dredd}" arg2="0"/>
-                </not>
-            </condition>
-        </fail>
     </target>
 </project>

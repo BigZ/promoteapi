@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the promote-api package.
+ *
+ * (c) Bigz
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+*/
+
 namespace AppBundle\Security\Voter;
 
 use AppBundle\Entity\Label;
@@ -8,6 +17,10 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+/**
+ * Class LabelVoter
+ * @author Romain Richard
+ */
 class LabelVoter extends Voter
 {
     const CREATE = 'create';
@@ -19,11 +32,17 @@ class LabelVoter extends Voter
      */
     private $decisionManager;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(AccessDecisionManagerInterface $decisionManager)
     {
         $this->decisionManager = $decisionManager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function supports($attribute, $subject)
     {
         if (!in_array($attribute, [self::CREATE, self::EDIT, self::DELETE])) {
@@ -37,6 +56,9 @@ class LabelVoter extends Voter
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function voteOnAttribute($attribute, $label, TokenInterface $token)
     {
         $user = $token->getUser();
@@ -51,12 +73,12 @@ class LabelVoter extends Voter
         }
 
         switch ($attribute) {
-        case self::CREATE:
-            return $this->canCreate($label, $user);
-        case self::EDIT:
-            return $this->canEdit($label, $user);
-        case self::DELETE:
-            return $this->canDelete($label, $user);
+            case self::CREATE:
+                return $this->canCreate($label, $user);
+            case self::EDIT:
+                return $this->canEdit($label, $user);
+            case self::DELETE:
+                return $this->canDelete($label, $user);
         }
     }
 

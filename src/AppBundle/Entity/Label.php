@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the promote-api package.
+ *
+ * (c) Bigz
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+*/
+
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -14,8 +23,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="label")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LabelRepository")
  *
- * Hateoas\RelationProvider("labelArtists")
- *
  * @ExclusionPolicy("all")
  */
 class Label
@@ -26,6 +33,7 @@ class Label
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
      * @Expose
      */
     private $id;
@@ -34,7 +42,9 @@ class Label
      * @var string
      *
      * @Assert\NotBlank()
+     *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
+     *
      * @Expose
      */
     private $name;
@@ -43,7 +53,9 @@ class Label
      * @var string
      *
      * @Assert\NotBlank()
+     *
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
+     *
      * @Expose
      */
     private $slug;
@@ -52,6 +64,7 @@ class Label
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255)
+     *
      * @Expose
      */
     private $description;
@@ -60,13 +73,16 @@ class Label
      * @var array
      *
      * @ORM\ManyToMany(targetEntity="Artist", mappedBy="labels")
+     *
      * @Embeddable
      */
     private $artists;
 
     /**
      * @var User
+     *
      * @ORM\ManyToOne(targetEntity="User")
+     *
      * @Embeddable
      */
     protected $createdBy;

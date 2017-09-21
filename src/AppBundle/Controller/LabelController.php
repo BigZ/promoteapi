@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the promote-api package.
+ *
+ * (c) Bigz
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+*/
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Label;
@@ -14,6 +23,10 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use Halapi\Representation\PaginatedRepresentation;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class LabelController
+ * @author Romain Richard
+ */
 class LabelController extends Controller
 {
     use ControllerTrait;
@@ -164,7 +177,7 @@ class LabelController extends Controller
     /**
      * Delete a label.
      *
-     * @ApiDoc(statusCodes = {
+     * @ApiDoc(statusCodes               = {
      *     204 = "Label deleted",
      *     404 = "Label not found"
      *   }
@@ -186,13 +199,18 @@ class LabelController extends Controller
 
         // Dirty Fix for php webserver
         // see https://github.com/symfony/symfony/issues/12744
-        header_register_callback(function () {
-            header_remove('Content-type');
-        });
+        header_register_callback(
+            function () {
+                header_remove('Content-type');
+            }
+        );
 
         return new Response('', 204);
     }
 
+    /**
+     * @return \AppBundle\Repository\LabelRepository
+     */
     protected function getRepository()
     {
         return $this->getDoctrine()->getManager()->getRepository('AppBundle:Label');

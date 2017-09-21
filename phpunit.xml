@@ -15,7 +15,6 @@
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>tests</directory>
-            <directory>src/bigz/**/Tests</directory>
         </testsuite>
     </testsuites>
 

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the promote-api package.
+ *
+ * (c) Bigz
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+*/
+
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -19,6 +28,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\HasLifecycleCallbacks
  *
  * @ExclusionPolicy("all")
+ *
  * @Vich\Uploadable()
  */
 class Artist
@@ -29,6 +39,7 @@ class Artist
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
      * @Expose
      */
     private $id;
@@ -37,7 +48,9 @@ class Artist
      * @var string
      *
      * @Assert\NotBlank()
+     *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
+     *
      * @Expose
      */
     private $name;
@@ -46,16 +59,20 @@ class Artist
      * @var string
      *
      * @Assert\NotBlank()
+     *
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
+     *
      * @Expose
      */
     private $slug;
 
     /**
      * @var string
+     *
      * @Assert\NotBlank()
      *
      * @ORM\Column(name="bio", type="text", nullable=true)
+     *
      * @Expose
      */
     private $bio;
@@ -64,6 +81,7 @@ class Artist
      * @var array
      *
      * @ORM\ManyToMany(targetEntity="Label", inversedBy="artists")
+     *
      * @Embeddable
      */
     protected $labels;
@@ -72,12 +90,14 @@ class Artist
      * @var array
      *
      * @ORM\ManyToMany(targetEntity="Gig", inversedBy="artists")
+     *
      * @Embeddable
      */
     protected $gigs;
 
     /**
      * @Vich\UploadableField(mapping="artist_image", fileNameProperty="imageName")
+     *
      * @Assert\Image
      *
      * @var File
@@ -86,7 +106,9 @@ class Artist
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     *
      * @Expose
+     *
      * @UploadedFile(type="image")
      *
      * @var string
@@ -102,7 +124,9 @@ class Artist
 
     /**
      * @var User
+     *
      * @ORM\ManyToOne(targetEntity="User")
+     *
      * @Embeddable
      */
     protected $createdBy;

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the promote-api package.
+ *
+ * (c) Bigz
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+*/
+
 namespace AppBundle\Security\Voter;
 
 use AppBundle\Entity\Artist;
@@ -8,6 +17,11 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+/**
+ * Class ArtistVoter.
+ *
+ * @author Romain Richard
+ */
 class ArtistVoter extends Voter
 {
     const CREATE = 'create';
@@ -19,11 +33,19 @@ class ArtistVoter extends Voter
      */
     private $decisionManager;
 
+    /**
+     * ArtistVoter constructor.
+     *
+     * @param AccessDecisionManagerInterface $decisionManager
+     */
     public function __construct(AccessDecisionManagerInterface $decisionManager)
     {
         $this->decisionManager = $decisionManager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function supports($attribute, $subject)
     {
         if (!in_array($attribute, [self::CREATE, self::EDIT, self::DELETE])) {
@@ -33,6 +55,9 @@ class ArtistVoter extends Voter
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function voteOnAttribute($attribute, $artist, TokenInterface $token)
     {
         $user = $token->getUser();
@@ -47,12 +72,12 @@ class ArtistVoter extends Voter
         }
 
         switch ($attribute) {
-        case self::CREATE:
-            return true;
-        case self::EDIT:
-            return $artist instanceof Artist && $this->canEdit($artist, $user);
-        case self::DELETE:
-            return $artist instanceof Artist && $this->canDelete($artist, $user);
+            case self::CREATE:
+                return true;
+            case self::EDIT:
+                return $artist instanceof Artist && $this->canEdit($artist, $user);
+            case self::DELETE:
+                return $artist instanceof Artist && $this->canDelete($artist, $user);
         }
     }
 

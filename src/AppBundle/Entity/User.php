@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the promote-api package.
+ *
+ * (c) Bigz
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+*/
+
 namespace AppBundle\Entity;
 
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -20,6 +29,7 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
+     *
      * @Expose
      */
     private $id;
@@ -140,7 +150,7 @@ class User implements UserInterface
     public function addRole($role)
     {
         $role = strtoupper($role);
-        if ($role === static::ROLE_DEFAULT) {
+        if (static::ROLE_DEFAULT === $role) {
             return $this;
         }
 
@@ -183,10 +193,16 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getSalt()
     {
     }
 
+    /**
+     * @inheritdoc
+     */
     public function eraseCredentials()
     {
     }

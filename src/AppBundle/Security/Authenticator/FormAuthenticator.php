@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the promote-api package.
+ *
+ * (c) Bigz
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+*/
+
 namespace AppBundle\Security\Authenticator;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -12,6 +21,10 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+/**
+ * Class FormAuthenticator
+ * @author Romain Richard
+ */
 class FormAuthenticator extends AbstractGuardAuthenticator
 {
     /**

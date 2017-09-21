@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the promote-api package.
+ *
+ * (c) Bigz
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+*/
+
 namespace AppBundle\Subscriber;
 
 use Doctrine\Common\Annotations\Reader;
@@ -8,6 +17,10 @@ use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\PreSerializeEvent;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 
+/**
+ * Class S3PublicUrlSubscriber
+ * @author Romain Richard
+ */
 class S3PublicUrlSubscriber implements EventSubscriberInterface
 {
     /**
@@ -44,13 +57,13 @@ class S3PublicUrlSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            array(
+        return [
+            [
                 'event' => Events::PRE_SERIALIZE,
                 'format' => 'json',
                 'method' => 'onPreSerialize',
-            ),
-        );
+            ],
+        ];
     }
 
     /**

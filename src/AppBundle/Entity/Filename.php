@@ -1,9 +1,19 @@
 <?php
 
+/*
+ * This file is part of the promote-api package.
+ *
+ * (c) Bigz
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+*/
+
 namespace AppBundle\Entity;
 
 /**
- * Class Filename.
+ * Class Filename
+ * @author Romain Richard
  */
 class Filename
 {
@@ -17,6 +27,10 @@ class Filename
      */
     public $extension;
 
+    /**
+     * Filename constructor.
+     * @param $filename
+     */
     public function __construct($filename)
     {
         $parts = explode('.', $filename);

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the promote-api package.
+ *
+ * (c) Bigz
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+*/
+
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -13,6 +22,7 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
  *
  * @ORM\Table(name="gig")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\GigRepository")
+ *
  * @ExclusionPolicy("all")
  */
 class Gig
@@ -23,6 +33,7 @@ class Gig
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
      * @Expose
      */
     private $id;
@@ -31,7 +42,9 @@ class Gig
      * @var string
      *
      * @Assert\NotBlank()
+     *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
+     *
      * @Expose
      */
     private $name;
@@ -41,7 +54,9 @@ class Gig
      *
      * @Assert\NotBlank()
      * @Assert\DateTime()
+     *
      * @ORM\Column(name="startDate", type="datetime")
+     *
      * @Expose
      */
     private $startDate;
@@ -50,7 +65,9 @@ class Gig
      * @var \DateTime
      *
      * @Assert\DateTime()
+     *
      * @ORM\Column(name="endDate", type="datetime", nullable=true)
+     *
      * @Expose
      */
     private $endDate;
@@ -59,6 +76,7 @@ class Gig
      * @var string
      *
      * @ORM\Column(name="venue", type="string", length=255, nullable=true)
+     *
      * @Expose
      */
     private $venue;
@@ -67,7 +85,9 @@ class Gig
      * @var string
      *
      * @Assert\NotBlank()
+     *
      * @ORM\Column(name="address", type="string", length=255)
+     *
      * @Expose
      */
     private $address;
@@ -76,6 +96,7 @@ class Gig
      * @var string
      *
      * @ORM\Column(name="facebookLink", type="string", length=255, nullable=true, unique=true)
+     *
      * @Expose
      */
     private $facebookLink;
@@ -84,13 +105,16 @@ class Gig
      * @var array
      *
      * @ORM\ManyToMany(targetEntity="Artist", mappedBy="gigs")
+     *
      * @Embeddable
      */
     private $artists;
 
     /**
      * @var User
+     *
      * @ORM\ManyToOne(targetEntity="User")
+     *
      * @Embeddable
      */
     protected $createdBy;

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the promote-api package.
+ *
+ * (c) Bigz
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+*/
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Gig;
@@ -13,6 +22,10 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Halapi\Representation\PaginatedRepresentation;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class GigController
+ * @author Romain Richard
+ */
 class GigController extends Controller
 {
     use ControllerTrait;
@@ -41,7 +54,7 @@ class GigController extends Controller
      *
      * @ApiDoc(output="AppBundle\Entity\Gig")
      *
-     * @param Gig          $gig
+     * @param Gig $gig
      *
      * @return array
      */
@@ -165,14 +178,19 @@ class GigController extends Controller
 
         // Dirty Fix for php webserver
         // see https://github.com/symfony/symfony/issues/12744
-        header_register_callback(function () {
-            header_remove('Content-type');
-            header('Content-Type: application/json');
-        });
+        header_register_callback(
+            function () {
+                header_remove('Content-type');
+                header('Content-Type: application/json');
+            }
+        );
 
         return new Response('{}', 204);
     }
 
+    /**
+     * @return \AppBundle\Repository\GigRepository
+     */
     protected function getRepository()
     {
         return $this->getDoctrine()->getManager()->getRepository('AppBundle:Gig');

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the promote-api package.
+ *
+ * (c) Bigz
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+*/
+
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Gig;
@@ -7,8 +16,52 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
+/**
+ * Class LoadGigData
+ * @author Romain Richard
+ */
 class LoadGigData extends AbstractFixture implements OrderedFixtureInterface
 {
+    /**
+     * @inheritdoc
+     */
+    public function load(ObjectManager $manager)
+    {
+        foreach ($this->getGigs() as $data) {
+            $gig = new Gig();
+            $gig->setCreatedBy($manager->getRepository('AppBundle:User')->findOneByUsername($data['createdBy']));
+            $gig->setCreatedAt($data['createdAt']);
+            $gig->setStartDate($data['startDate']);
+            $gig->setEndDate($data['endDate']);
+            $gig->setVenue($data['venue']);
+            $gig->setAddress($data['address']);
+            $gig->setFacebookLink($data['facebookLink']);
+            $gig->setName($data['name']);
+
+            $manager->persist($gig);
+
+            foreach ($data['artists'] as $artist) {
+                $artistEntity = $manager->getRepository('AppBundle:Artist')->findOneBySlug($artist);
+                $artistEntity->addGig($gig);
+            }
+
+            $manager->persist($artistEntity);
+        }
+
+        $manager->flush();
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrder()
+    {
+        return 4;
+    }
+
+    /**
+     * @return array
+     */
     private function getGigs()
     {
         return [
@@ -57,36 +110,5 @@ class LoadGigData extends AbstractFixture implements OrderedFixtureInterface
                 'createdAt' => new \DateTime('now'),
             ],
         ];
-    }
-
-    public function load(ObjectManager $manager)
-    {
-        foreach ($this->getGigs() as $data) {
-            $gig = new Gig();
-            $gig->setCreatedBy($manager->getRepository('AppBundle:User')->findOneByUsername($data['createdBy']));
-            $gig->setCreatedAt($data['createdAt']);
-            $gig->setStartDate($data['startDate']);
-            $gig->setEndDate($data['endDate']);
-            $gig->setVenue($data['venue']);
-            $gig->setAddress($data['address']);
-            $gig->setFacebookLink($data['facebookLink']);
-            $gig->setName($data['name']);
-
-            $manager->persist($gig);
-
-            foreach ($data['artists'] as $artist) {
-                $artistEntity = $manager->getRepository('AppBundle:Artist')->findOneBySlug($artist);
-                $artistEntity->addGig($gig);
-            }
-
-            $manager->persist($artistEntity);
-        }
-
-        $manager->flush();
-    }
-
-    public function getOrder()
-    {
-        return 4;
     }
 }

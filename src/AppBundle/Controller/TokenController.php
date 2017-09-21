@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the promote-api package.
+ *
+ * (c) Bigz
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+*/
+
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -26,8 +35,12 @@ class TokenController extends Controller
      * )
      *
      * @Route("/token")
+     *
      * @Method("POST")
+     *
      * @Security("has_role('ROLE_USER')")
+     *
+     * @return string
      */
     public function getTokenAction()
     {

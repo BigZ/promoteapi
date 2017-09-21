@@ -7,13 +7,13 @@
     "test": "tests"
   },
   "dependencies": {
-    "dredd": "^1.5.2"
+    "dredd": "^4.5.0"
   },
   "devDependencies": {
     "swagger-tools": "^0.10.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/dredd"
   },
   "repository": {
     "type": "git",

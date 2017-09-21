@@ -13,25 +13,14 @@ Add a .env file at the root of the project to configure you env-dependant variab
 DATABASE_URL="postgres://user:password@127.0.0.1/dbname"
 ```
 
-## Run composer
+## Build the project
 
 ```
-composer install
+make
 ```
-and fill your credentials for database and an s3 bucket (used for image upload)
-
-## Run migrations
-
-```
-php bin/console do:mi:mi
-```
-
-
-## Run fixtures
-
-```
-php bin/console do:fi:lo
-```
+make actually installs phing and run phing full-fuild which consists of the following steps:
+clean, composer, npm, drop-schema, migrate, fixture, lint, phploc-ci, pdepend, phpmd-ci, phpcs-ci, phpcpd-ci, phpunit, dredd, phpdox, -check-failure
+fill your credentials for database and an s3 bucket (used for image upload)
 
 ## Use
 

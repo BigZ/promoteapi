@@ -1,19 +1,34 @@
 <?php
 
+/*
+ * This file is part of the promote-api package.
+ *
+ * (c) Bigz
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+*/
+
 namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\Gig;
 use AppBundle\Entity\Label;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class ArtistType
+ * @author Romain Richard
+ */
 class ArtistType extends AbstractType
 {
+    /**
+     * @inheritdoc
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -21,10 +36,12 @@ class ArtistType extends AbstractType
             ->add('slug', TextType::class, ['required' => true])
             ->add('bio', TextareaType::class)
             ->add('gigs', EntityType::class, ['class' => Gig::class, 'multiple' => true])
-            ->add('labels', EntityType::class, ['class' => Label::class, 'multiple' => true])
-        ;
+            ->add('labels', EntityType::class, ['class' => Label::class, 'multiple' => true]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
