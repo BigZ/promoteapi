@@ -22,9 +22,6 @@ class IndexController extends Controller
      */
     public function indexAction()
     {
-        $meta = $this->get('doctrine.orm.entity_manager')->getClassMetadata(get_class(new Artist()));
-        dump($meta->getAssociationTargetClass('labels'));
-        die;
         return 'Welcome to the API :)';
     }
 }

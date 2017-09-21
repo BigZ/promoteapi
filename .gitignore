@@ -16,3 +16,4 @@
 /.env
 /node_modules
 /swagger.yml
+.web-server-pid
