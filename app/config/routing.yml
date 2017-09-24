@@ -4,10 +4,6 @@ app:
     prefix:   /
     defaults: {_format: json}
 
-NelmioApiDocBundle:
-    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
-    prefix:   /doc
-
 artists:
     type:     rest
     resource: AppBundle\Controller\ArtistController

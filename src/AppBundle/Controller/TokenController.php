@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Swagger\Annotations as SWG;
 
 /**
  * Token controller.
@@ -26,14 +26,8 @@ class TokenController extends Controller
      * Get token.
      * Protected by login form (username & password as form-data to this page).
      *
-     * @ApiDoc(
-     *     statusCodes = {
-     *         403 = "Returned when the credentials are invalid"
-     *     },
-     *     input="AppBundle\Form\Type\AuthenticatorType",
-     *     output="string"
-     * )
-     *
+     * @SWG\Response(response=200, description="Auth granted")
+     * @SWG\Response(response=403, description="Invalid credentials")
      * @Route("/token")
      *
      * @Method("POST")

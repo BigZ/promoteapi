@@ -19,7 +19,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Halapi\Representation\PaginatedRepresentation;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -34,15 +35,11 @@ class ArtistController extends Controller
     /**
      * Get artists.
      *
-     * @ApiDoc(
-     *     resource=true,
-     *     filters=PaginatedRepresentation::FILTERS,
-     *     output="Halapi\Representation\PaginatedRepresentation",
-     *     statusCodes = {
-     *         200 = "Returns the paginated artist collection",
-     *         400 = "Error"
-     *       }
+     * @SWG\Response(response=200, description="Get artists",
+     *     @SWG\Schema(
+     *         @Model(type=PaginatedRepresentation::class)
      *     )
+     * )
      *
      * @param ParamFetcher $paramFetcher
      *
@@ -56,13 +53,12 @@ class ArtistController extends Controller
     /**
      * Get an artist.
      *
-     * @Apidoc(
-     *  statusCodes = {
-     *     200 = "Returns an artist",
-     *     404 = "Artist not found"
-     *   },
-     *  output="AppBundle\Entity\Artist",
+     * @SWG\Response(response=200, description="Get an artist",
+     *     @SWG\Schema(
+     *         @Model(type=Artist::class)
+     *     )
      * )
+     * @SWG\Response(response=404, description="Artist not found")
      *
      * @param Artist $artist
      *
@@ -76,14 +72,19 @@ class ArtistController extends Controller
     /**
      * Create a new Artist.
      *
-     * @ApiDoc(
-     *  input="AppBundle\Form\Type\ArtistType",
-     *  output="AppBundle\Entity\Artist",
-     *  statusCodes = {
-     *     200 = "Artist created",
-     *     400 = "Invalid request",
-     *   }
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="Artist to add",
+     *     required=true,
+     *     @SWG\Schema(@Model(type=ArtistType::class)),
      * )
+     * @SWG\Response(response=201, description="Artist created",
+     *     @SWG\Schema(
+     *         @Model(type=Artist::class)
+     *     )
+     * )
+     * @SWG\Response(response=400, description="Invalid Request")
      *
      * @param Request $request
      *
@@ -103,7 +104,7 @@ class ArtistController extends Controller
             $manager->persist($artist);
             $manager->flush();
 
-            return $artist;
+            return $this->view($artist, 201);
         }
 
         return $this->view($form, 400);
@@ -112,15 +113,13 @@ class ArtistController extends Controller
     /**
      * Update an Artist.
      *
-     * @ApiDoc(
-     *  input="AppBundle\Form\Type\ArtistType",
-     *  output="AppBundle\Entity\Artist",
-     *  statusCodes = {
-     *     200 = "Artist patched",
-     *     400 = "Invalid request",
-     *     404 = "Artist not found"
-     *   }
+     * @SWG\Response(response=200, description="Artist updated",
+     *     @SWG\Schema(
+     *         @Model(type=Artist::class)
+     *     )
      * )
+     * @SWG\Response(response=400, description="Invalid Request")
+     * @SWG\Response(response=404, description="Artist not found")
      *
      * @param Request $request
      *
@@ -147,15 +146,13 @@ class ArtistController extends Controller
     /**
      * Pacth an Artist.
      *
-     * @ApiDoc(
-     *  input="AppBundle\Form\Type\ArtistType",
-     *  output="AppBundle\Entity\Artist",
-     *  statusCodes = {
-     *     200 = "Artist updated",
-     *     400 = "Invalid request",
-     *     404 = "Artist not found"
-     *   }
+     * @SWG\Response(response=200, description="Artist updated",
+     *     @SWG\Schema(
+     *         @Model(type=Artist::class)
+     *     )
      * )
+     * @SWG\Response(response=400, description="Invalid Request")
+     * @SWG\Response(response=404, description="Artist not found")
      *
      * @param Request $request
      *
@@ -182,11 +179,9 @@ class ArtistController extends Controller
     /**
      * Delete an Artist.
      *
-     * @ApiDoc(statusCodes               = {
-     *     204 = "Artist deleted",
-     *     404 = "Artist not found"
-     *   }
-     * )
+     * @SWG\Response(response=204, description="Artist deleted")
+     * @SWG\Response(response=404, description="Artist not found")
+     *
      * @Security("is_granted('delete')")
      *
      * @param Artist $artist
@@ -217,6 +212,14 @@ class ArtistController extends Controller
      *
      * @param Request $request
      * @param Artist  $artist
+     *
+     * @SWG\Response(response=200, description="Artist picture updated",
+     *     @SWG\Schema(
+     *         @Model(type=Artist::class)
+     *     )
+     * )
+     * @SWG\Response(response=415, description="Unsupported media type")
+     * @SWG\Response(response=404, description="Artist not found")
      *
      * @return array
      */

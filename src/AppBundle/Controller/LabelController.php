@@ -18,10 +18,11 @@ use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Halapi\Representation\PaginatedRepresentation;
 use Symfony\Component\HttpFoundation\Response;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 
 /**
  * Class LabelController
@@ -34,15 +35,11 @@ class LabelController extends Controller
     /**
      * Get all labels.
      *
-     * @ApiDoc(
-     *     resource=true,
-     *     filters=PaginatedRepresentation::FILTERS,
-     *     output="bigz\halapi\Representation\PaginatedRepresentation",
-     *     statusCodes = {
-     *         200 = "Returns the paginated artists collection",
-     *         400 = "Error"
-     *     })
-     *
+     * @SWG\Response(response=200, description="Paginated label collection",
+     *     @SWG\Schema(
+     *         @Model(type=PaginatedRepresentation::class)
+     *     )
+     * )
      * @param ParamFetcher $paramFetcher
      *
      * @return array
@@ -55,13 +52,14 @@ class LabelController extends Controller
     /**
      * Get a Label.
      *
-     * @Apidoc(output="AppBundle\Entity\Label", statusCodes = {
-     *         200 = "Returns the label",
-     *         404 = "Not found"
-     *     })
+     * @SWG\Response(response=200, description="Get a label",
+     *     @SWG\Schema(
+     *         @Model(type=Label::class)
+     *     )
+     * )
+     * @SWG\Response(response=404, description="Label not found")
      *
-     * @param Label        $label
-     * @param ParamFetcher $paramFetcher
+     * @param Label $label
      *
      * @return array
      */
@@ -73,14 +71,12 @@ class LabelController extends Controller
     /**
      * Create a new label.
      *
-     * @ApiDoc(
-     *  input="AppBundle\Form\Type\LabelType",
-     *  output="AppBundle\Entity\Label",
-     *     statusCodes = {
-     *     201 = "Label created",
-     *     400 = "Invalid data submission"
-     *   }
+     * @SWG\Response(response=201, description="Label created",
+     *     @SWG\Schema(
+     *         @Model(type=Label::class)
+     *     )
      * )
+     * @SWG\Response(response=400, description="Invalid Request")
      *
      * @param Request $request
      *
@@ -109,7 +105,7 @@ class LabelController extends Controller
     /**
      * Update a label.
      *
-     * @ApiDoc(
+     * ApiDoc(
      *  input="AppBundle\Form\Type\LabelType",
      *  output="AppBundle\Entity\Label",
      *  statusCodes = {
@@ -117,6 +113,14 @@ class LabelController extends Controller
      *     404 = "Label not found"
      *   }
      * )
+     *
+     * @SWG\Response(response=200, description="Label updated",
+     *     @SWG\Schema(
+     *         @Model(type=Label::class)
+     *     )
+     * )
+     * @SWG\Response(response=400, description="Invalid Request")
+     * @SWG\Response(response=404, description="Label not found")
      *
      * @param Request $request
      *
@@ -143,14 +147,14 @@ class LabelController extends Controller
     /**
      * Patch a label.
      *
-     * @ApiDoc(
-     *  input="AppBundle\Form\Type\LabelType",
-     *  output="AppBundle\Entity\Label",
-     *  statusCodes = {
-     *     200 = "Label patched",
-     *     404 = "Label not found"
-     *   }
+     *
+     * @SWG\Response(response=200, description="Label patched",
+     *     @SWG\Schema(
+     *         @Model(type=Label::class)
+     *     )
      * )
+     * @SWG\Response(response=400, description="Invalid Request")
+     * @SWG\Response(response=404, description="Label not found")
      *
      * @param Request $request
      *
@@ -177,11 +181,9 @@ class LabelController extends Controller
     /**
      * Delete a label.
      *
-     * @ApiDoc(statusCodes               = {
-     *     204 = "Label deleted",
-     *     404 = "Label not found"
-     *   }
-     * )
+     * @SWG\Response(response=204, description="Label deleted")
+     * @SWG\Response(response=404, description="Label not found")
+     *
      * @Security("is_granted('delete')")
      *
      * @param Label $label

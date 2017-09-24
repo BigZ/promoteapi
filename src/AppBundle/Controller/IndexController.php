@@ -14,6 +14,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Swagger\Annotations as SWG;
 
 /**
  * Class IndexController.
@@ -26,6 +27,8 @@ class IndexController extends Controller
      * @Route(name="index", path="/")
      *
      * @Method("GET")
+     *
+     * @SWG\Response(response=200, description="Api index. should we list endpoints ?")
      *
      * @return string
      */

@@ -79,8 +79,14 @@ fos_rest:
         default_format: json
         include_format: false
 
-nelmio_api_doc: ~
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Promote Api
+            description: Handsmoe API
+            version: 1.0.0
 
+# Virtual FileSystem on S3
 oneup_flysystem:
     adapters:
         app.flysystem_adapter:
@@ -106,20 +112,3 @@ vich_uploader:
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
-
-#bigz_swagger2:
-#    swagger: '2.0'
-#    info:
-#        title: Promote API
-#        description: Promote your band or label with this API
-#        termsOfService: http://api.promote.me/tos
-#        version: "1.0.0"
-#    host: api.promote.me
-#    schemes:
-#        - https
-#    basePath: /
-#    produces:
-#        - application/json
-#    security:
-#        type: apiKey
-#        name: X-AUTH-TOKEN

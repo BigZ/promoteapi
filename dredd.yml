@@ -1,6 +1,6 @@
 hookfiles: ./app/DreddHook/*.php
 language: vendor/bin/dredd-hooks-php
-server: 'php bin/console server:run'
+server: 'php bin/console server:start'
 server-wait: 3
 init: false
 custom: {}
@@ -27,5 +27,5 @@ hooks-worker-term-retry: 500
 hooks-worker-handler-host: localhost
 hooks-worker-handler-port: 61321
 config: ./dredd.yml
-blueprint: swagger.yml
+blueprint: swagger.json
 endpoint: 'http://localhost:8000/app.php'

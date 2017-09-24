@@ -18,7 +18,8 @@ use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Halapi\Representation\PaginatedRepresentation;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -33,12 +34,11 @@ class GigController extends Controller
     /**
      * Get all gigs.
      *
-     * @ApiDoc(resource=true, filters=PaginatedRepresentation::FILTERS,
-     *     output="bigz\halapi\Representation\PaginatedRepresentation",
-     *     statusCodes = {
-     *         200 = "Returns the paginated artists collection",
-     *         400 = "Error"
-     *     })
+     * @SWG\Response(response=200, description="Get the paginated gigs collection",
+     *     @SWG\Schema(
+     *         @Model(type=PaginatedRepresentation::class)
+     *     )
+     * )
      *
      * @param ParamFetcher $paramFetcher
      *
@@ -52,7 +52,12 @@ class GigController extends Controller
     /**
      * Get a gig.
      *
-     * @ApiDoc(output="AppBundle\Entity\Gig")
+     * @SWG\Response(response=200, description="Get a gig",
+     *     @SWG\Schema(
+     *         @Model(type=Gig::class)
+     *     )
+     * )
+     * @SWG\Response(response=404, description="Gig not found")
      *
      * @param Gig $gig
      *
@@ -66,10 +71,12 @@ class GigController extends Controller
     /**
      * Create a new Gig.
      *
-     * @ApiDoc(
-     *  input="AppBundle\Form\Type\GigType",
-     *  output="AppBundle\Entity\Gig"
+     * @SWG\Response(response=201, description="Gig created",
+     *     @SWG\Schema(
+     *         @Model(type=Gig::class)
+     *     )
      * )
+     * @SWG\Response(response=400, description="Invalid Request")
      *
      * @Security("is_granted('create')")
      *
@@ -89,7 +96,7 @@ class GigController extends Controller
             $manager->persist($gig);
             $manager->flush();
 
-            return $gig;
+            return $this->view($gig, 201);
         }
 
         return $this->view($form, 400);
@@ -98,10 +105,13 @@ class GigController extends Controller
     /**
      * Modify an existing Gig.
      *
-     * @ApiDoc(
-     *  input="AppBundle\Form\Type\GigType",
-     *  output="AppBundle\Entity\Gig"
+     * @SWG\Response(response=200, description="Gig updated",
+     *     @SWG\Schema(
+     *         @Model(type=Gig::class)
+     *     )
      * )
+     * @SWG\Response(response=400, description="Invalid request")
+     * @SWG\Response(response=404, description="Gig not found")
      *
      * @Security("is_granted('edit')")
      *
@@ -128,10 +138,13 @@ class GigController extends Controller
     /**
      * Patch an existing Gig.
      *
-     * @ApiDoc(
-     *  input="AppBundle\Form\Type\GigType",
-     *  output="AppBundle\Entity\Gig"
+     * @SWG\Response(response=200, description="Gig patched",
+     *     @SWG\Schema(
+     *         @Model(type=Gig::class)
+     *     )
      * )
+     * @SWG\Response(response=400, description="Invalid request")
+     * @SWG\Response(response=404, description="Gig not found")
      *
      * @Security("is_granted('edit')")
      *
@@ -158,10 +171,13 @@ class GigController extends Controller
     /**
      * Delete an existing Gig.
      *
-     * @ApiDoc(statusCodes = {
+     * ApiDoc(statusCodes = {
      *     204 = "Gig deleted",
      *     404 = "Gig not found"
      *   })
+     *
+     * @SWG\Response(response=204, description="Gig deleted")
+     * @SWG\Response(response=404, description="Gig not found")
      *
      * @Security("is_granted('delete')")
      *

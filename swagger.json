@@ -1,0 +1,581 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Promote Api",
+        "description": "Handsmoe API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Api index. should we list endpoints ?"
+                    }
+                }
+            }
+        },
+        "/token": {
+            "post": {
+                "summary": "Get token.",
+                "description": "Protected by login form (username & password as form-data to this page).",
+                "responses": {
+                    "200": {
+                        "description": "Auth granted"
+                    },
+                    "403": {
+                        "description": "Invalid credentials"
+                    }
+                }
+            }
+        },
+        "/artists": {
+            "get": {
+                "summary": "Get artists.",
+                "responses": {
+                    "200": {
+                        "description": "Get artists",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/PaginatedRepresentation"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new Artist.",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "description": "Artist to add",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/ArtistType"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Artist created",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Artist"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request"
+                    }
+                }
+            }
+        },
+        "/artists/{artist}": {
+            "get": {
+                "summary": "Get an artist.",
+                "parameters": [
+                    {
+                        "name": "artist",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "x-example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get an artist",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Artist"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Artist not found"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update an Artist.",
+                "parameters": [
+                    {
+                        "name": "artist",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "x-example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Artist updated",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Artist"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request"
+                    },
+                    "404": {
+                        "description": "Artist not found"
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Pacth an Artist.",
+                "parameters": [
+                    {
+                        "name": "artist",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "x-example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Artist updated",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Artist"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request"
+                    },
+                    "404": {
+                        "description": "Artist not found"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete an Artist.",
+                "parameters": [
+                    {
+                        "name": "artist",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "x-example": "1"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Artist deleted"
+                    },
+                    "404": {
+                        "description": "Artist not found"
+                    }
+                }
+            }
+        },
+        "/artists/{artist}/picture": {
+            "put": {
+                "summary": "Upload a new artist picture.",
+                "parameters": [
+                    {
+                        "name": "artist",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "x-example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Artist picture updated",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Artist"
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Unsupported media type"
+                    },
+                    "404": {
+                        "description": "Artist not found"
+                    }
+                }
+            }
+        },
+        "/labels": {
+            "get": {
+                "summary": "Get all labels.",
+                "responses": {
+                    "200": {
+                        "description": "Paginated label collection",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/PaginatedRepresentation"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new label.",
+                "responses": {
+                    "201": {
+                        "description": "Label created",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Label"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request"
+                    }
+                }
+            }
+        },
+        "/labels/{label}": {
+            "get": {
+                "summary": "Get a Label.",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "x-example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get a label",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Label"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Label not found"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a label.",
+                "description": "ApiDoc(\n input=\"AppBundle\\Form\\Type\\LabelType\",\n output=\"AppBundle\\Entity\\Label\",\n statusCodes = {\n    200 = \"Label updated\",\n    404 = \"Label not found\"\n  }\n)",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "x-example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Label updated",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Label"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request"
+                    },
+                    "404": {
+                        "description": "Label not found"
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Patch a label.",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "x-example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Label patched",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Label"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request"
+                    },
+                    "404": {
+                        "description": "Label not found"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a label.",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "x-example": "1"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Label deleted"
+                    },
+                    "404": {
+                        "description": "Label not found"
+                    }
+                }
+            }
+        },
+        "/gigs": {
+            "get": {
+                "summary": "Get all gigs.",
+                "responses": {
+                    "200": {
+                        "description": "Get the paginated gigs collection",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/PaginatedRepresentation"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new Gig.",
+                "responses": {
+                    "201": {
+                        "description": "Gig created",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Gig"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request"
+                    }
+                }
+            }
+        },
+        "/gigs/{gig}": {
+            "get": {
+                "summary": "Get a gig.",
+                "parameters": [
+                    {
+                        "name": "gig",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "x-example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get a gig",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Gig"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Gig not found"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Modify an existing Gig.",
+                "parameters": [
+                    {
+                        "name": "gig",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "x-example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Gig updated",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Gig"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    },
+                    "404": {
+                        "description": "Gig not found"
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Patch an existing Gig.",
+                "parameters": [
+                    {
+                        "name": "gig",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "x-example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Gig patched",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Gig"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    },
+                    "404": {
+                        "description": "Gig not found"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete an existing Gig.",
+                "description": "ApiDoc(statusCodes = {\n  204 = \"Gig deleted\",\n  404 = \"Gig not found\"\n})",
+                "parameters": [
+                    {
+                        "name": "gig",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "x-example": "1"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Gig deleted"
+                    },
+                    "404": {
+                        "description": "Gig not found"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "PaginatedRepresentation": {
+            "type": "object"
+        },
+        "Artist": {
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "bio": {
+                    "type": "string"
+                },
+                "image_name": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "ArtistType": {
+            "required": [
+                "name",
+                "slug",
+                "bio",
+                "gigs",
+                "labels"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "bio": {
+                    "type": "string"
+                },
+                "gigs": {
+                    "example": "[1, 2, 3]",
+                    "type": "array",
+                    "format": "[AppBundle\\Entity\\Gig id]"
+                },
+                "labels": {
+                    "example": "[1, 2, 3]",
+                    "type": "array",
+                    "format": "[AppBundle\\Entity\\Label id]"
+                }
+            },
+            "type": "object"
+        },
+        "Label": {
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "Gig": {
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "start_date": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "end_date": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "venue": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "facebook_link": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        }
+    }
+}
