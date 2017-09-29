@@ -31,8 +31,8 @@ class GigType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('startDate', DateTimeType::class)
-            ->add('endDate', DateTimeType::class)
+            ->add('startDate', DateTimeType::class, ['widget' => 'single_text'])
+            ->add('endDate', DateTimeType::class, ['widget' => 'single_text'])
             ->add('venue', TextareaType::class)
             ->add('address', TextareaType::class)
             ->add('facebookLink', TextareaType::class);

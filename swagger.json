@@ -5,12 +5,21 @@
         "description": "Handsmoe API",
         "version": "1.0.0"
     },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
     "paths": {
         "/": {
             "get": {
                 "responses": {
                     "200": {
-                        "description": "Api index. should we list endpoints ?"
+                        "description": "Swagger schema",
+                        "schema": {
+                            "type": "object"
+                        }
                     }
                 }
             }
@@ -19,9 +28,38 @@
             "post": {
                 "summary": "Get token.",
                 "description": "Protected by login form (username & password as form-data to this page).",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "description": "Authentication credentials",
+                        "schema": {
+                            "required": [
+                                "username",
+                                "password"
+                            ],
+                            "properties": {
+                                "username": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Auth granted"
+                        "description": "Auth granted",
+                        "schema": {
+                            "properties": {
+                                "apiKey": {
+                                    "type": "string"
+                                }
+                            }
+                        }
                     },
                     "403": {
                         "description": "Invalid credentials"
@@ -47,14 +85,12 @@
                 "summary": "Create a new Artist.",
                 "parameters": [
                     {
-                        "name": "body",
+                        "name": "artist",
                         "in": "body",
                         "required": true,
                         "description": "Artist to add",
                         "schema": {
-                            "items": {
-                                "$ref": "#/definitions/ArtistType"
-                            }
+                            "$ref": "#/definitions/ArtistType"
                         }
                     }
                 ],
@@ -62,9 +98,7 @@
                     "201": {
                         "description": "Artist created",
                         "schema": {
-                            "items": {
-                                "$ref": "#/definitions/Artist"
-                            }
+                            "$ref": "#/definitions/Artist"
                         }
                     },
                     "400": {
@@ -103,6 +137,15 @@
                 "summary": "Update an Artist.",
                 "parameters": [
                     {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "description": "Artist to update",
+                        "schema": {
+                            "$ref": "#/definitions/ArtistType"
+                        }
+                    },
+                    {
                         "name": "artist",
                         "in": "path",
                         "required": true,
@@ -114,9 +157,7 @@
                     "200": {
                         "description": "Artist updated",
                         "schema": {
-                            "items": {
-                                "$ref": "#/definitions/Artist"
-                            }
+                            "$ref": "#/definitions/Artist"
                         }
                     },
                     "400": {
@@ -131,6 +172,15 @@
                 "summary": "Pacth an Artist.",
                 "parameters": [
                     {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "description": "Artist to patch",
+                        "schema": {
+                            "$ref": "#/definitions/ArtistType"
+                        }
+                    },
+                    {
                         "name": "artist",
                         "in": "path",
                         "required": true,
@@ -142,9 +192,7 @@
                     "200": {
                         "description": "Artist updated",
                         "schema": {
-                            "items": {
-                                "$ref": "#/definitions/Artist"
-                            }
+                            "$ref": "#/definitions/Artist"
                         }
                     },
                     "400": {
@@ -163,7 +211,7 @@
                         "in": "path",
                         "required": true,
                         "type": "string",
-                        "x-example": "1"
+                        "x-example": "2"
                     }
                 ],
                 "responses": {
@@ -181,6 +229,16 @@
                 "summary": "Upload a new artist picture.",
                 "parameters": [
                     {
+                        "name": "BinaryData",
+                        "in": "body",
+                        "required": true,
+                        "description": "Image content",
+                        "schema": {
+                            "type": "string",
+                            "format": "byte"
+                        }
+                    },
+                    {
                         "name": "artist",
                         "in": "path",
                         "required": true,
@@ -192,9 +250,7 @@
                     "200": {
                         "description": "Artist picture updated",
                         "schema": {
-                            "items": {
-                                "$ref": "#/definitions/Artist"
-                            }
+                            "$ref": "#/definitions/Artist"
                         }
                     },
                     "415": {
@@ -213,22 +269,29 @@
                     "200": {
                         "description": "Paginated label collection",
                         "schema": {
-                            "items": {
-                                "$ref": "#/definitions/PaginatedRepresentation"
-                            }
+                            "$ref": "#/definitions/PaginatedRepresentation"
                         }
                     }
                 }
             },
             "post": {
                 "summary": "Create a new label.",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "description": "Label to add",
+                        "schema": {
+                            "$ref": "#/definitions/LabelType"
+                        }
+                    }
+                ],
                 "responses": {
                     "201": {
                         "description": "Label created",
                         "schema": {
-                            "items": {
-                                "$ref": "#/definitions/Label"
-                            }
+                            "$ref": "#/definitions/Label"
                         }
                     },
                     "400": {
@@ -253,9 +316,7 @@
                     "200": {
                         "description": "Get a label",
                         "schema": {
-                            "items": {
-                                "$ref": "#/definitions/Label"
-                            }
+                            "$ref": "#/definitions/Label"
                         }
                     },
                     "404": {
@@ -267,6 +328,15 @@
                 "summary": "Update a label.",
                 "description": "ApiDoc(\n input=\"AppBundle\\Form\\Type\\LabelType\",\n output=\"AppBundle\\Entity\\Label\",\n statusCodes = {\n    200 = \"Label updated\",\n    404 = \"Label not found\"\n  }\n)",
                 "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "description": "Label to add",
+                        "schema": {
+                            "$ref": "#/definitions/LabelType"
+                        }
+                    },
                     {
                         "name": "label",
                         "in": "path",
@@ -296,6 +366,15 @@
                 "summary": "Patch a label.",
                 "parameters": [
                     {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "description": "Label to add",
+                        "schema": {
+                            "$ref": "#/definitions/LabelType"
+                        }
+                    },
+                    {
                         "name": "label",
                         "in": "path",
                         "required": true,
@@ -307,9 +386,7 @@
                     "200": {
                         "description": "Label patched",
                         "schema": {
-                            "items": {
-                                "$ref": "#/definitions/Label"
-                            }
+                            "$ref": "#/definitions/Label"
                         }
                     },
                     "400": {
@@ -328,7 +405,7 @@
                         "in": "path",
                         "required": true,
                         "type": "string",
-                        "x-example": "1"
+                        "x-example": "2"
                     }
                 ],
                 "responses": {
@@ -357,13 +434,22 @@
             },
             "post": {
                 "summary": "Create a new Gig.",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "description": "Gig to add",
+                        "schema": {
+                            "$ref": "#/definitions/GigType"
+                        }
+                    }
+                ],
                 "responses": {
                     "201": {
                         "description": "Gig created",
                         "schema": {
-                            "items": {
-                                "$ref": "#/definitions/Gig"
-                            }
+                            "$ref": "#/definitions/Gig"
                         }
                     },
                     "400": {
@@ -388,9 +474,7 @@
                     "200": {
                         "description": "Get a gig",
                         "schema": {
-                            "items": {
-                                "$ref": "#/definitions/Gig"
-                            }
+                            "$ref": "#/definitions/Gig"
                         }
                     },
                     "404": {
@@ -401,6 +485,15 @@
             "put": {
                 "summary": "Modify an existing Gig.",
                 "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "description": "Gig to add",
+                        "schema": {
+                            "$ref": "#/definitions/GigType"
+                        }
+                    },
                     {
                         "name": "gig",
                         "in": "path",
@@ -413,9 +506,7 @@
                     "200": {
                         "description": "Gig updated",
                         "schema": {
-                            "items": {
-                                "$ref": "#/definitions/Gig"
-                            }
+                            "$ref": "#/definitions/Gig"
                         }
                     },
                     "400": {
@@ -430,6 +521,15 @@
                 "summary": "Patch an existing Gig.",
                 "parameters": [
                     {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "description": "Gig to add",
+                        "schema": {
+                            "$ref": "#/definitions/GigType"
+                        }
+                    },
+                    {
                         "name": "gig",
                         "in": "path",
                         "required": true,
@@ -441,9 +541,7 @@
                     "200": {
                         "description": "Gig patched",
                         "schema": {
-                            "items": {
-                                "$ref": "#/definitions/Gig"
-                            }
+                            "$ref": "#/definitions/Gig"
                         }
                     },
                     "400": {
@@ -463,7 +561,7 @@
                         "in": "path",
                         "required": true,
                         "type": "string",
-                        "x-example": "1"
+                        "x-example": "2"
                     }
                 ],
                 "responses": {
@@ -549,6 +647,25 @@
             },
             "type": "object"
         },
+        "LabelType": {
+            "required": [
+                "name",
+                "slug",
+                "description"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
         "Gig": {
             "properties": {
                 "id": {
@@ -572,6 +689,39 @@
                     "type": "string"
                 },
                 "facebook_link": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "GigType": {
+            "required": [
+                "name",
+                "startDate",
+                "endDate",
+                "venue",
+                "address",
+                "facebookLink"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "startDate": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "endDate": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "venue": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "facebookLink": {
                     "type": "string"
                 }
             },

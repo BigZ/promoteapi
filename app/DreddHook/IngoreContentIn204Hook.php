@@ -3,7 +3,7 @@
 use Dredd\Hooks;
 
 /**
- * ignore body and headers validation if the content type (
+ * ignore body and headers validation if the response code is 204.
  */
 Hooks::beforeAll(function(&$transactions) {
     foreach ($transactions as $transaction) {

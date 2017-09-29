@@ -24,6 +24,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
+    const PASSWORD = 'test';
+
+    /**
+     * Some fixture users may be useful for tests, and need to be accessed separately.
+     */
+    const USER_ADMIN = [
+        'username' => 'admin',
+        'email' => 'admin@admin.com',
+        'apiKey' => '123',
+        'roles' => ['ROLE_ADMIN'],
+    ];
+
     /**
      * @var ContainerInterface
      */
@@ -52,7 +64,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
                 $user->$setter($fieldValue);
             }
 
-            $password = $encoder->encodePassword($user, 'test');
+            $password = $encoder->encodePassword($user, self::PASSWORD);
             $user->setPassword($password);
             $manager->persist($user);
         }
@@ -74,12 +86,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     private function getUsers()
     {
         return [
-            [
-                'username' => 'admin',
-                'email' => 'admin@admin.com',
-                'apiKey' => '123',
-                'roles' => ['ROLE_ADMIN'],
-            ],
+            self::USER_ADMIN,
             [
                 'username' => 'user1',
                 'email' => 'user1@user.com',

@@ -52,11 +52,7 @@ class GigController extends Controller
     /**
      * Get a gig.
      *
-     * @SWG\Response(response=200, description="Get a gig",
-     *     @SWG\Schema(
-     *         @Model(type=Gig::class)
-     *     )
-     * )
+     * @SWG\Response(response=200, description="Get a gig", @Model(type=Gig::class))
      * @SWG\Response(response=404, description="Gig not found")
      *
      * @param Gig $gig
@@ -71,11 +67,14 @@ class GigController extends Controller
     /**
      * Create a new Gig.
      *
-     * @SWG\Response(response=201, description="Gig created",
-     *     @SWG\Schema(
-     *         @Model(type=Gig::class)
-     *     )
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="Gig to add",
+     *     required=true,
+     *     @Model(type=GigType::class),
      * )
+     * @SWG\Response(response=201, description="Gig created", @Model(type=Gig::class))
      * @SWG\Response(response=400, description="Invalid Request")
      *
      * @Security("is_granted('create')")
@@ -105,11 +104,14 @@ class GigController extends Controller
     /**
      * Modify an existing Gig.
      *
-     * @SWG\Response(response=200, description="Gig updated",
-     *     @SWG\Schema(
-     *         @Model(type=Gig::class)
-     *     )
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="Gig to add",
+     *     required=true,
+     *     @Model(type=GigType::class),
      * )
+     * @SWG\Response(response=200, description="Gig updated", @Model(type=Gig::class))
      * @SWG\Response(response=400, description="Invalid request")
      * @SWG\Response(response=404, description="Gig not found")
      *
@@ -138,11 +140,14 @@ class GigController extends Controller
     /**
      * Patch an existing Gig.
      *
-     * @SWG\Response(response=200, description="Gig patched",
-     *     @SWG\Schema(
-     *         @Model(type=Gig::class)
-     *     )
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="Gig to add",
+     *     required=true,
+     *     @Model(type=GigType::class),
      * )
+     * @SWG\Response(response=200, description="Gig patched", @Model(type=Gig::class))
      * @SWG\Response(response=400, description="Invalid request")
      * @SWG\Response(response=404, description="Gig not found")
      *

@@ -85,6 +85,10 @@ nelmio_api_doc:
             title: Promote Api
             description: Handsmoe API
             version: 1.0.0
+        produces:
+          - application/json
+        consumes:
+          - application/json
 
 # Virtual FileSystem on S3
 oneup_flysystem:

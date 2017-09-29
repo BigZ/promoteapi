@@ -34,6 +34,8 @@ class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
             $artist->setName($data['name']);
             $artist->setSlug($data['slug']);
             $artist->setBio($data['bio']);
+            $artist->setCreatedAt(new \DateTime('now'));
+            $artist->setUpdatedAt(new \DateTime('now'));
 
             foreach ($data['labels'] as $label) {
                 $artist->addLabel($manager->getRepository('AppBundle:Label')->findOneBySlug($label));

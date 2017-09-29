@@ -121,6 +121,13 @@ class Artist
      * @var \DateTime
      */
     private $updatedAt;
+    
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @var \DateTime
+     */
+    private $createdAt;
 
     /**
      * @var User
@@ -314,6 +321,22 @@ class Artist
     }
 
     /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+    
+    /**
      * @return \DateTime
      */
     public function getUpdatedAt()
@@ -355,9 +378,17 @@ class Artist
 
     /**
      * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->setCreatedAt(new \DateTime('now'));
+        $this->setUpdatedAt(new \DateTime('now'));
+    }
+    
+    /**
      * @ORM\PreUpdate
      */
-    public function updatedTimestamps()
+    public function preUpdate()
     {
         $this->setUpdatedAt(new \DateTime('now'));
     }

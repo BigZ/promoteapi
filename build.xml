@@ -55,7 +55,7 @@
     <target name="drop-schema"
             unless="drop-schema.done"
             description="Drop Database schema">
-        <exec executable="${console}">
+        <exec executable="${console}" checkreturn="true" passthru="true">
             <arg value="doctrine:schema:drop" />
             <arg value="--no-interaction" />
             <arg value="--force" />
@@ -68,7 +68,7 @@
     <target name="migrate"
             unless="migrate.done"
             description="Migrate Database schema">
-        <exec executable="${console}">
+        <exec executable="${console}" checkreturn="true" passthru="true">
             <arg value="doctrine:migrations:migrate" />
             <arg value="--no-interaction" />
             <arg value="--ansi" />
@@ -79,7 +79,7 @@
     <target name="fixture"
             unless="fixture.done"
             description="Load doctrine fixtures">
-        <exec executable="${console}">
+        <exec executable="${console}" checkreturn="true" passthru="true">
             <arg value="doctrine:fixtures:load" />
             <arg value="--no-interaction" />
             <arg value="--ansi" />

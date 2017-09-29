@@ -13,7 +13,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Halapi\Annotation\Embeddable;
-use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 
@@ -22,6 +22,7 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
  *
  * @ORM\Table(name="gig")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\GigRepository")
+ * @ORM\HasLifecycleCallbacks
  *
  * @ExclusionPolicy("all")
  */
@@ -34,7 +35,7 @@ class Gig
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Expose
+     * @JMS\Expose
      */
     private $id;
 
@@ -45,7 +46,7 @@ class Gig
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
      *
-     * @Expose
+     * @JMS\Expose
      */
     private $name;
 
@@ -57,7 +58,8 @@ class Gig
      *
      * @ORM\Column(name="startDate", type="datetime")
      *
-     * @Expose
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d\TH:i:s.000\Z'>")
      */
     private $startDate;
 
@@ -68,7 +70,8 @@ class Gig
      *
      * @ORM\Column(name="endDate", type="datetime", nullable=true)
      *
-     * @Expose
+     * @JMS\Expose
+     * @JMS\Type("DateTime<'Y-m-d\TH:i:s.000\Z'>")
      */
     private $endDate;
 
@@ -77,7 +80,7 @@ class Gig
      *
      * @ORM\Column(name="venue", type="string", length=255, nullable=true)
      *
-     * @Expose
+     * @JMS\Expose
      */
     private $venue;
 
@@ -88,7 +91,7 @@ class Gig
      *
      * @ORM\Column(name="address", type="string", length=255)
      *
-     * @Expose
+     * @JMS\Expose
      */
     private $address;
 
@@ -97,7 +100,7 @@ class Gig
      *
      * @ORM\Column(name="facebookLink", type="string", length=255, nullable=true, unique=true)
      *
-     * @Expose
+     * @JMS\Expose
      */
     private $facebookLink;
 
@@ -122,9 +125,16 @@ class Gig
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="createdAt", type="datetime")
+     * @ORM\Column(type="datetime")
      */
     protected $createdAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime")
+     */
+    protected $updatedAt;
 
     /**
      * Get id.
@@ -350,5 +360,38 @@ class Gig
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->setCreatedAt(new \DateTime('now'));
+        $this->setUpdatedAt(new \DateTime('now'));
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdate()
+    {
+        $this->setUpdatedAt(new \DateTime('now'));
     }
 }

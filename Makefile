@@ -1,4 +1,5 @@
-PHING_IS_INSTALLED=$(shell [ -e ./vendor/bin/phing ] && echo 1 || echo 0 )
+PHING_BIN = ./vendor/bin/phing
+PHING_IS_INSTALLED=$(shell [ -e $(PHING_BIN) ] && echo 1 || echo 0 )
 
 .PHONY: install
 
@@ -6,7 +7,13 @@ install:
     ifeq ($(PHING_IS_INSTALLED), 0)
         composer install
     endif
-	phing full-build
+	$(PHING_BIN) prepare
+
+build:
+    ifeq ($(PHING_IS_INSTALLED), 0)
+        composer install
+    endif
+	$(PHING_BIN) full-build
 
 start:
     php app/console server:run
@@ -15,4 +22,4 @@ stop:
     php app/console server:stop
 
 test:
-	phing tests
+	$(PHING_BIN) tests

@@ -79,7 +79,8 @@ class GenerateSwaggerDocumentationCommand extends ContainerAwareCommand
                 if (isset($method['parameters']) && is_array($method['parameters'])) {
                     foreach ($method['parameters'] as $parameterName => $parameter) {
                         if (true === $parameter['required'] && 'path' === $parameter['in']) {
-                            $pathList[$pathName][$methodName]['parameters'][$parameterName]['x-example'] = '1';
+                            $pathList[$pathName][$methodName]['parameters'][$parameterName]['x-example'] =
+                                'delete' === $methodName ? '2' : '1';
                         }
                     }
                 }

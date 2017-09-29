@@ -73,17 +73,13 @@ class ArtistController extends Controller
      * Create a new Artist.
      *
      * @SWG\Parameter(
-     *     name="body",
+     *     name="artist",
      *     in="body",
      *     description="Artist to add",
      *     required=true,
-     *     @SWG\Schema(@Model(type=ArtistType::class)),
+     *     @Model(type=ArtistType::class),
      * )
-     * @SWG\Response(response=201, description="Artist created",
-     *     @SWG\Schema(
-     *         @Model(type=Artist::class)
-     *     )
-     * )
+     * @SWG\Response(response=201, description="Artist created", @Model(type=Artist::class))
      * @SWG\Response(response=400, description="Invalid Request")
      *
      * @param Request $request
@@ -113,11 +109,14 @@ class ArtistController extends Controller
     /**
      * Update an Artist.
      *
-     * @SWG\Response(response=200, description="Artist updated",
-     *     @SWG\Schema(
-     *         @Model(type=Artist::class)
-     *     )
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="Artist to update",
+     *     required=true,
+     *     @Model(type=ArtistType::class),
      * )
+     * @SWG\Response(response=200, description="Artist updated", @Model(type=Artist::class))
      * @SWG\Response(response=400, description="Invalid Request")
      * @SWG\Response(response=404, description="Artist not found")
      *
@@ -146,11 +145,14 @@ class ArtistController extends Controller
     /**
      * Pacth an Artist.
      *
-     * @SWG\Response(response=200, description="Artist updated",
-     *     @SWG\Schema(
-     *         @Model(type=Artist::class)
-     *     )
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="Artist to patch",
+     *     required=true,
+     *     @Model(type=ArtistType::class),
      * )
+     * @SWG\Response(response=200, description="Artist updated", @Model(type=Artist::class))
      * @SWG\Response(response=400, description="Invalid Request")
      * @SWG\Response(response=404, description="Artist not found")
      *
@@ -213,11 +215,14 @@ class ArtistController extends Controller
      * @param Request $request
      * @param Artist  $artist
      *
-     * @SWG\Response(response=200, description="Artist picture updated",
-     *     @SWG\Schema(
-     *         @Model(type=Artist::class)
-     *     )
+     * @SWG\Parameter(
+     *     name="BinaryData",
+     *     in="body",
+     *     description="Image content",
+     *     required=true,
+     *     @SWG\Schema(type="string", format="byte"),
      * )
+     * @SWG\Response(response=200, description="Artist picture updated", @Model(type=Artist::class))
      * @SWG\Response(response=415, description="Unsupported media type")
      * @SWG\Response(response=404, description="Artist not found")
      *

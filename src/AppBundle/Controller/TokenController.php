@@ -26,7 +26,24 @@ class TokenController extends Controller
      * Get token.
      * Protected by login form (username & password as form-data to this page).
      *
-     * @SWG\Response(response=200, description="Auth granted")
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="Authentication credentials",
+     *     required=true,
+     *     @SWG\Schema(
+     *           required={"username", "password"},
+     *           @SWG\Property(property="username", type="string"),
+     *           @SWG\Property(property="password", type="string")
+     *     )
+     * )
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Auth granted",
+     *     @SWG\Schema(
+     *           @SWG\Property(property="apiKey", type="string")
+     *     ))
      * @SWG\Response(response=403, description="Invalid credentials")
      * @Route("/token")
      *
@@ -38,6 +55,6 @@ class TokenController extends Controller
      */
     public function getTokenAction()
     {
-        return $this->getUser()->getApiKey();
+        return ['apiKey' => $this->getUser()->getApiKey()];
     }
 }

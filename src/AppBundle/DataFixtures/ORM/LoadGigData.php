@@ -37,6 +37,8 @@ class LoadGigData extends AbstractFixture implements OrderedFixtureInterface
             $gig->setAddress($data['address']);
             $gig->setFacebookLink($data['facebookLink']);
             $gig->setName($data['name']);
+            $gig->setCreatedAt(new \DateTime('now'));
+            $gig->setUpdatedAt(new \DateTime('now'));
 
             $manager->persist($gig);
 

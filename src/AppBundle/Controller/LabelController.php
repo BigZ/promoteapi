@@ -35,10 +35,10 @@ class LabelController extends Controller
     /**
      * Get all labels.
      *
-     * @SWG\Response(response=200, description="Paginated label collection",
-     *     @SWG\Schema(
-     *         @Model(type=PaginatedRepresentation::class)
-     *     )
+     * @SWG\Response(
+     *     response=200,
+     *     description="Paginated label collection",
+     *     @Model(type=PaginatedRepresentation::class)
      * )
      * @param ParamFetcher $paramFetcher
      *
@@ -52,11 +52,7 @@ class LabelController extends Controller
     /**
      * Get a Label.
      *
-     * @SWG\Response(response=200, description="Get a label",
-     *     @SWG\Schema(
-     *         @Model(type=Label::class)
-     *     )
-     * )
+     * @SWG\Response(response=200, description="Get a label", @Model(type=Label::class))
      * @SWG\Response(response=404, description="Label not found")
      *
      * @param Label $label
@@ -71,10 +67,14 @@ class LabelController extends Controller
     /**
      * Create a new label.
      *
-     * @SWG\Response(response=201, description="Label created",
-     *     @SWG\Schema(
-     *         @Model(type=Label::class)
-     *     )
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="Label to add",
+     *     required=true,
+     *     @Model(type=LabelType::class),
+     * )
+     * @SWG\Response(response=201, description="Label created", @Model(type=Label::class))
      * )
      * @SWG\Response(response=400, description="Invalid Request")
      *
@@ -114,10 +114,15 @@ class LabelController extends Controller
      *   }
      * )
      *
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="Label to add",
+     *     required=true,
+     *     @Model(type=LabelType::class),
+     * )
      * @SWG\Response(response=200, description="Label updated",
-     *     @SWG\Schema(
-     *         @Model(type=Label::class)
-     *     )
+     *     @SWG\Schema(@Model(type=Label::class))
      * )
      * @SWG\Response(response=400, description="Invalid Request")
      * @SWG\Response(response=404, description="Label not found")
@@ -147,12 +152,14 @@ class LabelController extends Controller
     /**
      * Patch a label.
      *
-     *
-     * @SWG\Response(response=200, description="Label patched",
-     *     @SWG\Schema(
-     *         @Model(type=Label::class)
-     *     )
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="Label to add",
+     *     required=true,
+     *     @Model(type=LabelType::class)
      * )
+     * @SWG\Response(response=200, description="Label patched", @Model(type=Label::class))
      * @SWG\Response(response=400, description="Invalid Request")
      * @SWG\Response(response=404, description="Label not found")
      *

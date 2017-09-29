@@ -22,6 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="label")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LabelRepository")
+ * @ORM\HasLifecycleCallbacks
  *
  * @ExclusionPolicy("all")
  */
@@ -86,6 +87,20 @@ class Label
      * @Embeddable
      */
     protected $createdBy;
+
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @var \DateTime
+     */
+    private $updatedAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @var \DateTime
+     */
+    private $createdAt;
 
     /**
      * Get id.
@@ -211,5 +226,58 @@ class Label
     public function getCreatedBy()
     {
         return $this->createdBy;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param $createdAt
+     *
+     * @return $this
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->setCreatedAt(new \DateTime('now'));
+        $this->setUpdatedAt(new \DateTime('now'));
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdate()
+    {
+        $this->setUpdatedAt(new \DateTime('now'));
     }
 }

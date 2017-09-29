@@ -13,6 +13,7 @@ namespace AppBundle\Security\Authenticator;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -47,10 +48,17 @@ class FormAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
+        try {
+            $credentials = json_decode($request->getContent());
         return [
-            'username' => $request->request->get('username'),
-            'password' => $request->request->get('password'),
+            'username' => $credentials->username,
+            'password' => $credentials->password,
         ];
+        } catch (\Exception $exception) {
+            throw new BadRequestHttpException(
+                'The request must be in json and include both an username & password field'
+            );
+        }
     }
 
     /**
@@ -90,9 +98,7 @@ class FormAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        $data = array(
-            'message' => strtr($exception->getMessageKey(), $exception->getMessageData()),
-        );
+        $data = ['message' => strtr($exception->getMessageKey(), $exception->getMessageData())];
 
         return new JsonResponse($data, 403);
     }
@@ -102,12 +108,7 @@ class FormAuthenticator extends AbstractGuardAuthenticator
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        $data = array(
-            // you might translate this message
-            'message' => 'Authentication Required',
-        );
-
-        return new JsonResponse($data, 401);
+        return new JsonResponse(['message' => 'Authentication Required'], 401);
     }
 
     /**

@@ -33,6 +33,8 @@ class LoadLabelData extends AbstractFixture implements OrderedFixtureInterface
             $label->setName($data['name']);
             $label->setSlug($data['slug']);
             $label->setDescription($data['description']);
+            $label->setCreatedAt(new \DateTime('now'));
+            $label->setUpdatedAt(new \DateTime('now'));
 
             $manager->persist($label);
         }
