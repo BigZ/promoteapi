@@ -32,7 +32,7 @@
         "league/flysystem-aws-s3-v3": "^1.0",
         "vich/uploader-bundle": "^1.7",
         "phing/phing": "^2.16",
-        "bigz/halapi-bundle": ">=0.2.2",
+        "bigz/halapi-bundle": ">=0.3",
         "nelmio/api-doc-bundle": "^3",
         "symfony/flex": "^1.0",
         "sensio/framework-extra-bundle": "^5.2",

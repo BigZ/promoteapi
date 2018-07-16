@@ -64,7 +64,7 @@ services:
         arguments:
             -
                 version: "latest"
-                region: "%env(AWS_ACCESS_KEY_ID)%"
+                region: "%env(AWS_REGION)%"
                 credentials:
                     key: "%env(AWS_ACCESS_KEY_ID)%"
                     secret: "%env(AWS_SECRET_ACCESS_KEY)%"
@@ -75,7 +75,3 @@ services:
         arguments: ['@annotations.cached_reader', "%env(AWS_REGION)%", "%env(AWS_BUCKET)%"]
         tags:
             - { name: jms_serializer.event_subscriber }
-
-    App\EventListener\ResponseListener:
-            tags:
-                - { name: kernel.event_listener, event: kernel.response }

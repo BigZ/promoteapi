@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd2d657e72e688515a35dbe72eb332df",
+    "content-hash": "818564c8135d6416530d1dd57fd90f2a",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -185,21 +185,22 @@
         },
         {
             "name": "bigz/halapi-bundle",
-            "version": "0.2.4",
+            "version": "0.3.1",
             "target-dir": "Bigz/HalapiBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BigZ/HalapiBundle.git",
-                "reference": "1669e5c6533c3741b45f7537ea4642e1a70ba0f2"
+                "reference": "ae55af21b68741b26be5c9300615ab356b8f9a99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BigZ/HalapiBundle/zipball/1669e5c6533c3741b45f7537ea4642e1a70ba0f2",
-                "reference": "1669e5c6533c3741b45f7537ea4642e1a70ba0f2",
+                "url": "https://api.github.com/repos/BigZ/HalapiBundle/zipball/ae55af21b68741b26be5c9300615ab356b8f9a99",
+                "reference": "ae55af21b68741b26be5c9300615ab356b8f9a99",
                 "shasum": ""
             },
             "require": {
                 "bigz/halapi": "^0.2",
+                "league/fractal": "^0.17.0",
                 "pagerfanta/pagerfanta": "^1.0",
                 "php": ">5.5",
                 "symfony/framework-bundle": "~2.7 || ~4.0",
@@ -234,20 +235,20 @@
                 "hal",
                 "rest"
             ],
-            "time": "2018-07-16T14:31:41+00:00"
+            "time": "2018-07-16T20:23:13+00:00"
         },
         {
             "name": "bigz/s3url",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BigZ/S3Url.git",
-                "reference": "9abdbf2738c64a203914006ed769498bacbd0401"
+                "reference": "b43080fbad84dfb008a25f6ac1415ca63ce20a66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BigZ/S3Url/zipball/9abdbf2738c64a203914006ed769498bacbd0401",
-                "reference": "9abdbf2738c64a203914006ed769498bacbd0401",
+                "url": "https://api.github.com/repos/BigZ/S3Url/zipball/b43080fbad84dfb008a25f6ac1415ca63ce20a66",
+                "reference": "b43080fbad84dfb008a25f6ac1415ca63ce20a66",
                 "shasum": ""
             },
             "require": {
@@ -263,11 +264,6 @@
                 "squizlabs/php_codesniffer": "^3.3"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.10-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "": "src/",
@@ -285,7 +281,7 @@
                 }
             ],
             "description": "A subscriber for s3 urls in APIs",
-            "time": "2018-07-16T15:31:41+00:00"
+            "time": "2018-07-16T15:33:53+00:00"
         },
         {
             "name": "doctrine/annotations",
