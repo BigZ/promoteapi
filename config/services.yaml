@@ -1,0 +1,77 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: 'en'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Allows optimizing the container by removing unused services; this also means
+                            # fetching services directly from the container via $container->get() won't work.
+                            # The best practice is to be explicit about your dependencies anyway.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    #App\:
+        #resource: '../src/*'
+        #exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    #App\Controller\:
+        #resource: '../src/Controller'
+        #tags: ['controller.service_arguments']
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    #Authenticators
+    app.token_authenticator:
+        class: App\Security\Authenticator\TokenAuthenticator
+        arguments: ['@doctrine.orm.entity_manager']
+    app.form_authenticator:
+        class: App\Security\Authenticator\FormAuthenticator
+        arguments: ['@security.password_encoder']
+
+    #Voters
+    app.artist_voter:
+        class: App\Security\Voter\ArtistVoter
+        arguments: ['@security.access.decision_manager']
+        public: false
+        tags:
+            - { name: security.voter }
+    app.label_voter:
+        class: App\Security\Voter\LabelVoter
+        arguments: ['@security.access.decision_manager']
+        public: false
+        tags:
+            - { name: security.voter }
+    app.gig_vo(er:
+        class: App\Security\Voter\GigVoter
+        arguments: ['@security.access.decision_manager']
+        public: false
+        tags:
+            - { name: security.voter }
+
+    # Flysystem Clients
+    app.s3_client:
+        class: Aws\S3\S3Client
+        arguments:
+            -
+                version: "latest"
+                region: "%env(AWS_ACCESS_KEY_ID)%"
+                credentials:
+                    key: "%env(AWS_ACCESS_KEY_ID)%"
+                    secret: "%env(AWS_SECRET_ACCESS_KEY)%"
+
+    app.s3_public_url_subscriber:
+        public: true
+        class: App\Subscriber\S3PublicUrlSubscriber
+        arguments: ['@annotations.cached_reader', "%env(AWS_REGION)%", "%env(AWS_BUCKET)%"]
+        tags:
+            - { name: jms_serializer.event_subscriber }

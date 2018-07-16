@@ -1,0 +1,17 @@
+fos_rest:
+    exception:
+        exception_controller: 'fos_rest.exception.controller:showAction'
+        codes:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
+    param_fetcher_listener: true
+    body_listener: true
+    format_listener: true
+    view:
+        empty_content: 204
+        view_response_listener: 'force'
+        formats:
+            json : true
+        failed_validation: HTTP_BAD_REQUEST
+    routing_loader:
+        default_format: json
+        include_format: false

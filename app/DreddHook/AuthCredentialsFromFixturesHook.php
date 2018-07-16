@@ -1,7 +1,7 @@
 <?php
 
 use Dredd\Hooks;
-use AppBundle\DataFixtures\ORM\LoadUserData as UserFixtures;
+use App\DataFixtures\ORM\LoadUserData as UserFixtures;
 
 /**
  * Use fixture data to login

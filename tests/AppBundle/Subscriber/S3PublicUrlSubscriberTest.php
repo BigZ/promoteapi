@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
 */
 
-namespace test\AppBundle\Subscriber;
+namespace test\App\Subscriber;
 
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
-use AppBundle\Subscriber\S3PublicUrlSubscriber;
+use App\Subscriber\S3PublicUrlSubscriber;
 use PHPUnit\Framework\TestCase;
-use AppBundle\DataFixtures\Tests\S3SubscriberTestObject as TestObject;
+use App\DataFixtures\Tests\S3SubscriberTestObject as TestObject;
 
 /**
  * Class S3PublicUrlSubscriberTest
