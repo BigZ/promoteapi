@@ -22,7 +22,9 @@ class ResponseListener
      */
     public function onKernelResponse(FilterResponseEvent $event)
     {
-        if (200 !== $event->getResponse()->getStatusCode()) {
+        if (200 !== $event->getResponse()->getStatusCode()
+            || 'application/vnd.api+json' !== $event->getRequest()->headers->get('Content-Type')
+        ) {
             return;
         }
 
