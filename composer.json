@@ -41,7 +41,9 @@
         "symfony/form": "^4.1",
         "symfony/security-bundle": "^4.1",
         "symfony/validator": "^4.1",
-        "symfony/templating": "^4.1"
+        "symfony/templating": "^4.1",
+        "bigz/s3url": "^1.0",
+        "league/fractal": "^0.17.0"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^3.0",
@@ -57,7 +59,8 @@
         "symfony/web-server-bundle": "^4.1",
         "symfony/dotenv": "^4.1",
         "symfony/maker-bundle": "^1.5",
-        "symfony/console": "^4.1"
+        "symfony/console": "^4.1",
+        "symfony/var-dumper": "^4.1"
     },
     "conflict": {
         "symfony/symfony": "*"

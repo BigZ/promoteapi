@@ -11,6 +11,9 @@
     "bigz/halapi-bundle": {
         "version": "0.2.2"
     },
+    "bigz/s3url": {
+        "version": "1.0.1"
+    },
     "composer/semver": {
         "version": "1.4.2"
     },
@@ -151,6 +154,9 @@
     },
     "league/flysystem-aws-s3-v3": {
         "version": "1.0.19"
+    },
+    "league/fractal": {
+        "version": "0.17.0"
     },
     "monolog/monolog": {
         "version": "1.23.0"
@@ -501,6 +507,9 @@
         }
     },
     "symfony/validator": {
+        "version": "v4.1.1"
+    },
+    "symfony/var-dumper": {
         "version": "v4.1.1"
     },
     "symfony/web-server-bundle": {

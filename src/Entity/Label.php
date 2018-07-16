@@ -83,8 +83,6 @@ class Label
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User")
-     *
-     * @Embeddable
      */
     protected $createdBy;
 
