@@ -83,8 +83,6 @@
             <arg value="doctrine:fixtures:load" />
             <arg value="--no-interaction" />
             <arg value="--ansi" />
-            <arg value="--quiet" />
-            <arg value="--no-debug" />
         </exec>
         <property name="fixture.done" value="true"/>
     </target>

@@ -1,0 +1,35 @@
+security:
+    encoders:
+        App\Entity\User: bcrypt
+        Symfony\Component\Security\Core\User\User: plaintext
+        FOS\UserBundle\Model\UserInterface: sha512
+
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+
+    providers:
+        doctrine:
+            entity:
+                class: App:User
+                property: username
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        token:
+            pattern: ^/token
+            anonymous: ~
+            guard:
+                authenticators:
+                    - app.form_authenticator
+        main:
+            anonymous: ~
+            guard:
+                authenticators:
+                    - app.token_authenticator
+            stateless: true
+
+    access_control:
+            - { path: ^/artists, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+            - { path: ^/token, roles: IS_AUTHENTICATED_ANONYMOUSLY }

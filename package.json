@@ -2,7 +2,7 @@
   "name": "promote-api",
   "version": "1.0.0",
   "description": "An api to promote your events / artists",
-  "main": "web/app.php",
+  "main": "public/index.php",
   "directories": {
     "test": "tests"
   },
