@@ -13,8 +13,8 @@ namespace App\Controller;
 
 use App\Entity\Label;
 use App\Form\Type\LabelType;
+use Doctrine\Common\Persistence\ObjectRepository;
 use FOS\RestBundle\Controller\ControllerTrait;
-use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -40,13 +40,12 @@ class LabelController extends Controller
      *     description="Paginated label collection",
      *     @Model(type=PaginatedRepresentation::class)
      * )
-     * @param ParamFetcher $paramFetcher
      *
-     * @return array
+     * @return PaginatedRepresentation
      */
-    public function getLabelsAction(ParamFetcher $paramFetcher)
+    public function getLabelsAction()
     {
-        return $this->get('bigz_halapi.pagination_factory')->getRepresentation(Label::class, $paramFetcher);
+        return $this->get('bigz_halapi.pagination_factory')->getRepresentation(Label::class);
     }
 
     /**
@@ -57,7 +56,7 @@ class LabelController extends Controller
      *
      * @param Label $label
      *
-     * @return array
+     * @return Label
      */
     public function getLabelAction(Label $label)
     {
@@ -72,7 +71,9 @@ class LabelController extends Controller
      *     in="body",
      *     description="Label to add",
      *     required=true,
-     *     @Model(type=LabelType::class),
+     *     @SWG\Schema(
+     *          @SWG\Property(property="label", ref=@Model(type=LabelType::class))
+     *     )
      * )
      * @SWG\Response(response=201, description="Label created", @Model(type=Label::class))
      * )
@@ -90,7 +91,7 @@ class LabelController extends Controller
         $form = $this->createForm(LabelType::class, $label);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $label->setCreatedBy($this->getUser());
             $manager->persist($label);
@@ -105,21 +106,14 @@ class LabelController extends Controller
     /**
      * Update a label.
      *
-     * ApiDoc(
-     *  input="App\Form\Type\LabelType",
-     *  output="App\Entity\Label",
-     *  statusCodes = {
-     *     200 = "Label updated",
-     *     404 = "Label not found"
-     *   }
-     * )
-     *
      * @SWG\Parameter(
      *     name="body",
      *     in="body",
-     *     description="Label to add",
+     *     description="Label to update",
      *     required=true,
-     *     @Model(type=LabelType::class),
+     *     @SWG\Schema(
+     *          @SWG\Property(property="label", ref=@Model(type=LabelType::class))
+     *     )
      * )
      * @SWG\Response(response=200, description="Label updated",
      *     @SWG\Schema(@Model(type=Label::class))
@@ -138,7 +132,7 @@ class LabelController extends Controller
         $form = $this->createForm(LabelType::class, $label, ['method' => 'PUT']);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($label);
             $manager->flush();
@@ -157,7 +151,9 @@ class LabelController extends Controller
      *     in="body",
      *     description="Label to add",
      *     required=true,
-     *     @Model(type=LabelType::class)
+     *     @SWG\Schema(
+     *          @SWG\Property(property="label", ref=@Model(type=LabelType::class))
+     *     )
      * )
      * @SWG\Response(response=200, description="Label patched", @Model(type=Label::class))
      * @SWG\Response(response=400, description="Invalid Request")
@@ -174,7 +170,7 @@ class LabelController extends Controller
         $form = $this->createForm(LabelType::class, $label, ['method' => 'PATCH']);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($label);
             $manager->flush();
@@ -197,7 +193,7 @@ class LabelController extends Controller
      *
      * @Rest\View(statusCode=204)
      *
-     * @return array
+     * @return Response
      */
     public function deleteLabelAction(Label $label)
     {
@@ -218,7 +214,7 @@ class LabelController extends Controller
     }
 
     /**
-     * @return \App\Repository\LabelRepository
+     * @return ObjectRepository
      */
     protected function getRepository()
     {

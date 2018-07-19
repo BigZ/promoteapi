@@ -195,7 +195,7 @@ class Label
      *
      * @return $this
      */
-    public function setArtists(array $artists)
+    public function setArtists($artists)
     {
         $this->artists = $artists;
 
@@ -235,11 +235,11 @@ class Label
     }
 
     /**
-     * @param $createdAt
+     * @param \DateTime $createdAt
      *
      * @return $this
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 

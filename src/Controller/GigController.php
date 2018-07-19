@@ -13,8 +13,8 @@ namespace App\Controller;
 
 use App\Entity\Gig;
 use App\Form\Type\GigType;
+use Doctrine\Common\Persistence\ObjectRepository;
 use FOS\RestBundle\Controller\ControllerTrait;
-use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -35,18 +35,14 @@ class GigController extends Controller
      * Get all gigs.
      *
      * @SWG\Response(response=200, description="Get the paginated gigs collection",
-     *     @SWG\Schema(
-     *         @Model(type=PaginatedRepresentation::class)
-     *     )
+     *     @SWG\Schema(@Model(type=PaginatedRepresentation::class))
      * )
      *
-     * @param ParamFetcher $paramFetcher
-     *
-     * @return array
+     * @return PaginatedRepresentation
      */
-    public function getGigsAction(ParamFetcher $paramFetcher)
+    public function getGigsAction()
     {
-        return $this->get('bigz_halapi.pagination_factory')->getRepresentation(Gig::class, $paramFetcher);
+        return $this->get('bigz_halapi.pagination_factory')->getRepresentation(Gig::class);
     }
 
     /**
@@ -57,7 +53,7 @@ class GigController extends Controller
      *
      * @param Gig $gig
      *
-     * @return array
+     * @return Gig
      */
     public function getGigAction(Gig $gig)
     {
@@ -72,7 +68,9 @@ class GigController extends Controller
      *     in="body",
      *     description="Gig to add",
      *     required=true,
-     *     @Model(type=GigType::class),
+     *     @SWG\Schema(
+     *          @SWG\Property(property="gig", ref=@Model(type=GigType::class))
+     *     )
      * )
      * @SWG\Response(response=201, description="Gig created", @Model(type=Gig::class))
      * @SWG\Response(response=400, description="Invalid Request")
@@ -89,7 +87,7 @@ class GigController extends Controller
         $form = $this->createForm(GigType::class, $gig);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $gig->setCreatedBy($this->getUser());
             $manager->persist($gig);
@@ -109,7 +107,9 @@ class GigController extends Controller
      *     in="body",
      *     description="Gig to add",
      *     required=true,
-     *     @Model(type=GigType::class),
+     *     @SWG\Schema(
+     *          @SWG\Property(property="gig", ref=@Model(type=GigType::class))
+     *     )
      * )
      * @SWG\Response(response=200, description="Gig updated", @Model(type=Gig::class))
      * @SWG\Response(response=400, description="Invalid request")
@@ -126,7 +126,7 @@ class GigController extends Controller
         $form = $this->createForm(GigType::class, $gig, ['method' => 'PUT']);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($gig);
             $manager->flush();
@@ -145,7 +145,9 @@ class GigController extends Controller
      *     in="body",
      *     description="Gig to add",
      *     required=true,
-     *     @Model(type=GigType::class),
+     *     @SWG\Schema(
+     *          @SWG\Property(property="gig", ref=@Model(type=GigType::class))
+     *     )
      * )
      * @SWG\Response(response=200, description="Gig patched", @Model(type=Gig::class))
      * @SWG\Response(response=400, description="Invalid request")
@@ -162,7 +164,7 @@ class GigController extends Controller
         $form = $this->createForm(GigType::class, $gig, ['method' => 'PATCH']);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($gig);
             $manager->flush();
@@ -188,7 +190,7 @@ class GigController extends Controller
      *
      * @param Gig $gig
      *
-     * @return array
+     * @return Response
      */
     public function deleteGigAction(Gig $gig)
     {
@@ -210,7 +212,7 @@ class GigController extends Controller
     }
 
     /**
-     * @return \App\Repository\GigRepository
+     * @return ObjectRepository
      */
     protected function getRepository()
     {

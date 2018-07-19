@@ -298,11 +298,11 @@ class Gig
     }
 
     /**
-     * @param $createdBy
+     * @param User $createdBy
      *
      * @return $this
      */
-    public function setCreatedBy($createdBy)
+    public function setCreatedBy(User $createdBy = null)
     {
         $this->createdBy = $createdBy;
 
@@ -318,7 +318,7 @@ class Gig
     }
 
     /**
-     * @param $artists
+     * @param array $artists
      *
      * @return $this
      */
@@ -350,11 +350,11 @@ class Gig
     }
 
     /**
-     * @param $createdAt
+     * @param \DateTime $createdAt
      *
      * @return $this
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -372,7 +372,7 @@ class Gig
     /**
      * @param \DateTime $updatedAt
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt)
     {
         $this->updatedAt = $updatedAt;
     }

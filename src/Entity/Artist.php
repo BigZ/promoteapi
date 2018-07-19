@@ -100,7 +100,7 @@ class Artist
      *
      * @Assert\Image
      *
-     * @var File
+     * @var File|null
      */
     private $imageFile;
 
@@ -121,7 +121,7 @@ class Artist
      * @var \DateTime
      */
     private $updatedAt;
-    
+
     /**
      * @ORM\Column(type="datetime")
      *
@@ -220,7 +220,7 @@ class Artist
     }
 
     /**
-     * @param $labels
+     * @param array $labels
      *
      * @return $this
      */
@@ -240,7 +240,7 @@ class Artist
     }
 
     /**
-     * @param $gigs
+     * @param array $gigs
      *
      * @return $this
      */
@@ -292,7 +292,7 @@ class Artist
     }
 
     /**
-     * @return File
+     * @return File|null
      */
     public function getImageFile()
     {
@@ -334,7 +334,7 @@ class Artist
     {
         $this->createdAt = $createdAt;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -383,7 +383,7 @@ class Artist
         $this->setCreatedAt(new \DateTime('now'));
         $this->setUpdatedAt(new \DateTime('now'));
     }
-    
+
     /**
      * @ORM\PreUpdate
      */

@@ -11,6 +11,7 @@
 
 namespace App\Controller;
 
+use FOS\RestBundle\Controller\ControllerTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -22,6 +23,8 @@ use Swagger\Annotations as SWG;
  */
 class TokenController extends Controller
 {
+    use ControllerTrait;
+
     /**
      * Get token.
      * Protected by login form (username & password as form-data to this page).
@@ -45,15 +48,14 @@ class TokenController extends Controller
      *           @SWG\Property(property="apiKey", type="string")
      *     ))
      * @SWG\Response(response=403, description="Invalid credentials")
-     * @Route("/token")
      *
-     * @Method("POST")
+     * @Route("/token")
      *
      * @Security("has_role('ROLE_USER')")
      *
-     * @return string
+     * @return array<string, string>
      */
-    public function getTokenAction()
+    public function postTokenAction()
     {
         return ['apiKey' => $this->getUser()->getApiKey()];
     }
