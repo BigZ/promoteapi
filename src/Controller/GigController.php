@@ -68,7 +68,9 @@ class GigController extends Controller
      *     in="body",
      *     description="Gig to add",
      *     required=true,
-     *     @Model(type=GigType::class),
+     *     @SWG\Schema(
+     *          @SWG\Property(property="gig", ref=@Model(type=GigType::class))
+     *     )
      * )
      * @SWG\Response(response=201, description="Gig created", @Model(type=Gig::class))
      * @SWG\Response(response=400, description="Invalid Request")
@@ -85,7 +87,7 @@ class GigController extends Controller
         $form = $this->createForm(GigType::class, $gig);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $gig->setCreatedBy($this->getUser());
             $manager->persist($gig);
@@ -105,7 +107,9 @@ class GigController extends Controller
      *     in="body",
      *     description="Gig to add",
      *     required=true,
-     *     @Model(type=GigType::class),
+     *     @SWG\Schema(
+     *          @SWG\Property(property="gig", ref=@Model(type=GigType::class))
+     *     )
      * )
      * @SWG\Response(response=200, description="Gig updated", @Model(type=Gig::class))
      * @SWG\Response(response=400, description="Invalid request")
@@ -122,7 +126,7 @@ class GigController extends Controller
         $form = $this->createForm(GigType::class, $gig, ['method' => 'PUT']);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($gig);
             $manager->flush();
@@ -141,7 +145,9 @@ class GigController extends Controller
      *     in="body",
      *     description="Gig to add",
      *     required=true,
-     *     @Model(type=GigType::class),
+     *     @SWG\Schema(
+     *          @SWG\Property(property="gig", ref=@Model(type=GigType::class))
+     *     )
      * )
      * @SWG\Response(response=200, description="Gig patched", @Model(type=Gig::class))
      * @SWG\Response(response=400, description="Invalid request")
@@ -158,7 +164,7 @@ class GigController extends Controller
         $form = $this->createForm(GigType::class, $gig, ['method' => 'PATCH']);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($gig);
             $manager->flush();

@@ -48,13 +48,11 @@ class TokenController extends Controller
      *
      * @Route("/token")
      *
-     * @Method("POST")
-     *
      * @Security("has_role('ROLE_USER')")
      *
      * @return array<string, string>
      */
-    public function getTokenAction()
+    public function postTokenAction()
     {
         return ['apiKey' => $this->getUser()->getApiKey()];
     }

@@ -195,7 +195,7 @@ class Label
      *
      * @return $this
      */
-    public function setArtists(array $artists)
+    public function setArtists($artists)
     {
         $this->artists = $artists;
 

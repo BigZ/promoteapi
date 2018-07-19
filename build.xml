@@ -40,7 +40,16 @@
             <arg value="install" />
             <arg value="--optimize-autoloader" />
         </exec>
-        <property name="vendor.done" value="true"/>
+        <property name="composer.done" value="true"/>
+    </target>
+
+    <target name="nvm"
+            unless="nvm.done"
+            description="Use the proper version of npm">
+        <exec executable="nvm">
+            <arg value="use" />
+        </exec>
+        <property name="nvm.done" value="true"/>
     </target>
 
     <target name="npm"
@@ -89,7 +98,7 @@
 
     <target name="prepare"
             unless="prepare.done"
-            depends="clean,composer,npm,drop-schema,migrate,fixture"
+            depends="clean,composer,nvm,npm,drop-schema,migrate,fixture"
             description="Prepare for build">
         <mkdir dir="./build/api"/>
         <mkdir dir="./build/coverage"/>

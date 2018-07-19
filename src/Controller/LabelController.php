@@ -71,7 +71,9 @@ class LabelController extends Controller
      *     in="body",
      *     description="Label to add",
      *     required=true,
-     *     @Model(type=LabelType::class),
+     *     @SWG\Schema(
+     *          @SWG\Property(property="label", ref=@Model(type=LabelType::class))
+     *     )
      * )
      * @SWG\Response(response=201, description="Label created", @Model(type=Label::class))
      * )
@@ -89,7 +91,7 @@ class LabelController extends Controller
         $form = $this->createForm(LabelType::class, $label);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $label->setCreatedBy($this->getUser());
             $manager->persist($label);
@@ -104,21 +106,14 @@ class LabelController extends Controller
     /**
      * Update a label.
      *
-     * ApiDoc(
-     *  input="App\Form\Type\LabelType",
-     *  output="App\Entity\Label",
-     *  statusCodes = {
-     *     200 = "Label updated",
-     *     404 = "Label not found"
-     *   }
-     * )
-     *
      * @SWG\Parameter(
      *     name="body",
      *     in="body",
-     *     description="Label to add",
+     *     description="Label to update",
      *     required=true,
-     *     @Model(type=LabelType::class),
+     *     @SWG\Schema(
+     *          @SWG\Property(property="label", ref=@Model(type=LabelType::class))
+     *     )
      * )
      * @SWG\Response(response=200, description="Label updated",
      *     @SWG\Schema(@Model(type=Label::class))
@@ -137,7 +132,7 @@ class LabelController extends Controller
         $form = $this->createForm(LabelType::class, $label, ['method' => 'PUT']);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($label);
             $manager->flush();
@@ -156,7 +151,9 @@ class LabelController extends Controller
      *     in="body",
      *     description="Label to add",
      *     required=true,
-     *     @Model(type=LabelType::class)
+     *     @SWG\Schema(
+     *          @SWG\Property(property="label", ref=@Model(type=LabelType::class))
+     *     )
      * )
      * @SWG\Response(response=200, description="Label patched", @Model(type=Label::class))
      * @SWG\Response(response=400, description="Invalid Request")
@@ -173,7 +170,7 @@ class LabelController extends Controller
         $form = $this->createForm(LabelType::class, $label, ['method' => 'PATCH']);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($label);
             $manager->flush();

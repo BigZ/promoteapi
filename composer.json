@@ -43,7 +43,8 @@
         "symfony/validator": "^4.1",
         "symfony/templating": "^4.1",
         "bigz/s3url": "^1.0",
-        "league/fractal": "^0.17.0"
+        "league/fractal": "^0.17.0",
+        "symfony/expression-language": "^4.1"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^3.0",

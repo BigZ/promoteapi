@@ -13,3 +13,8 @@ labels:
 gigs:
     type:     rest
     resource: App\Controller\GigController
+
+token:
+    type:     rest
+    resource: App\Controller\TokenController
+

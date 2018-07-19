@@ -30,7 +30,7 @@ class GenerateSwaggerDocumentationCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('generate:swagger-documentation')
+            ->setName('generate:swagger-doc')
             ->setDescription('Generate a swagger.json file according to your annotations')
             ->addArgument('argument', InputArgument::OPTIONAL, 'Argument description')
             ->addOption('option', null, InputOption::VALUE_NONE, 'Option description');

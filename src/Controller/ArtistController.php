@@ -71,7 +71,9 @@ class ArtistController extends Controller
      *     in="body",
      *     description="Artist to add",
      *     required=true,
-     *     @Model(type=ArtistType::class),
+     *     @SWG\Schema(
+     *          @SWG\Property(property="artist", ref=@Model(type=ArtistType::class))
+     *     )
      * )
      * @SWG\Response(response=201, description="Artist created", @Model(type=Artist::class))
      * @SWG\Response(response=400, description="Invalid Request")
@@ -88,7 +90,7 @@ class ArtistController extends Controller
         $form = $this->createForm(ArtistType::class, $artist);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $artist->setCreatedBy($this->getUser());
             $manager->persist($artist);
@@ -108,9 +110,13 @@ class ArtistController extends Controller
      *     in="body",
      *     description="Artist to update",
      *     required=true,
-     *     @Model(type=ArtistType::class),
+     *     @SWG\Schema(
+     *          @SWG\Property(property="artist", ref=@Model(type=ArtistType::class))
+     *     )
      * )
-     * @SWG\Response(response=200, description="Artist updated", @Model(type=Artist::class))
+     * @SWG\Response(response=200, description="Artist updated",
+     *     @SWG\Schema(@Model(type=Artist::class))
+     * )
      * @SWG\Response(response=400, description="Invalid Request")
      * @SWG\Response(response=404, description="Artist not found")
      *
@@ -125,7 +131,7 @@ class ArtistController extends Controller
         $form = $this->createForm(ArtistType::class, $artist, ['method' => 'PUT']);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($artist);
             $manager->flush();
@@ -144,7 +150,9 @@ class ArtistController extends Controller
      *     in="body",
      *     description="Artist to patch",
      *     required=true,
-     *     @Model(type=ArtistType::class),
+     *     @SWG\Schema(
+     *          @SWG\Property(property="artist", ref=@Model(type=ArtistType::class))
+     *     )
      * )
      * @SWG\Response(response=200, description="Artist updated", @Model(type=Artist::class))
      * @SWG\Response(response=400, description="Invalid Request")
@@ -161,7 +169,7 @@ class ArtistController extends Controller
         $form = $this->createForm(ArtistType::class, $artist, ['method' => 'PATCH']);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($artist);
             $manager->flush();
