@@ -18,7 +18,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-
 /**
  * Class GenerateSwaggerDocumentationCommand
  * @author Romain Richard
@@ -55,6 +54,7 @@ class GenerateSwaggerDocumentationCommand extends ContainerAwareCommand
 
     /**
      * @param array $pathList
+     *
      * @return array
      */
     private function removePrivatePaths(array $pathList)
@@ -70,6 +70,7 @@ class GenerateSwaggerDocumentationCommand extends ContainerAwareCommand
 
     /**
      * @param array $pathList
+     *
      * @return array
      */
     private function addExamples(array $pathList)

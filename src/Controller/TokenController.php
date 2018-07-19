@@ -45,13 +45,14 @@ class TokenController extends Controller
      *           @SWG\Property(property="apiKey", type="string")
      *     ))
      * @SWG\Response(response=403, description="Invalid credentials")
+     *
      * @Route("/token")
      *
      * @Method("POST")
      *
      * @Security("has_role('ROLE_USER')")
      *
-     * @return string
+     * @return array<string, string>
      */
     public function getTokenAction()
     {

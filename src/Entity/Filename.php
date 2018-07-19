@@ -29,7 +29,7 @@ class Filename
 
     /**
      * Filename constructor.
-     * @param $filename
+     * @param string $filename
      */
     public function __construct($filename)
     {
@@ -43,7 +43,7 @@ class Filename
     /**
      * @param mixed $extension
      *
-     * @return Media
+     * @return Filename
      */
     public function setExtension($extension)
     {
@@ -68,6 +68,8 @@ class Filename
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**

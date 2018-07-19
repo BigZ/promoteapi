@@ -11,6 +11,7 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\Entity\Artist;
 use App\Entity\Gig;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -43,11 +44,14 @@ class LoadGigData extends AbstractFixture implements OrderedFixtureInterface
             $manager->persist($gig);
 
             foreach ($data['artists'] as $artist) {
+                /**
+                 * @var Artist $artistEntity
+                 */
                 $artistEntity = $manager->getRepository('App:Artist')->findOneBySlug($artist);
                 $artistEntity->addGig($gig);
-            }
 
-            $manager->persist($artistEntity);
+                $manager->persist($artistEntity);
+            }
         }
 
         $manager->flush();

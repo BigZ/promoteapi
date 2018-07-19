@@ -50,10 +50,11 @@ class FormAuthenticator extends AbstractGuardAuthenticator
     {
         try {
             $credentials = json_decode($request->getContent());
-        return [
-            'username' => $credentials->username,
-            'password' => $credentials->password,
-        ];
+
+            return [
+                'username' => $credentials->username,
+                'password' => $credentials->password,
+            ];
         } catch (\Exception $exception) {
             throw new BadRequestHttpException(
                 'The request must be in json and include both an username & password field'

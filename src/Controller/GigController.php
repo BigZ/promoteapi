@@ -13,8 +13,8 @@ namespace App\Controller;
 
 use App\Entity\Gig;
 use App\Form\Type\GigType;
+use Doctrine\Common\Persistence\ObjectRepository;
 use FOS\RestBundle\Controller\ControllerTrait;
-use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -35,18 +35,14 @@ class GigController extends Controller
      * Get all gigs.
      *
      * @SWG\Response(response=200, description="Get the paginated gigs collection",
-     *     @SWG\Schema(
-     *         @Model(type=PaginatedRepresentation::class)
-     *     )
+     *     @SWG\Schema(@Model(type=PaginatedRepresentation::class))
      * )
      *
-     * @param ParamFetcher $paramFetcher
-     *
-     * @return array
+     * @return PaginatedRepresentation
      */
-    public function getGigsAction(ParamFetcher $paramFetcher)
+    public function getGigsAction()
     {
-        return $this->get('bigz_halapi.pagination_factory')->getRepresentation(Gig::class, $paramFetcher);
+        return $this->get('bigz_halapi.pagination_factory')->getRepresentation(Gig::class);
     }
 
     /**
@@ -57,7 +53,7 @@ class GigController extends Controller
      *
      * @param Gig $gig
      *
-     * @return array
+     * @return Gig
      */
     public function getGigAction(Gig $gig)
     {
@@ -188,7 +184,7 @@ class GigController extends Controller
      *
      * @param Gig $gig
      *
-     * @return array
+     * @return Response
      */
     public function deleteGigAction(Gig $gig)
     {
@@ -210,7 +206,7 @@ class GigController extends Controller
     }
 
     /**
-     * @return \App\Repository\GigRepository
+     * @return ObjectRepository
      */
     protected function getRepository()
     {

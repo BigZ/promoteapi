@@ -39,22 +39,24 @@ Fields `username` `password`
 ### List
 
 #### Pagination
-A list will give you a paginated ressource, HAL formatted.
+A list will give you a paginated ressource.
 
-`/artists?page=2&limite&sorting[id]=desc`
+`/artists?page=2&limit=2`
 
 #### Filtering
 You can filter out results on specific fields.
 
-`/artists?filtervalue[id]=5&filteroperator[id]=>`
+`/artists?filter[id]=5&filteroperator[id]=>`
 
 Available operators are `>`, `<`, `>=`, `<=`, `=`, `!=`
-
+Default operator is =
 
 #### Sorting
 You can sort the result by any property
 
-`/artists?sorting[id]=asc`
+`/artists?sort=-id`
+
+Will sort the results by descending id
 
 ### Entity
 #### Creating new entities
@@ -87,11 +89,11 @@ You can sort the result by any property
 
 PUT & PATCH works the same way
 
-#### Embedding
+#### Including
 
 By default, relations are not embeded. You can change this behaviour by specifiying wich embedeed entities you need.
 
-`/artists/1?embed[]=gigs&embed[]=labels`
+`/artists/1?include=gigs,labels`
 
 
 ##### Uploading

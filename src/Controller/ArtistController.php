@@ -13,8 +13,8 @@ namespace App\Controller;
 
 use App\Entity\Artist;
 use App\Form\Type\ArtistType;
+use Doctrine\Common\Persistence\ObjectRepository;
 use FOS\RestBundle\Controller\ControllerTrait;
-use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,33 +36,27 @@ class ArtistController extends Controller
      * Get artists.
      *
      * @SWG\Response(response=200, description="Get artists",
-     *     @SWG\Schema(
-     *         @Model(type=PaginatedRepresentation::class)
-     *     )
+     *     @SWG\Schema(@Model(type=PaginatedRepresentation::class))
      * )
      *
-     * @param ParamFetcher $paramFetcher
-     *
-     * @return array
+     * @return PaginatedRepresentation
      */
-    public function getArtistsAction(ParamFetcher $paramFetcher)
+    public function getArtistsAction()
     {
-        return $this->get('bigz_halapi.pagination_factory')->getRepresentation(Artist::class, $paramFetcher);
+        return $this->get('bigz_halapi.pagination_factory')->getRepresentation(Artist::class);
     }
 
     /**
      * Get an artist.
      *
      * @SWG\Response(response=200, description="Get an artist",
-     *     @SWG\Schema(
-     *         @Model(type=Artist::class)
-     *     )
+     *     @SWG\Schema(@Model(type=Artist::class))
      * )
      * @SWG\Response(response=404, description="Artist not found")
      *
      * @param Artist $artist
      *
-     * @return array
+     * @return Artist
      */
     public function getArtistAction(Artist $artist)
     {
@@ -188,7 +182,7 @@ class ArtistController extends Controller
      *
      * @param Artist $artist
      *
-     * @return array
+     * @return Response
      */
     public function deleteArtistAction(Artist $artist)
     {
@@ -226,7 +220,7 @@ class ArtistController extends Controller
      * @SWG\Response(response=415, description="Unsupported media type")
      * @SWG\Response(response=404, description="Artist not found")
      *
-     * @return array
+     * @return Artist|Response
      */
     public function putArtistPictureAction(Request $request, Artist $artist)
     {
@@ -236,12 +230,12 @@ class ArtistController extends Controller
 
         // The last parameter (test) allow you to skip some validation steps that fails when
         // the image is not uploaded through a POST HTTP Form
-        $file = new UploadedFile($tmpFilePath, 'image.jpg', null, null, null, true);
+        $file = new UploadedFile($tmpFilePath, 'image.jpg');
         $artist->setImageFile($file);
 
         $errors = $this->get('validator')->validate($artist);
         if (count($errors) > 0) {
-            return new Response((string) $errors, 415);
+            return new Response($errors->get(0)->getMessage(), 415);
         }
 
         $manager = $this->getDoctrine()->getManager();
@@ -252,7 +246,7 @@ class ArtistController extends Controller
     }
 
     /**
-     * @return \App\Repository\ArtistRepository
+     * @return ObjectRepository
      */
     protected function getRepository()
     {

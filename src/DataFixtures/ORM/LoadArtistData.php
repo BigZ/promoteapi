@@ -47,8 +47,7 @@ class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
                     $data['imageFile'],
                     null,
                     null,
-                    null,
-                    true
+                    false
                 );
                 $artist->setImageFile($file);
             }
@@ -72,7 +71,7 @@ class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
      */
     protected function getImageFixtureDir()
     {
-        return __DIR__ . '/../Images/Artist/';
+        return sprintf('%s/../Images/Artist/', __DIR__);
     }
 
     /**

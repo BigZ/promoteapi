@@ -76,7 +76,7 @@ class User implements UserInterface
     }
 
     /**
-     * @param $username
+     * @param string $username
      *
      * @return $this
      */
@@ -96,7 +96,7 @@ class User implements UserInterface
     }
 
     /**
-     * @param $apiKey
+     * @param string $apiKey
      *
      * @return $this
      */
@@ -116,7 +116,7 @@ class User implements UserInterface
     }
 
     /**
-     * @param $email
+     * @param string $email
      *
      * @return $this
      */
@@ -143,7 +143,7 @@ class User implements UserInterface
     }
 
     /**
-     * @param $role
+     * @param string $role
      *
      * @return $this
      */
@@ -182,7 +182,7 @@ class User implements UserInterface
     }
 
     /**
-     * @param $password
+     * @param string $password
      *
      * @return $this
      */

@@ -60,7 +60,9 @@
         "symfony/dotenv": "^4.1",
         "symfony/maker-bundle": "^1.5",
         "symfony/console": "^4.1",
-        "symfony/var-dumper": "^4.1"
+        "symfony/var-dumper": "^4.1",
+        "phpstan/phpstan": "^0.10.1",
+        "phpstan/phpstan-symfony": "^0.10.0"
     },
     "conflict": {
         "symfony/symfony": "*"
