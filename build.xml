@@ -255,8 +255,6 @@
             depends="prepare"
             description="Run unit tests with PHPUnit">
         <exec executable="${phpunit}" taskname="phpunit" checkreturn="true" passthru="true">
-            <arg value="--configuration"/>
-            <arg path="./phpunit.xml"/>
             <arg value="--coverage-html"/>
             <arg value="./build/coverage"/>
             <arg value="--coverage-clover"/>
@@ -272,11 +270,7 @@
             unless="phpunit.done"
             depends="prepare"
             description="Run unit tests with PHPUnit (without generating code coverage reports)">
-        <exec executable="${phpunit}" taskname="phpunit" checkreturn="true" passthru="true">
-            <arg value="--configuration"/>
-            <arg path="./phpunit.xml"/>
-        </exec>
-
+        <exec executable="${phpunit}" taskname="phpunit" checkreturn="true" passthru="true"/>
         <property name="phpunit.done" value="true"/>
     </target>
 

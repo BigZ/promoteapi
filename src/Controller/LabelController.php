@@ -13,8 +13,8 @@ namespace App\Controller;
 
 use App\Entity\Label;
 use App\Form\Type\LabelType;
+use Doctrine\Common\Persistence\ObjectRepository;
 use FOS\RestBundle\Controller\ControllerTrait;
-use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -40,13 +40,12 @@ class LabelController extends Controller
      *     description="Paginated label collection",
      *     @Model(type=PaginatedRepresentation::class)
      * )
-     * @param ParamFetcher $paramFetcher
      *
-     * @return array
+     * @return PaginatedRepresentation
      */
-    public function getLabelsAction(ParamFetcher $paramFetcher)
+    public function getLabelsAction()
     {
-        return $this->get('bigz_halapi.pagination_factory')->getRepresentation(Label::class, $paramFetcher);
+        return $this->get('bigz_halapi.pagination_factory')->getRepresentation(Label::class);
     }
 
     /**
@@ -57,7 +56,7 @@ class LabelController extends Controller
      *
      * @param Label $label
      *
-     * @return array
+     * @return Label
      */
     public function getLabelAction(Label $label)
     {
@@ -197,7 +196,7 @@ class LabelController extends Controller
      *
      * @Rest\View(statusCode=204)
      *
-     * @return array
+     * @return Response
      */
     public function deleteLabelAction(Label $label)
     {
@@ -218,7 +217,7 @@ class LabelController extends Controller
     }
 
     /**
-     * @return \App\Repository\LabelRepository
+     * @return ObjectRepository
      */
     protected function getRepository()
     {
