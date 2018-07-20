@@ -45,6 +45,7 @@ class GenerateSwaggerDocumentationCommand extends ContainerAwareCommand
         $apiDoc = $this->getContainer()->get('nelmio_api_doc.generator')->generate()->toArray();
         $apiDoc['paths'] = $this->removePrivatePaths($apiDoc['paths']);
         $apiDoc['paths'] = $this->addExamples($apiDoc['paths']);
+        $apiDoc['definitions'] = $this->removeDatePattern($apiDoc['definitions']);
         $fileSystem->dumpFile(
             'swagger.json',
             json_encode($apiDoc, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
@@ -89,5 +90,27 @@ class GenerateSwaggerDocumentationCommand extends ContainerAwareCommand
         }
 
         return $pathList;
+    }
+
+    /**
+     * Nelmio api doc adds a shitty "pattern" thing to date-time in forms, and we don't want that.
+     *
+     * @param array $definitionList
+     *
+     * @return array
+     */
+    private function removeDatePattern(array $definitionList)
+    {
+        foreach ($definitionList as $definitionName => $definition) {
+            if (isset($definition['properties'])) {
+                foreach ($definition['properties'] as $propertyId => $property) {
+                    if (isset($property['format']) && isset($property['pattern'])) {
+                        unset($definitionList[$definitionName]['properties'][$propertyId]['pattern']);
+                    }
+                }
+            }
+        }
+
+        return $definitionList;
     }
 }

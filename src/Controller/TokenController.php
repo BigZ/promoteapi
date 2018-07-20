@@ -46,8 +46,6 @@ class TokenController extends Controller
      *     ))
      * @SWG\Response(response=403, description="Invalid credentials")
      *
-     * @Route("/token")
-     *
      * @Security("has_role('ROLE_USER')")
      *
      * @return array<string, string>

@@ -1,4 +1,4 @@
-hookfiles: ./app/DreddHook/*.php
+hookfiles: ./src/DreddHook/*.php
 language: vendor/bin/dredd-hooks-php
 server: 'php bin/console server:run'
 server-wait: 3

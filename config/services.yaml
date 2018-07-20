@@ -76,9 +76,11 @@ services:
         tags:
             - { name: jms_serializer.event_subscriber }
 
-
     # Commands
     App\Command\GenerateSwaggerDocumentationCommand:
         public: true
         tags:
             - { name: console.command }
+
+    jms_serializer.naming_strategy:
+        alias: jms_serializer.identical_property_naming_strategy

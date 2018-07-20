@@ -23,3 +23,6 @@ stop:
 
 test:
 	$(PHING_BIN) tests
+
+analysis:
+	$(PHING_BIN) analysis

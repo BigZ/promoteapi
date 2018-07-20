@@ -59,7 +59,6 @@ class Gig
      * @ORM\Column(name="startDate", type="datetime")
      *
      * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d\TH:i:s.000\Z'>")
      */
     private $startDate;
 
@@ -71,7 +70,6 @@ class Gig
      * @ORM\Column(name="endDate", type="datetime", nullable=true)
      *
      * @JMS\Expose
-     * @JMS\Type("DateTime<'Y-m-d\TH:i:s.000\Z'>")
      */
     private $endDate;
 

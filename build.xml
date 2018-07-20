@@ -8,6 +8,7 @@
     <property name="phploc"  value="./vendor/bin/phploc"/>
     <property name="phpmd"   value="./vendor/bin/phpmd"/>
     <property name="phpunit" value="./vendor/bin/phpunit"/>
+    <property name="phpstan" value="./vendor/bin/phpstan"/>
     <property name="dredd" value="./node_modules/.bin/dredd"/>
 
     <target name="full-build"
@@ -15,8 +16,12 @@
             description="Performs static analysis, runs the tests, and generates project documentation"/>
 
     <target name="tests"
-            depends="prepare,lint,phpmd,phpcs,phploc,phpunit-no-coverage,dredd"
+            depends="prepare,analysis,phpunit-no-coverage,dredd"
             description="Performs a lint check and runs the tests (without generating code coverage reports)"/>
+
+    <target name="analysis"
+            depends="lint,phpmd,phpcs,phploc,phpstan"
+            description="Performs code analysis" />
 
     <target name="static-analysis"
             depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci"
@@ -124,6 +129,16 @@
         </apply>
 
         <property name="lint.done" value="true"/>
+    </target>
+
+    <target name="phpstan"
+            unless="phpstan.done"
+            description="Perform a STatic ANalysis on src">
+        <exec executable="${phpstan}" taskname="phpstan">
+            <arg path="src" />
+        </exec>
+
+        <property name="phpstan.done" value="true"/>
     </target>
 
     <target name="phploc"

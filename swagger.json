@@ -12,47 +12,6 @@
         "application/json"
     ],
     "paths": {
-        "/token": {
-            "post": {
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "description": "Authentication credentials",
-                        "schema": {
-                            "required": [
-                                "username",
-                                "password"
-                            ],
-                            "properties": {
-                                "username": {
-                                    "type": "string"
-                                },
-                                "password": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Auth granted",
-                        "schema": {
-                            "properties": {
-                                "apiKey": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Invalid credentials"
-                    }
-                }
-            }
-        },
         "/artists": {
             "get": {
                 "summary": "Get artists.",
@@ -662,7 +621,7 @@
                 "bio": {
                     "type": "string"
                 },
-                "image_name": {
+                "imageName": {
                     "type": "string"
                 }
             },
@@ -750,15 +709,13 @@
                 "name": {
                     "type": "string"
                 },
-                "start_date": {
+                "startDate": {
                     "type": "string",
-                    "format": "date-time",
-                    "pattern": "Y-m-d H:i:s"
+                    "format": "date-time"
                 },
-                "end_date": {
+                "endDate": {
                     "type": "string",
-                    "format": "date-time",
-                    "pattern": "Y-m-d H:i:s"
+                    "format": "date-time"
                 },
                 "venue": {
                     "type": "string"
@@ -766,7 +723,7 @@
                 "address": {
                     "type": "string"
                 },
-                "facebook_link": {
+                "facebookLink": {
                     "type": "string"
                 }
             },

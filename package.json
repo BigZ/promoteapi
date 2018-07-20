@@ -7,11 +7,9 @@
     "test": "tests"
   },
   "dependencies": {
-    "dredd": "^4.5.0"
+    "dredd": "^5"
   },
-  "devDependencies": {
-    "swagger-tools": "^0.10.1"
-  },
+  "devDependencies": {},
   "scripts": {
     "test": "./node_modules/.bin/dredd"
   },

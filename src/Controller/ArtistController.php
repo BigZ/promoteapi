@@ -15,6 +15,7 @@ use App\Entity\Artist;
 use App\Form\Type\ArtistType;
 use Doctrine\Common\Persistence\ObjectRepository;
 use FOS\RestBundle\Controller\ControllerTrait;
+use FOS\RestBundle\View\View;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -228,7 +229,7 @@ class ArtistController extends Controller
      * @SWG\Response(response=415, description="Unsupported media type")
      * @SWG\Response(response=404, description="Artist not found")
      *
-     * @return Artist|Response
+     * @return Artist|View
      */
     public function putArtistPictureAction(Request $request, Artist $artist)
     {
@@ -243,7 +244,7 @@ class ArtistController extends Controller
 
         $errors = $this->get('validator')->validate($artist);
         if (count($errors) > 0) {
-            return new Response($errors->get(0)->getMessage(), 415);
+            return $this->view(['error' => $errors->get(0)->getMessage()], 415);
         }
 
         $manager = $this->getDoctrine()->getManager();

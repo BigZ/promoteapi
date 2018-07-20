@@ -224,7 +224,7 @@ class Artist
      *
      * @return $this
      */
-    public function setLabels(array $labels)
+    public function setLabels($labels)
     {
         $this->labels = $labels;
 
@@ -244,7 +244,7 @@ class Artist
      *
      * @return $this
      */
-    public function setGigs(array $gigs)
+    public function setGigs($gigs)
     {
         $this->gigs = $gigs;
 
