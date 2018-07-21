@@ -15,7 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Swagger\Annotations as SWG;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class IndexController.
@@ -35,6 +35,6 @@ class IndexController extends Controller
      */
     public function indexAction()
     {
-        return ($this->get('nelmio_api_doc.generator')->generate()->toArray());
+        return new Response(file_get_contents(__DIR__ . '/../../swagger.json'), 200);
     }
 }

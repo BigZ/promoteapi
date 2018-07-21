@@ -1,7 +1,3 @@
-index:
-    path: /
-    controller: App\Controller\IndexController::index
-
 artists:
     type:     rest
     resource: App\Controller\ArtistController
