@@ -27,5 +27,5 @@ hooks-worker-term-retry: 500
 hooks-worker-handler-host: localhost
 hooks-worker-handler-port: 61321
 config: ./dredd.yml
-blueprint: swagger.json
+blueprint: apidoc.json
 endpoint: 'http://localhost:8000'

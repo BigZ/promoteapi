@@ -1,13 +1,4 @@
-# This file is the entry point to configure your own services.
-# Files in the packages/ subdirectory configure your dependencies.
-
-# Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
-parameters:
-    locale: 'en'
-
 services:
-    # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
@@ -26,9 +17,6 @@ services:
     #App\Controller\:
         #resource: '../src/Controller'
         #tags: ['controller.service_arguments']
-
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
 
     #Authenticators
     app.token_authenticator:
@@ -75,12 +63,6 @@ services:
         arguments: ['@annotations.cached_reader', "%env(AWS_REGION)%", "%env(AWS_BUCKET)%"]
         tags:
             - { name: jms_serializer.event_subscriber }
-
-    # Commands
-    App\Command\GenerateSwaggerDocumentationCommand:
-        public: true
-        tags:
-            - { name: console.command }
 
     jms_serializer.naming_strategy:
         alias: jms_serializer.identical_property_naming_strategy

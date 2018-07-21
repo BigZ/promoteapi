@@ -28,13 +28,10 @@ class IndexController extends Controller
      * @Route(name="index", path="/")
      *
      * @Method("GET")
-     *
-     * @SWG\Response(response=200, description="Swagger schema", @SWG\Schema(type="object"))
-     *
      * @return string
      */
     public function indexAction()
     {
-        return new Response(file_get_contents(__DIR__ . '/../../swagger.json'), 200);
+        return new Response(json_encode(['data' => 'welcome']), 200);
     }
 }
