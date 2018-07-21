@@ -2,9 +2,10 @@ nelmio_api_doc:
     documentation:
         info:
             title: Promote Api
-            description: Handsmoe API
+            description: Handsome API to work with an artist roster
             version: 1.0.0
         produces:
           - application/json
         consumes:
           - application/json
+          - application/vnd.api+json

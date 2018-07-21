@@ -37,7 +37,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     ];
 
     /**
-     * @var ContainerInterface
+     * @var ContainerInterface|null
      */
     private $container;
 
@@ -54,6 +54,10 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      */
     public function load(ObjectManager $manager)
     {
+        if (!$this->container) {
+            return;
+        }
+
         $encoder = $this->container->get('security.password_encoder');
 
         foreach ($this->getUsers() as $data) {

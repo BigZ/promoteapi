@@ -9,14 +9,15 @@
     <property name="phpmd"   value="./vendor/bin/phpmd"/>
     <property name="phpunit" value="./vendor/bin/phpunit"/>
     <property name="phpstan" value="./vendor/bin/phpstan"/>
-    <property name="dredd" value="./node_modules/.bin/dredd"/>
+    <property name="behat"   value="./vendor/bin/behat"/>
+    <property name="dredd"   value="./node_modules/.bin/dredd"/>
 
     <target name="full-build"
             depends="prepare,static-analysis,phpunit,phpdox"
             description="Performs static analysis, runs the tests, and generates project documentation"/>
 
     <target name="tests"
-            depends="prepare,analysis,phpunit-no-coverage,dredd"
+            depends="prepare,analysis,phpunit-no-coverage,behat,dredd"
             description="Performs a lint check and runs the tests (without generating code coverage reports)"/>
 
     <target name="analysis"
@@ -24,7 +25,7 @@
             description="Performs code analysis" />
 
     <target name="static-analysis"
-            depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci"
+            depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci,phpstan-ci"
             description="Performs static analysis" />
 
     <target name="clean"
@@ -35,6 +36,7 @@
         <delete dir="./build/logs"/>
         <delete dir="./build/pdepend"/>
         <delete dir="./build/phpdox"/>
+        <delete dir="./build/phpstan"/>
         <property name="clean.done" value="true"/>
     </target>
 
@@ -110,13 +112,14 @@
         <mkdir dir="./build/logs"/>
         <mkdir dir="./build/pdepend"/>
         <mkdir dir="./build/phpdox"/>
+        <mkdir dir="./build/phpstan"/>
         <property name="prepare.done" value="true"/>
     </target>
 
     <target name="lint"
             unless="lint.done"
             description="Perform syntax check of sourcecode files">
-        <apply executable="php" taskname="lint" passthru="true">
+        <apply executable="php" passthru="true">
             <arg value="-l" />
 
             <fileset dir="./src">
@@ -134,17 +137,24 @@
     <target name="phpstan"
             unless="phpstan.done"
             description="Perform a STatic ANalysis on src">
-        <exec executable="${phpstan}" taskname="phpstan">
+        <exec executable="${phpstan}">
+            <arg path="analyse" />
             <arg path="src" />
         </exec>
-
         <property name="phpstan.done" value="true"/>
+    </target>
+
+    <target name="phpstan-ci"
+            unless="phpstan-ci.done"
+            description="Perform a STatic ANalysis on src and keep the logs in xml">
+        <exec command="${phpstan} analyse src --errorFormat=checkstyle --no-progress --no-ansi > ./build/phpstan/phpstan.xml" />
+        <property name="phpstan-ci.done" value="true"/>
     </target>
 
     <target name="phploc"
             unless="phploc.done"
             description="Measure project size using PHPLOC and print human readable output. Intended for usage on the command line.">
-        <exec executable="${phploc}" taskname="phploc">
+        <exec executable="${phploc}">
             <arg value="--count-tests" />
             <arg path="./src" />
             <arg path="./tests" />
@@ -157,7 +167,7 @@
             unless="phploc.done"
             depends="prepare"
             description="Measure project size using PHPLOC and log result in CSV and XML format. Intended for usage within a continuous integration environment.">
-        <exec executable="${phploc}" taskname="phploc">
+        <exec executable="${phploc}">
             <arg value="--count-tests" />
             <arg value="--log-csv" />
             <arg path="./build/logs/phploc.csv" />
@@ -174,7 +184,7 @@
             unless="pdepend.done"
             depends="prepare"
             description="Calculate software metrics using PHP_Depend and log result in XML format. Intended for usage within a continuous integration environment.">
-        <exec executable="${pdepend}" taskname="pdepend">
+        <exec executable="${pdepend}">
             <arg value="--jdepend-xml=./build/logs/jdepend.xml" />
             <arg value="--jdepend-chart=./build/pdepend/dependencies.svg" />
             <arg value="--overview-pyramid=./build/pdepend/overview-pyramid.svg" />
@@ -187,7 +197,7 @@
     <target name="phpmd"
             unless="phpmd.done"
             description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
-        <exec executable="${phpmd}" taskname="phpmd">
+        <exec executable="${phpmd}">
             <arg path="./src" />
             <arg value="text" />
             <arg path="./build/phpmd.xml" />
@@ -200,7 +210,7 @@
             unless="phpmd.done"
             depends="prepare"
             description="Perform project mess detection using PHPMD and log result in XML format. Intended for usage within a continuous integration environment.">
-        <exec executable="${phpmd}" taskname="phpmd">
+        <exec executable="${phpmd}">
             <arg path="./src" />
             <arg value="xml" />
             <arg path="./build/phpmd.xml" />
@@ -214,7 +224,7 @@
     <target name="phpcs"
             unless="phpcs.done"
             description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
-        <exec executable="${phpcs}" taskname="phpcs" passthru="true" checkreturn="true">
+        <exec executable="${phpcs}" passthru="true" checkreturn="true">
             <arg value="--standard=./vendor/escapestudios/symfony2-coding-standard/Symfony/ruleset.xml" />
             <arg value="--extensions=php" />
             <arg value="--ignore=autoload.php" />
@@ -229,7 +239,7 @@
             unless="phpcs.done"
             depends="prepare"
             description="Find coding standard violations using PHP_CodeSniffer and log result in XML format. Intended for usage within a continuous integration environment.">
-        <exec executable="${phpcs}" output="/dev/null" taskname="phpcs">
+        <exec executable="${phpcs}" output="/dev/null">
             <arg value="--report=checkstyle" />
             <arg value="--report-file=./build/logs/checkstyle.xml" />
             <arg value="--standard=PSR2" />
@@ -245,7 +255,7 @@
     <target name="phpcpd"
             unless="phpcpd.done"
             description="Find duplicate code using PHPCPD and print human readable output. Intended for usage on the command line before committing.">
-        <exec executable="${phpcpd}" taskname="phpcpd" passthru="true">
+        <exec executable="${phpcpd}" passthru="true">
             <arg path="./src" />
         </exec>
 
@@ -256,7 +266,7 @@
             unless="phpcpd.done"
             depends="prepare"
             description="Find duplicate code using PHPCPD and log result in XML format. Intended for usage within a continuous integration environment.">
-        <exec executable="${phpcpd}" taskname="phpcpd">
+        <exec executable="${phpcpd}" >
             <arg value="--log-pmd" />
             <arg path="./build/logs/pmd-cpd.xml" />
             <arg path="./src" />
@@ -269,7 +279,7 @@
             unless="phpdox.done"
             depends="phploc-ci,phpcs-ci,phpmd-ci"
             description="Generate project documentation using phpDox">
-        <exec executable="${phpdox}" dir="./build" taskname="phpdox"/>
+        <exec executable="${phpdox}" dir="./build"/>
 
         <property name="phpdox.done" value="true"/>
     </target>
@@ -278,7 +288,7 @@
             unless="phpunit.done"
             depends="prepare"
             description="Run unit tests with PHPUnit">
-        <exec executable="${phpunit}" taskname="phpunit" checkreturn="true" passthru="true">
+        <exec executable="${phpunit}" checkreturn="true" passthru="true">
             <arg value="--coverage-html"/>
             <arg value="./build/coverage"/>
             <arg value="--coverage-clover"/>
@@ -294,7 +304,7 @@
             unless="phpunit.done"
             depends="prepare"
             description="Run unit tests with PHPUnit (without generating code coverage reports)">
-        <exec executable="${phpunit}" taskname="phpunit" checkreturn="true" passthru="true"/>
+        <exec executable="${phpunit}" checkreturn="true" passthru="true"/>
         <property name="phpunit.done" value="true"/>
     </target>
 
@@ -307,5 +317,13 @@
         </exec>
 
         <property name="dredd.done" value="true"/>
+    </target>
+
+    <target name="behat"
+            unless="behat.done"
+            depends="prepare"
+            description="Run end-to-end tests with Behat">
+        <exec executable="${behat}" checkreturn="true" passthru="true"/>
+        <property name="behat.done" value="true"/>
     </target>
 </project>

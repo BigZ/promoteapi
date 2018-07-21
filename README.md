@@ -6,7 +6,7 @@ An api to promote your events / artists
 [![Build Status](https://travis-ci.org/BigZ/promoteapi.svg?branch=master)](https://travis-ci.org/BigZ/promoteapi)
 ## Install and run
 
-## Database connection
+## Database connection & s3 credentials
 Add a .env file at the root of the project to configure you env-dependant variables
 
 ```
@@ -18,9 +18,8 @@ DATABASE_URL="postgres://user:password@127.0.0.1/dbname"
 ```
 make
 ```
-make actually installs phing and run phing full-fuild which consists of the following steps:
-clean, composer, npm, drop-schema, migrate, fixture, lint, phploc-ci, pdepend, phpmd-ci, phpcs-ci, phpcpd-ci, phpunit, dredd, phpdox, -check-failure
-fill your credentials for database and an s3 bucket (used for image upload)
+Running the `make` command prepares the project so you can use it, whether in dev or production mode.
+In dev mode, running the `make start` will start a dev server on 127.0.0.1
 
 ## Use
 
@@ -113,13 +112,26 @@ Upload a file as a binary in the content, specifying it's content-type in the he
 
 ### Testing
 
-Dump the Swagger definition
-`php bin/console swagger2:dump`
+#### Locally
+Phpspec will test that your code is doing what it should.
+Behat will run end to end tests on pretty much all key features
+Dredd performs a documentation test to check whether the implementation is done accordingly to the documentation.
 
-Test it with dredd !
-`npm install`
-`dredd`
+Run the tests
+`make test`
+
+#### CI
+```make build```
+will create reports in the /build folder for you to follow the evolution of you app. best run on a Continuous Intergration environment.
+
 
 ### Documentation
 
-Use swagger-ui :)
+Document your code with the appropriate @SWG & @JMS annotations so nelmioApiDocBundle can generate the proper doc.
+ìf you want to automatically update your OpenAPI documentation according to your annotations & code, run this command:
+`php bin/console generate:swagger-doc`
+
+you can then have the documentation available on 
+`http://127.0.0.1:8042/`
+by starting a swagger-ui docker container with this command
+`docker run -p 8042:8080 -e SWAGGER_JSON=/def/swagger.json -v $PWD:/def swaggerapi/swagger-ui`

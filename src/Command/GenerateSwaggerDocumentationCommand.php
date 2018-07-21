@@ -46,11 +46,16 @@ class GenerateSwaggerDocumentationCommand extends ContainerAwareCommand
         $apiDoc['paths'] = $this->removePrivatePaths($apiDoc['paths']);
         $apiDoc['paths'] = $this->addExamples($apiDoc['paths']);
         $apiDoc['definitions'] = $this->removeDatePattern($apiDoc['definitions']);
-        $fileSystem->dumpFile(
-            'swagger.json',
-            json_encode($apiDoc, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
-        );
-        $output->writeln('swagger.json generated successfully');
+
+        $jsonSchema = json_encode($apiDoc, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+
+        if ($jsonSchema) {
+            $fileSystem->dumpFile('swagger.json', $jsonSchema);
+
+            return $output->writeln('swagger.json generated successfully');
+        }
+
+        return $output->writeln('unable to generate swagger.json');
     }
 
     /**

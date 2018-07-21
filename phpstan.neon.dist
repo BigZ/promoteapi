@@ -1,7 +1,12 @@
 includes:
     - vendor/phpstan/phpstan/conf/config.level7.neon
     - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-doctrine/extension.neon
 
 parameters:
 	symfony:
 		container_xml_path: %rootDir%/../../../var/cache/dev/srcDevDebugProjectContainer.xml
+	excludes_analyse:
+		- %rootDir%/../../../src/Migrations/*
+	ignoreErrors:
+		- '#Call to an undefined method Doctrine\\ORM\\EntityRepository<App:[a-zA-Z0-9]+>::findOneBy[a-zA-Z0-9]+\(\)#'

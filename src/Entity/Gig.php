@@ -300,7 +300,7 @@ class Gig
      *
      * @return $this
      */
-    public function setCreatedBy(User $createdBy = null)
+    public function setCreatedBy(User $createdBy)
     {
         $this->createdBy = $createdBy;
 
