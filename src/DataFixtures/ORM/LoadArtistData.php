@@ -37,10 +37,17 @@ class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
             $artist->setCreatedAt(new \DateTime('now'));
             $artist->setUpdatedAt(new \DateTime('now'));
 
+            if (isset($data['imageName'])) {
+                $artist->setImageName($data['imageName']);
+            }
+
             foreach ($data['labels'] as $label) {
                 $artist->addLabel($manager->getRepository('App:Label')->findOneBySlug($label));
             }
 
+            /*
+             * Here is how to upload a file to the filesystem manually
+             *
             if (isset($data['imageFile'])) {
                 $file = new UploadedFile(
                     $this->getImageFixtureDir().$data['imageFile'],
@@ -51,6 +58,7 @@ class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
                 );
                 $artist->setImageFile($file);
             }
+            */
 
             $manager->persist($artist);
         }
@@ -67,14 +75,6 @@ class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
     }
 
     /**
-     * @return string
-     */
-    protected function getImageFixtureDir()
-    {
-        return sprintf('%s/../Images/Artist/', __DIR__);
-    }
-
-    /**
      * @return array
      */
     private function getArtists()
@@ -86,7 +86,7 @@ class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
                 'bio' => 'Bob is a <b>reggae</b> legend',
                 'createdBy' => 'user1',
                 'labels' => ['island-records', 'tuff-gong'],
-                'imageFile' => 'bob-marley.jpg',
+                'imageName' => 'bob-marley.jpg',
             ],
             [
                 'name' => 'Peter Tosh',

@@ -12,7 +12,7 @@
     <property name="dredd" value="./node_modules/.bin/dredd"/>
 
     <target name="full-build"
-            depends="prepare,static-analysis,phpunit,dredd,phpdox"
+            depends="prepare,static-analysis,phpunit,phpdox"
             description="Performs static analysis, runs the tests, and generates project documentation"/>
 
     <target name="tests"

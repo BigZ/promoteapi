@@ -16,7 +16,7 @@ Feature: Artist feature
                       "name": "Bob Marley",
                       "slug": "bob-marley",
                       "bio": "Bob is a <b>reggae<\/b> legend",
-                      "imageName": "https:\/\/s3.eu-west-3.amazonaws.com\/promoteapi\/5b51eaf94c118451747586.jpg"
+                      "imageName": "https:\/\/s3.eu-west-3.amazonaws.com\/promoteapi\/bob-marley.jpg"
                   },
                   "links": {
                       "self": "\/artist\/1"
