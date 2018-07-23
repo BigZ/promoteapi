@@ -37,7 +37,7 @@ class ArtistController extends Controller
      * Get artists.
      *
      * @SWG\Response(response=200, description="Get artists",
-     *     @SWG\Schema(@Model(type=PaginatedRepresentation::class))
+     *     @SWG\Items(@Model(type=Artist::class))
      * )
      *
      * @return PaginatedRepresentation
@@ -237,12 +237,11 @@ class ArtistController extends Controller
         $tmpFilePath = stream_get_meta_data($tmpFile)['uri'];
         file_put_contents($tmpFilePath, $request->getContent());
 
-        // The last parameter (test) allow you to skip some validation steps that fails when
-        // the image is not uploaded through a POST HTTP Form
         $file = new UploadedFile($tmpFilePath, 'image.jpg');
         $artist->setImageFile($file);
 
         $errors = $this->get('validator')->validate($artist);
+
         if (count($errors) > 0) {
             return $this->view(['error' => $errors->get(0)->getMessage()], 415);
         }

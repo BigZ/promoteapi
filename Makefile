@@ -7,13 +7,14 @@ install:
     ifeq ($(PHING_IS_INSTALLED), 0)
         composer install
     endif
-	$(PHING_BIN) prepare
+	$(PHING_BIN) install
 
 build:
     ifeq ($(PHING_IS_INSTALLED), 0)
         composer install
     endif
-	$(PHING_BIN) full-build
+	$(PHING_BIN) install
+	$(PHING_BIN) prepare
 
 start:
     php app/console server:run
@@ -22,7 +23,8 @@ stop:
     php app/console server:stop
 
 test:
-	$(PHING_BIN) tests
+	$(PHING_BIN) prepare
+	$(PHING_BIN) test
 
 analysis:
 	$(PHING_BIN) analysis

@@ -12,21 +12,41 @@
     <property name="behat"   value="./vendor/bin/behat"/>
     <property name="dredd"   value="./node_modules/.bin/dredd"/>
 
-    <target name="full-build"
-            depends="prepare,static-analysis,phpunit,phpdox"
-            description="Performs static analysis, runs the tests, and generates project documentation"/>
+    <target name="install"
+            depends="composer,nvm,npm"
+            description="Prepare for build or tests" />
 
-    <target name="tests"
-            depends="prepare,analysis,phpunit-no-coverage,behat,dredd"
-            description="Performs a lint check and runs the tests (without generating code coverage reports)"/>
+    <target name="prepare"
+            depends="drop-schema,migrate,fixture"
+            description="Prepare for build or tests" />
 
     <target name="analysis"
             depends="lint,phpmd,phpcs,phploc,phpstan"
             description="Performs code analysis" />
 
+    <target name="test"
+            depends="prepare,behat,dredd"
+            description="Performs a lint check and runs the tests (without generating code coverage reports)" />
+
     <target name="static-analysis"
-            depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci,phpstan-ci"
+            depends="clean,build-ci-dir,lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci,phpstan-ci"
             description="Performs static analysis" />
+
+    <target name="full-build"
+            depends="install,prepare,static-analysis,test,phpdox"
+            description="Install dependencies, prepare data, performs static analysis, runs the tests, and generates project documentation"/>
+
+    <target name="build-ci-dir"
+            unless="build-ci-dir.done"
+            description="Prepare build artifacts">
+        <mkdir dir="./build/api"/>
+        <mkdir dir="./build/coverage"/>
+        <mkdir dir="./build/logs"/>
+        <mkdir dir="./build/pdepend"/>
+        <mkdir dir="./build/phpdox"/>
+        <mkdir dir="./build/phpstan"/>
+        <property name="build-ci-dir.done" value="true"/>
+    </target>
 
     <target name="clean"
             unless="clean.done"
@@ -101,19 +121,6 @@
             <arg value="--ansi" />
         </exec>
         <property name="fixture.done" value="true"/>
-    </target>
-
-    <target name="prepare"
-            unless="prepare.done"
-            depends="clean,composer,nvm,npm,drop-schema,migrate,fixture"
-            description="Prepare for build">
-        <mkdir dir="./build/api"/>
-        <mkdir dir="./build/coverage"/>
-        <mkdir dir="./build/logs"/>
-        <mkdir dir="./build/pdepend"/>
-        <mkdir dir="./build/phpdox"/>
-        <mkdir dir="./build/phpstan"/>
-        <property name="prepare.done" value="true"/>
     </target>
 
     <target name="lint"

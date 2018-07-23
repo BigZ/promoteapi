@@ -35,7 +35,7 @@ class GigController extends Controller
      * Get all gigs.
      *
      * @SWG\Response(response=200, description="Get the paginated gigs collection",
-     *     @SWG\Schema(@Model(type=PaginatedRepresentation::class))
+     *     @SWG\Items(@Model(type=Gig::class))
      * )
      *
      * @return PaginatedRepresentation
@@ -177,11 +177,6 @@ class GigController extends Controller
 
     /**
      * Delete an existing Gig.
-     *
-     * ApiDoc(statusCodes = {
-     *     204 = "Gig deleted",
-     *     404 = "Gig not found"
-     *   })
      *
      * @SWG\Response(response=204, description="Gig deleted")
      * @SWG\Response(response=404, description="Gig not found")

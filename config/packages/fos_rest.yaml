@@ -1,6 +1,6 @@
 fos_rest:
     exception:
-        exception_controller: 'fos_rest.exception.controller:showAction'
+        exception_controller: 'app.json_exception_controller:showAction'
         codes:
             'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
             'Symfony\Component\OptionsResolver\Exception\InvalidOptionsException': 400

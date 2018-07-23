@@ -66,3 +66,9 @@ services:
 
     jms_serializer.naming_strategy:
         alias: jms_serializer.identical_property_naming_strategy
+
+    app.json_exception_controller:
+        public: true
+        class: App\Controller\ExceptionController
+        arguments:
+            - '@fos_rest.exception.codes_map'

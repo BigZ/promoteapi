@@ -38,7 +38,7 @@ class LabelController extends Controller
      * @SWG\Response(
      *     response=200,
      *     description="Paginated label collection",
-     *     @Model(type=PaginatedRepresentation::class)
+     *     @SWG\Items(@Model(type=Label::class))
      * )
      *
      * @return PaginatedRepresentation
@@ -191,8 +191,6 @@ class LabelController extends Controller
      *
      * @param Label $label
      *
-     * @Rest\View(statusCode=204)
-     *
      * @return Response
      */
     public function deleteLabelAction(Label $label)
@@ -207,6 +205,7 @@ class LabelController extends Controller
         header_register_callback(
             function () {
                 header_remove('Content-type');
+                header('Content-Type: application/json');
             }
         );
 
