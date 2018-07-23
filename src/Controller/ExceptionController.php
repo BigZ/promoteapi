@@ -27,13 +27,12 @@ class ExceptionController
      *
      * @param Request                   $request
      * @param \Exception|\Throwable     $exception
-     * @param DebugLoggerInterface|null $logger
      *
      * @throws \InvalidArgumentException
      *
      * @return Response
      */
-    public function showAction(Request $request, $exception, DebugLoggerInterface $logger = null)
+    public function showAction(Request $request, \Exception $exception)
     {
         $code = $this->getStatusCode($exception);
         return new Response(

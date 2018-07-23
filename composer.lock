@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2fbff5aef3719280e9d01cccd1f59e6b",
+    "content-hash": "0f69a84ec20958e2e5a0e48c2ea21584",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -6941,17 +6941,17 @@
         },
         {
             "name": "bigz/api-doc-dumper-bundle",
-            "version": "0.2",
+            "version": "0.2.1",
             "target-dir": "Bigz/ApiDocDumperBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BigZ/ApiDocDumperBundle.git",
-                "reference": "b49c23e300e654e62f1ce75eeb00b2c8d5d69518"
+                "reference": "cd2ec61e29ede27dc87d37be055c40d8fa894428"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BigZ/ApiDocDumperBundle/zipball/b49c23e300e654e62f1ce75eeb00b2c8d5d69518",
-                "reference": "b49c23e300e654e62f1ce75eeb00b2c8d5d69518",
+                "url": "https://api.github.com/repos/BigZ/ApiDocDumperBundle/zipball/cd2ec61e29ede27dc87d37be055c40d8fa894428",
+                "reference": "cd2ec61e29ede27dc87d37be055c40d8fa894428",
                 "shasum": ""
             },
             "require": {
@@ -6985,7 +6985,7 @@
                 "rest",
                 "swagger"
             ],
-            "time": "2018-07-21T21:44:50+00:00"
+            "time": "2018-07-23T01:17:30+00:00"
         },
         {
             "name": "composer/semver",
@@ -8444,16 +8444,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.10.1",
+            "version": "0.10.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "3179cf27542e9e47acb548150e7ca21ca5ab92d6"
+                "reference": "d69658794514e57ad9f247e623513397038f362f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/3179cf27542e9e47acb548150e7ca21ca5ab92d6",
-                "reference": "3179cf27542e9e47acb548150e7ca21ca5ab92d6",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d69658794514e57ad9f247e623513397038f362f",
+                "reference": "d69658794514e57ad9f247e623513397038f362f",
                 "shasum": ""
             },
             "require": {
@@ -8478,6 +8478,7 @@
                 "ext-mysqli": "*",
                 "ext-zip": "*",
                 "jakub-onderka/php-parallel-lint": "^1.0",
+                "localheinz/composer-normalize": "~0.8.0",
                 "phing/phing": "^2.16.0",
                 "phpstan/phpstan-deprecation-rules": "^0.10.2",
                 "phpstan/phpstan-php-parser": "^0.10",
@@ -8508,7 +8509,7 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "time": "2018-07-01T18:22:12+00:00"
+            "time": "2018-07-22T17:55:11+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",
