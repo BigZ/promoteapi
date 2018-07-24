@@ -129,7 +129,7 @@ will create reports in the /build folder for you to follow the evolution of you 
 
 Document your code with the appropriate @SWG & @JMS annotations so nelmioApiDocBundle can generate the proper doc.
 ìf you want to automatically update your OpenAPI documentation according to your annotations & code, run this command:
-`php bin/console generate:swagger-doc`
+`php bin/console dump:api-doc`
 
 you can then have the documentation available on 
 `http://127.0.0.1:8042/`
