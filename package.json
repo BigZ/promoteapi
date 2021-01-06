@@ -8,7 +8,9 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "dredd": "^5"
+    "dredd": "^13",
+    "husky": "^4.3.6",
+    "lint-staged": "^10.5.3"
   },
   "scripts": {
     "test": "./node_modules/.bin/dredd"
@@ -22,5 +24,10 @@
   "bugs": {
     "url": "https://github.com/BigZ/promoteapi/issues"
   },
-  "homepage": "https://github.com/BigZ/promoteapi#readme"
+  "homepage": "https://github.com/BigZ/promoteapi#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
 }

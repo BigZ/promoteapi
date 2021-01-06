@@ -1,11 +1,13 @@
 # Promote API
 
-An example API to demonstrate the use of [https://github.com/wizardstechnologies/rest-api-bundle](wizards/rest-api-bundle)
+An example API to demonstrate the use of [https://github.com/wizardstechnologies/rest-api-bundle](wizards/rest-api-bundle).
+
+It also tries to be an efficient example of how to test, develop, deploy and manage resources for a REST API.
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/a8fe54a5-2b61-47b7-a8d4-c6f29b3709ab/big.png)](https://insight.sensiolabs.com/projects/a8fe54a5-2b61-47b7-a8d4-c6f29b3709ab)
 [![Build Status](https://travis-ci.org/BigZ/promoteapi.svg?branch=master)](https://travis-ci.org/BigZ/promoteapi)
 
-## Run locally
+## Local Development
 To develop and run the project, you might want to run it locally.
 
 ### Requirements
@@ -14,7 +16,6 @@ To develop and run the project, you might want to run it locally.
 
 ### Configuration
 Add `127.0.0.1 promoteapi.test` to you hosts file.
-
 
 Copy the `.env.dist` file to `.env` and replace the default values with your own.
 
