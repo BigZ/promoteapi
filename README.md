@@ -1,27 +1,31 @@
 # Promote API
 
-An api to promote your events / artists
+An example API to demonstrate the use of [https://github.com/wizardstechnologies/rest-api-bundle](wizards/rest-api-bundle)
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/a8fe54a5-2b61-47b7-a8d4-c6f29b3709ab/big.png)](https://insight.sensiolabs.com/projects/a8fe54a5-2b61-47b7-a8d4-c6f29b3709ab)
 [![Build Status](https://travis-ci.org/BigZ/promoteapi.svg?branch=master)](https://travis-ci.org/BigZ/promoteapi)
-## Install and run
 
-## Database connection & s3 credentials
-Add a .env file at the root of the project to configure you env-dependant variables
+## Run locally
+To develop and run the project, you might want to run it locally.
 
-```
-DATABASE_URL="postgres://user:password@127.0.0.1/dbname"
-```
+### Requirements
+- `docker-compose`
+- `make`
 
-## Build the project
+### Configuration
+Add `127.0.0.1 promoteapi.test` to you hosts file.
 
-```
-make
-```
-Running the `make` command prepares the project so you can use it, whether in dev or production mode.
-In dev mode, running the `make start` will start a dev server on 127.0.0.1
 
-## Use
+Copy the `.env.dist` file to `.env` and replace the default values with your own.
+
+### Run
+
+Start the docker containers with `make dev`.
+
+Prepare the project for usage - ie prepare database schema, load fixtures, install dependencies - with `make d c=prepare`
+
+## Usage
+Acces the API on `http://promoteapi.test:4200/`
 
 ### Log in
 Post a form containing the username and the password to get the token.

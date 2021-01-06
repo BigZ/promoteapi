@@ -42,12 +42,13 @@
         "phing/phing": "^2.16",
         "nelmio/api-doc-bundle": "^3",
         "bigz/s3url": "^1.0",
-        "bigz/halapi-bundle": ">=0.3"
+        "wizards/rest-bundle": "1.0-beta4",
+        "symfony/serializer": "^5.2"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.3",
         "escapestudios/symfony2-coding-standard": "^3.4",
-        "FriendsOfPHP/PHP-CS-Fixer": "^2.12",
+        "friendsofphp/php-cs-fixer": "^2.17",
         "sebastian/phpcpd": "^2.0",
         "phpmd/phpmd" : "^2.4",
         "pdepend/pdepend": "^2.2",
@@ -59,7 +60,7 @@
         "symfony/dotenv": "^4.1",
         "symfony/maker-bundle": "^1.5",
         "symfony/var-dumper": "^4.1",
-        "phpspec/phpspec": "^5.0",
+        "phpspec/phpspec": "^6.2",
         "ddelnano/dredd-hooks-php": "^1.1",
         "behat/behat": "^3.4",
         "behat/mink": "^1.7",

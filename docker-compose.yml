@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  nginx:
+    container_name: promoteapi_nginx
+    build:
+      context: docker/nginx
+      args:
+        APP_ENV: dev
+    ports:
+      - "4200:80"
+    volumes:
+      - .:/var/www/promoteapi
+      - ./docker/nginx/log:/var/log/nginx
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      default:
+        aliases:
+          - promoteapi.test
+  php:
+    container_name: promoteapi_php
+    build:
+      context: docker/php
+      args:
+        APP_ENV: dev
+    working_dir: /var/www/promoteapi
+    volumes:
+      - .:/var/www/promoteapi
+    environment:
+      DATABASE_URL: mysql://root:root@mysql:3306/commandecomapi
+      DATABASE_DRIVER: pdo_mysql
+  postgres:
+    container_name: promoteapi_postgres
+    image: postgres:13
+    volumes:
+    - ./db_data:/var/lib/postgresql/data/
+    restart: always
+    ports:
+    - "4202:3306"
+    environment:
+      POSTGRES_USER: promoteapi
+      POSTGRES_PASSWORD: promoteapi
+      POSTGRES_DB: promoteapi
+
+volumes:
+  db_data: {}
