@@ -11,10 +11,10 @@
 
 namespace App\Entity;
 
-use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity
@@ -162,8 +162,6 @@ class User implements UserInterface
     }
 
     /**
-     * @param array $roles
-     *
      * @return $this
      */
     public function setRoles(array $roles)
@@ -194,14 +192,14 @@ class User implements UserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getSalt()
     {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function eraseCredentials()
     {

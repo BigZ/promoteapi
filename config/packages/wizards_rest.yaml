@@ -1,0 +1,5 @@
+wizards_rest:
+    data_source: orm
+    reader: annotation
+    format: jsonapi
+    base_url: promoteapi.test:4200

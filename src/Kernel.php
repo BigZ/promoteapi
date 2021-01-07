@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
 /**
- * Class Kernel
+ * Class Kernel.
  */
 class Kernel extends BaseKernel
 {
@@ -57,9 +57,6 @@ class Kernel extends BaseKernel
     }
 
     /**
-     * @param ContainerBuilder $container
-     * @param LoaderInterface $loader
-     *
      * @throws \Exception
      */
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
@@ -78,8 +75,6 @@ class Kernel extends BaseKernel
     }
 
     /**
-     * @param RouteCollectionBuilder $routes
-     *
      * @throws \Symfony\Component\Config\Exception\FileLoaderLoadException
      */
     protected function configureRoutes(RouteCollectionBuilder $routes)

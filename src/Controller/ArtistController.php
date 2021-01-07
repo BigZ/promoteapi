@@ -1,263 +1,129 @@
 <?php
 
-/*
- * This file is part of the promote-api package.
- *
- * (c) Bigz
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
-*/
-
 namespace App\Controller;
 
 use App\Entity\Artist;
-use App\Form\Type\ArtistType;
-use Doctrine\Common\Persistence\ObjectRepository;
-use FOS\RestBundle\Controller\ControllerTrait;
-use FOS\RestBundle\View\View;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use App\Form\ArtistType;
+use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Swagger\Annotations as SWG;
-use Halapi\Representation\PaginatedRepresentation;
+use OpenApi\Annotations as OA;
+use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
+use Wizards\RestBundle\Controller\JsonControllerTrait;
+use WizardsRest\Annotation\Type;
+use WizardsRest\CollectionManager;
 
 /**
- * Class ArtistController
- * @author Romain Richard
+ * @Type("artist")
+ *
+ * @Route("/artists")
  */
-class ArtistController extends Controller
+class ArtistController extends AbstractController
 {
-    use ControllerTrait;
+    use JsonControllerTrait;
 
     /**
-     * Get artists.
+     * @Route("", methods={"GET"})
      *
-     * @SWG\Response(response=200, description="Get artists",
-     *     @SWG\Items(@Model(type=Artist::class))
+     * @OA\Response(
+     *     description="Get paginated Artist configurations.",
+     *     response=200,
+     *     @OA\JsonContent(
+     *         type="object",
+     *         @OA\Property(
+     *             property="data",
+     *             type="array",
+     *             @OA\Items(ref=@Model(type=Artist::class))
+     *         )
+     *     )
      * )
-     *
-     * @return PaginatedRepresentation
      */
-    public function getArtistsAction()
+    public function getArtistsAction(CollectionManager $collectionManager, ServerRequestInterface $request)
     {
-        return $this->get('bigz_halapi.pagination_factory')->getRepresentation(Artist::class);
+        return $collectionManager->getPaginatedCollection(Artist::class, $request);
     }
 
     /**
-     * Get an artist.
+     * @Route("/{id}", methods={"GET"})
      *
-     * @SWG\Response(response=200, description="Get an artist",
-     *     @SWG\Schema(@Model(type=Artist::class))
+     * @OA\Response(
+     *     description="Get a Artist.",
+     *     response=200,
+     *     @OA\JsonContent(
+     *         type="object",
+     *         @OA\Property(
+     *             property="data",
+     *             type="object",
+     *             ref=@Model(type=Artist::class)
+     *         )
+     *     )
      * )
-     * @SWG\Response(response=404, description="Artist not found")
-     *
-     * @param Artist $artist
-     *
-     * @return Artist
      */
-    public function getArtistAction(Artist $artist)
+    public function getArtistAction(string $id, EntityManagerInterface $entityManager)
     {
+        try {
+            $artist = $entityManager->find(Artist::class, $id);
+        } catch (\Exception $exception) {
+            throw new NotFoundHttpException('Artist not found.');
+        }
+
         return $artist;
     }
 
     /**
-     * Create a new Artist.
-     *
-     * @SWG\Parameter(
-     *     name="artist",
-     *     in="body",
-     *     description="Artist to add",
-     *     required=true,
-     *     @SWG\Schema(
-     *          @SWG\Property(property="artist", ref=@Model(type=ArtistType::class))
-     *     )
-     * )
-     * @SWG\Response(response=201, description="Artist created", @Model(type=Artist::class))
-     * @SWG\Response(response=400, description="Invalid Request")
-     *
-     * @param Request $request
-     *
-     * @Security("is_granted('create')")
-     *
-     * @return mixed
+     * @Route("", methods={"POST"})
      */
-    public function postArtistAction(Request $request)
+    public function postArtistAction(Request $request, EntityManagerInterface $entityManager)
     {
         $artist = new Artist();
         $form = $this->createForm(ArtistType::class, $artist);
-        $form->handleRequest($request);
+        $this->handleJsonForm($form, $request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $this->getDoctrine()->getManager();
-            $artist->setCreatedBy($this->getUser());
-            $manager->persist($artist);
-            $manager->flush();
-
-            return $this->view($artist, 201);
+        if (!$form->isValid()) {
+            $this->throwRestErrorFromForm($form);
         }
 
-        return $this->view($form, 400);
+        $entityManager->persist($artist);
+        $entityManager->flush();
+
+        return $artist;
     }
 
     /**
-     * Update an Artist.
-     *
-     * @SWG\Parameter(
-     *     name="body",
-     *     in="body",
-     *     description="Artist to update",
-     *     required=true,
-     *     @SWG\Schema(
-     *          @SWG\Property(property="artist", ref=@Model(type=ArtistType::class))
-     *     )
-     * )
-     * @SWG\Response(response=200, description="Artist updated",
-     *     @SWG\Schema(@Model(type=Artist::class))
-     * )
-     * @SWG\Response(response=400, description="Invalid Request")
-     * @SWG\Response(response=404, description="Artist not found")
-     *
-     * @param Request $request
-     *
-     * @Security("is_granted('edit')")
-     *
-     * @return mixed
+     * @Route("/{id}", methods={"PATCH"})
      */
-    public function putArtistAction(Request $request, Artist $artist)
-    {
-        $form = $this->createForm(ArtistType::class, $artist, ['method' => 'PUT']);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($artist);
-            $manager->flush();
-
-            return $artist;
-        }
-
-        return $this->view($form, 400);
-    }
-
-    /**
-     * Pacth an Artist.
-     *
-     * @SWG\Parameter(
-     *     name="body",
-     *     in="body",
-     *     description="Artist to patch",
-     *     required=true,
-     *     @SWG\Schema(
-     *          @SWG\Property(property="artist", ref=@Model(type=ArtistType::class))
-     *     )
-     * )
-     * @SWG\Response(response=200, description="Artist updated", @Model(type=Artist::class))
-     * @SWG\Response(response=400, description="Invalid Request")
-     * @SWG\Response(response=404, description="Artist not found")
-     *
-     * @param Request $request
-     *
-     * @Security("is_granted('edit')")
-     *
-     * @return mixed
-     */
-    public function patchArtistAction(Request $request, Artist $artist)
+    public function patchArtistAction(Artist $artist, Request $request, EntityManagerInterface $entityManager)
     {
         $form = $this->createForm(ArtistType::class, $artist, ['method' => 'PATCH']);
-        $form->handleRequest($request);
+        $this->handleJsonForm($form, $request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($artist);
-            $manager->flush();
-
-            return $artist;
+        if (!$form->isValid()) {
+            $this->throwRestErrorFromForm($form);
         }
 
-        return $this->view($form, 400);
+        $entityManager->persist($artist);
+        $entityManager->flush();
+
+        return $artist;
     }
 
     /**
      * Delete an Artist.
      *
-     * @SWG\Response(response=204, description="Artist deleted")
-     * @SWG\Response(response=404, description="Artist not found")
-     *
-     * @Security("is_granted('delete')")
-     *
-     * @param Artist $artist
-     *
-     * @return Response
+     * @OA\Response(response=204, description="Artist deleted")
+     * @OA\Response(response=404, description="Artist not found")
      */
-    public function deleteArtistAction(Artist $artist)
+    public function deleteArtistAction(Artist $artist): Response
     {
         $manager = $this->getDoctrine()->getManager();
 
         $manager->remove($artist);
         $manager->flush();
 
-        // Dirty Fix for php webserver
-        // see https://github.com/symfony/symfony/issues/12744
-        header_register_callback(
-            function () {
-                header_remove('Content-type');
-                header('Content-Type: application/json');
-            }
-        );
-
         return new Response('{}', 204);
-    }
-
-    /**
-     * Upload a new artist picture.
-     *
-     * @param Request $request
-     * @param Artist  $artist
-     *
-     * @SWG\Parameter(
-     *     name="BinaryData",
-     *     in="body",
-     *     description="Image content",
-     *     required=true,
-     *     @SWG\Schema(type="string", format="byte"),
-     * )
-     * @SWG\Response(response=200, description="Artist picture updated", @Model(type=Artist::class))
-     * @SWG\Response(response=415, description="Unsupported media type")
-     * @SWG\Response(response=404, description="Artist not found")
-     *
-     * @return Artist|View
-     */
-    public function putArtistPictureAction(Request $request, Artist $artist)
-    {
-        $tmpFile = tmpfile();
-        $tmpFilePath = stream_get_meta_data($tmpFile)['uri'];
-        file_put_contents($tmpFilePath, $request->getContent());
-
-        $file = new UploadedFile($tmpFilePath, 'image.jpg');
-        $artist->setImageFile($file);
-
-        $errors = $this->get('validator')->validate($artist);
-
-        if (count($errors) > 0) {
-            return $this->view(['error' => $errors->get(0)->getMessage()], 415);
-        }
-
-        $manager = $this->getDoctrine()->getManager();
-        $manager->persist($artist);
-        $manager->flush();
-
-        return $artist;
-    }
-
-    /**
-     * @return ObjectRepository
-     */
-    protected function getRepository()
-    {
-        return $this->getDoctrine()->getManager()->getRepository('App:Artist');
     }
 }

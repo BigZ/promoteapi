@@ -1,36 +1,20 @@
 <?php
 
-/*
- * This file is part of the promote-api package.
- *
- * (c) Bigz
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
-*/
+namespace App\DataFixtures;
 
-namespace App\DataFixtures\ORM;
-
-use App\Entity\Artist;
 use App\Entity\Gig;
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
 
-/**
- * Class LoadGigData
- * @author Romain Richard
- */
-class LoadGigData extends AbstractFixture implements OrderedFixtureInterface
+class GigFixtures extends Fixture implements DependentFixtureInterface
 {
-    /**
-     * @inheritdoc
-     */
+    const GIG_FIXTURES_PREFIX = 'gig_fixtures_';
+
     public function load(ObjectManager $manager)
     {
         foreach ($this->getGigs() as $data) {
             $gig = new Gig();
-            $gig->setCreatedBy($manager->getRepository('App:User')->findOneByUsername($data['createdBy']));
             $gig->setCreatedAt($data['createdAt']);
             $gig->setStartDate($data['startDate']);
             $gig->setEndDate($data['endDate']);
@@ -41,34 +25,21 @@ class LoadGigData extends AbstractFixture implements OrderedFixtureInterface
             $gig->setCreatedAt(new \DateTime('now'));
             $gig->setUpdatedAt(new \DateTime('now'));
 
-            $manager->persist($gig);
-
-            foreach ($data['artists'] as $artist) {
-                /**
-                 * @var Artist $artistEntity
-                 */
-                $artistEntity = $manager->getRepository('App:Artist')->findOneBySlug($artist);
-                $artistEntity->addGig($gig);
-
-                $manager->persist($artistEntity);
+            foreach ($data['artist'] as $artistSlug) {
+                $artist = $this->getReference(
+                    sprintf('%s%s', ArtistFixtures::ARTIST_FIXTURES_PREFIX, $artistSlug)
+                );
+                $artist->addGig($gig);
+                $manager->persist($artist);
             }
+
+            $manager->persist($gig);
         }
 
         $manager->flush();
     }
 
-    /**
-     * @return int
-     */
-    public function getOrder()
-    {
-        return 4;
-    }
-
-    /**
-     * @return array
-     */
-    private function getGigs()
+    private function getGigs(): array
     {
         return [
             [
@@ -78,7 +49,6 @@ class LoadGigData extends AbstractFixture implements OrderedFixtureInterface
                 'venue' => 'Jamaica Stadium',
                 'address' => 'nearby kingston',
                 'facebookLink' => null,
-                'createdBy' => 'user1',
                 'artists' => ['bob-marley', 'peter-tosh'],
                 'createdAt' => new \DateTime('yesterday'),
             ],
@@ -89,7 +59,6 @@ class LoadGigData extends AbstractFixture implements OrderedFixtureInterface
                 'venue' => 'Bercy Arena',
                 'address' => 'Quai de Bercy, Paris',
                 'facebookLink' => 'https://www.facebook.com/events/981661548572560/',
-                'createdBy' => 'user2',
                 'artists' => ['daftpunk'],
                 'createdAt' => new \DateTime('now'),
             ],
@@ -100,7 +69,6 @@ class LoadGigData extends AbstractFixture implements OrderedFixtureInterface
                 'venue' => 'Zenith de Paris',
                 'address' => 'Porte de pantin, paris',
                 'facebookLink' => 'https://www.facebook.com/events/4212/',
-                'createdBy' => 'user3',
                 'artists' => ['maitregims'],
                 'createdAt' => new \DateTime('now'),
             ],
@@ -115,6 +83,13 @@ class LoadGigData extends AbstractFixture implements OrderedFixtureInterface
                 'artists' => ['maitregims'],
                 'createdAt' => new \DateTime('now'),
             ],
+        ];
+    }
+
+    public function getDependencies()
+    {
+        return [
+            ArtistFixtures::class,
         ];
     }
 }

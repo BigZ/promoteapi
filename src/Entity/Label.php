@@ -12,9 +12,9 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Halapi\Annotation\Embeddable;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
-use Halapi\Annotation\Embeddable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -205,8 +205,6 @@ class Label
     /**
      * Set createdBy.
      *
-     * @param User $createdBy
-     *
      * @return $this
      */
     public function setCreatedBy(User $createdBy)
@@ -235,8 +233,6 @@ class Label
     }
 
     /**
-     * @param \DateTime $createdAt
-     *
      * @return $this
      */
     public function setCreatedAt(\DateTime $createdAt)

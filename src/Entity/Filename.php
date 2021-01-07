@@ -12,7 +12,8 @@
 namespace App\Entity;
 
 /**
- * Class Filename
+ * Class Filename.
+ *
  * @author Romain Richard
  */
 class Filename
@@ -29,6 +30,7 @@ class Filename
 
     /**
      * Filename constructor.
+     *
      * @param string $filename
      */
     public function __construct($filename)
@@ -85,6 +87,6 @@ class Filename
      */
     public function __toString()
     {
-        return implode('.', array($this->name, $this->extension));
+        return implode('.', [$this->name, $this->extension]);
     }
 }

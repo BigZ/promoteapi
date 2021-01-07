@@ -12,12 +12,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Halapi\Annotation\Embeddable;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
-use Halapi\Annotation\Embeddable;
 use S3Url\Annotation\UploadedFile;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -133,7 +133,6 @@ class Artist
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User")
-     *
      */
     protected $createdBy;
 
@@ -252,8 +251,6 @@ class Artist
     }
 
     /**
-     * @param Gig $gig
-     *
      * @return $this
      */
     public function addGig(Gig $gig)
@@ -264,8 +261,6 @@ class Artist
     }
 
     /**
-     * @param Label $label
-     *
      * @return $this
      */
     public function addLabel(Label $label)
@@ -353,8 +348,6 @@ class Artist
 
     /**
      * Set createdBy.
-     *
-     * @param User $createdBy
      *
      * @return $this
      */

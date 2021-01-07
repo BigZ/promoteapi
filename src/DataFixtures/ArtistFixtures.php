@@ -1,64 +1,33 @@
 <?php
 
-/*
- * This file is part of the promote-api package.
- *
- * (c) Bigz
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
-*/
-
-namespace App\DataFixtures\ORM;
+namespace App\DataFixtures;
 
 use App\Entity\Artist;
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
 
-/**
- * Class LoadArtistData
- * @author Romain Richard
- */
-class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
+class ArtistFixtures extends Fixture implements DependentFixtureInterface
 {
-    /**
-     * @inheritdoc
-     */
+    const ARTIST_FIXTURES_PREFIX = 'artist_fixtures_';
+
     public function load(ObjectManager $manager)
     {
         foreach ($this->getArtists() as $data) {
             $artist = new Artist();
-            $artist->setCreatedBy($manager->getRepository('App:User')->findOneByUsername($data['createdBy']));
             $artist->setName($data['name']);
             $artist->setSlug($data['slug']);
             $artist->setBio($data['bio']);
             $artist->setCreatedAt(new \DateTime('now'));
             $artist->setUpdatedAt(new \DateTime('now'));
 
-            if (isset($data['imageName'])) {
-                $artist->setImageName($data['imageName']);
-            }
-
             foreach ($data['labels'] as $label) {
-                $artist->addLabel($manager->getRepository('App:Label')->findOneBySlug($label));
+                $artist->addLabel(
+                    $this->getReference(sprintf('%s%s', LabelFixtures::LABEL_FIXTURES_PREFIX, $label))
+                );
             }
 
-            /*
-             * Here is how to upload a file to the filesystem manually
-             *
-            if (isset($data['imageFile'])) {
-                $file = new UploadedFile(
-                    $this->getImageFixtureDir().$data['imageFile'],
-                    $data['imageFile'],
-                    null,
-                    null,
-                    false
-                );
-                $artist->setImageFile($file);
-            }
-            */
+            $this->addReference(sprintf('%s%s', self::ARTIST_FIXTURES_PREFIX, $data['slug']), $artist);
 
             $manager->persist($artist);
         }
@@ -66,18 +35,7 @@ class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
         $manager->flush();
     }
 
-    /**
-     * @return int
-     */
-    public function getOrder()
-    {
-        return 3;
-    }
-
-    /**
-     * @return array
-     */
-    private function getArtists()
+    private function getArtists(): array
     {
         return [
             [
@@ -109,6 +67,13 @@ class LoadArtistData extends AbstractFixture implements OrderedFixtureInterface
                 'createdBy' => 'user3',
                 'labels' => ['wati-b'],
             ],
+        ];
+    }
+
+    public function getDependencies()
+    {
+        return [
+            LabelFixtures::class,
         ];
     }
 }

@@ -14,8 +14,8 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Halapi\Annotation\Embeddable;
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\ExclusionPolicy;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Gig.
@@ -115,7 +115,6 @@ class Gig
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User")
-     *
      */
     protected $createdBy;
 
@@ -296,8 +295,6 @@ class Gig
     }
 
     /**
-     * @param User $createdBy
-     *
      * @return $this
      */
     public function setCreatedBy(User $createdBy)
@@ -328,8 +325,6 @@ class Gig
     }
 
     /**
-     * @param Artist $artist
-     *
      * @return $this
      */
     public function addArtist(Artist $artist)
@@ -348,8 +343,6 @@ class Gig
     }
 
     /**
-     * @param \DateTime $createdAt
-     *
      * @return $this
      */
     public function setCreatedAt(\DateTime $createdAt)
@@ -367,9 +360,6 @@ class Gig
         return $this->updatedAt;
     }
 
-    /**
-     * @param \DateTime $updatedAt
-     */
     public function setUpdatedAt(\DateTime $updatedAt)
     {
         $this->updatedAt = $updatedAt;

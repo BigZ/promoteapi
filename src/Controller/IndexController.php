@@ -11,24 +11,14 @@
 
 namespace App\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Swagger\Annotations as SWG;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class IndexController.
- *
- * @Route("/")
- */
-class IndexController extends Controller
+class IndexController extends AbstractController
 {
     /**
-     * @Route(name="index", path="/")
-     *
-     * @Method("GET")
-     * @return string
+     * @Route(name="index", path="/", methods={"GET"})
      */
     public function indexAction()
     {
