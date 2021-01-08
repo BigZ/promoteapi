@@ -12,9 +12,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Halapi\Annotation\Embeddable;
-use JMS\Serializer\Annotation as JMS;
-use JMS\Serializer\Annotation\ExclusionPolicy;
+use WizardsRest\Annotation\Exposable;
+use WizardsRest\Annotation\Embeddable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -23,8 +22,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="gig")
  * @ORM\Entity(repositoryClass="App\Repository\GigRepository")
  * @ORM\HasLifecycleCallbacks
- *
- * @ExclusionPolicy("all")
  */
 class Gig
 {
@@ -35,7 +32,7 @@ class Gig
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @JMS\Expose
+     * @Exposable
      */
     private $id;
 
@@ -46,7 +43,7 @@ class Gig
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
      *
-     * @JMS\Expose
+     * @Exposable
      */
     private $name;
 
@@ -58,7 +55,7 @@ class Gig
      *
      * @ORM\Column(name="startDate", type="datetime")
      *
-     * @JMS\Expose
+     * @Exposable
      */
     private $startDate;
 
@@ -69,7 +66,7 @@ class Gig
      *
      * @ORM\Column(name="endDate", type="datetime", nullable=true)
      *
-     * @JMS\Expose
+     * @Exposable
      */
     private $endDate;
 
@@ -78,7 +75,7 @@ class Gig
      *
      * @ORM\Column(name="venue", type="string", length=255, nullable=true)
      *
-     * @JMS\Expose
+     * @Exposable
      */
     private $venue;
 
@@ -89,7 +86,7 @@ class Gig
      *
      * @ORM\Column(name="address", type="string", length=255)
      *
-     * @JMS\Expose
+     * @Exposable
      */
     private $address;
 
@@ -98,7 +95,7 @@ class Gig
      *
      * @ORM\Column(name="facebookLink", type="string", length=255, nullable=true, unique=true)
      *
-     * @JMS\Expose
+     * @Exposable
      */
     private $facebookLink;
 
@@ -110,13 +107,6 @@ class Gig
      * @Embeddable
      */
     private $artists;
-
-    /**
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     */
-    protected $createdBy;
 
     /**
      * @var \DateTime
@@ -284,24 +274,6 @@ class Gig
     public function getFacebookLink()
     {
         return $this->facebookLink;
-    }
-
-    /**
-     * @return User
-     */
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
-    }
-
-    /**
-     * @return $this
-     */
-    public function setCreatedBy(User $createdBy)
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
     }
 
     /**

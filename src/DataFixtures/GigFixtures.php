@@ -25,7 +25,7 @@ class GigFixtures extends Fixture implements DependentFixtureInterface
             $gig->setCreatedAt(new \DateTime('now'));
             $gig->setUpdatedAt(new \DateTime('now'));
 
-            foreach ($data['artist'] as $artistSlug) {
+            foreach ($data['artists'] as $artistSlug) {
                 $artist = $this->getReference(
                     sprintf('%s%s', ArtistFixtures::ARTIST_FIXTURES_PREFIX, $artistSlug)
                 );

@@ -11,7 +11,7 @@ services:
       - "4200:80"
     volumes:
       - .:/var/www/promoteapi
-      - ./docker/nginx/log:/var/log/nginx
+      - ./var/logs/ngingx:/var/log/nginx
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
     networks:
       default:
@@ -26,9 +26,9 @@ services:
     working_dir: /var/www/promoteapi
     volumes:
       - .:/var/www/promoteapi
-    environment:
-      DATABASE_URL: mysql://root:root@mysql:3306/commandecomapi
-      DATABASE_DRIVER: pdo_mysql
+      - ./var/logs/php:/var/log/php-fpm
+    env_file:
+      - .env
   postgres:
     container_name: promoteapi_postgres
     image: postgres:13
@@ -36,7 +36,7 @@ services:
     - ./db_data:/var/lib/postgresql/data/
     restart: always
     ports:
-    - "4202:3306"
+    - "4202:5432"
     environment:
       POSTGRES_USER: promoteapi
       POSTGRES_PASSWORD: promoteapi

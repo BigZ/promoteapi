@@ -12,9 +12,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Halapi\Annotation\Embeddable;
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use JMS\Serializer\Annotation\Expose;
+use WizardsRest\Annotation\Exposable;
+use WizardsRest\Annotation\Embeddable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -23,8 +22,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="label")
  * @ORM\Entity(repositoryClass="App\Repository\LabelRepository")
  * @ORM\HasLifecycleCallbacks
- *
- * @ExclusionPolicy("all")
  */
 class Label
 {
@@ -35,7 +32,7 @@ class Label
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Expose
+     * @Exposable
      */
     private $id;
 
@@ -46,7 +43,7 @@ class Label
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
      *
-     * @Expose
+     * @Exposable
      */
     private $name;
 
@@ -57,7 +54,7 @@ class Label
      *
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
      *
-     * @Expose
+     * @Exposable
      */
     private $slug;
 
@@ -66,7 +63,7 @@ class Label
      *
      * @ORM\Column(name="description", type="string", length=255)
      *
-     * @Expose
+     * @Exposable
      */
     private $description;
 
@@ -78,13 +75,6 @@ class Label
      * @Embeddable
      */
     private $artists;
-
-    /**
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     */
-    protected $createdBy;
 
     /**
      * @ORM\Column(type="datetime")
@@ -200,28 +190,6 @@ class Label
         $this->artists = $artists;
 
         return $this;
-    }
-
-    /**
-     * Set createdBy.
-     *
-     * @return $this
-     */
-    public function setCreatedBy(User $createdBy)
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
-    /**
-     * Get createdBy.
-     *
-     * @return User
-     */
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
     }
 
     /**

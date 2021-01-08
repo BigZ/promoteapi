@@ -12,74 +12,63 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Halapi\Annotation\Embeddable;
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use JMS\Serializer\Annotation\Expose;
-use S3Url\Annotation\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use WizardsRest\Annotation\Exposable;
+use WizardsRest\Annotation\Embeddable;
 
 /**
- * Artist.
- *
  * @ORM\Table(name="artist")
  * @ORM\Entity(repositoryClass="App\Repository\ArtistRepository")
  * @ORM\HasLifecycleCallbacks
  *
- * @ExclusionPolicy("all")
- *
- * @Vich\Uploadable()
+ * @UniqueEntity(
+ *     fields={"id"},
+ *     errorPath="artist",
+ *     message="An artist is already registered with the same id."
+ * )
+ * 
  */
 class Artist
 {
     /**
-     * @var int
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Expose
+     * @Exposable
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank()
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
      *
-     * @Expose
+     * @Exposable
      */
-    private $name;
+    private string $name;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank()
      *
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
      *
-     * @Expose
+     * @Exposable
      */
     private $slug;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank()
      *
      * @ORM\Column(name="bio", type="text", nullable=true)
      *
-     * @Expose
+     * @Exposable
      */
     private $bio;
 
     /**
-     * @var array
-     *
      * @ORM\ManyToMany(targetEntity="Label", inversedBy="artists")
      *
      * @Embeddable
@@ -87,54 +76,28 @@ class Artist
     protected $labels;
 
     /**
-     * @var array
-     *
      * @ORM\ManyToMany(targetEntity="Gig", inversedBy="artists")
      *
      * @Embeddable
      */
-    protected $gigs;
-
-    /**
-     * @Vich\UploadableField(mapping="artist_image", fileNameProperty="imageName")
-     *
-     * @Assert\Image
-     *
-     * @var File|null
-     */
-    private $imageFile;
+    protected ?iterable $gigs;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *
-     * @Expose
-     *
-     * @UploadedFile(type="image")
-     *
-     * @var string
+     * @Exposable
      */
-    private $imageName;
+    private ?string $imageName;
 
     /**
      * @ORM\Column(type="datetime")
-     *
-     * @var \DateTime
      */
-    private $updatedAt;
+    private \DateTime $updatedAt;
 
     /**
      * @ORM\Column(type="datetime")
-     *
-     * @var \DateTime
      */
-    private $createdAt;
-
-    /**
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     */
-    protected $createdBy;
+    private \DateTime $createdAt;
 
     /**
      * Get id.
@@ -344,28 +307,6 @@ class Artist
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
-    }
-
-    /**
-     * Set createdBy.
-     *
-     * @return $this
-     */
-    public function setCreatedBy(User $createdBy)
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
-    /**
-     * Get createdBy.
-     *
-     * @return User
-     */
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
     }
 
     /**

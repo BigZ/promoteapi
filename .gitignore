@@ -34,3 +34,5 @@ behat.yml
 
 !/docker/nginx/log
 /docker/nginx/log/*
+
+/db_data/
